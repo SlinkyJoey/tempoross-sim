@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tempoross Simulator</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060e1c;--surface:#0c1e33;--border:#1a3a58;
+  --teal:#00d4b8;--teal-dim:#008f7c;
+  --gold:#f0bc3a;--gold-dim:#7a5e18;
+  --purple:#b06ef3;--red:#f04060;
+  --text:#c0d8ec;--muted:#4a7090;
+  --osrs-bg:#3e3529;--osrs-hdr:#2a2018;
+  --osrs-out:#0a0a0a;--osrs-inn:#6e5c3a;
+  --osrs-slot:#241c11;--osrs-sb:#4a3820;
+  --orange:#ff981f;--green:#00ff00;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 35% at 50% -5%,rgba(0,212,184,.06) 0%,transparent 70%);pointer-events:none;}
+.wrap{max-width:900px;margin:0 auto;padding:22px 14px 80px;position:relative;}
+h1{font-family:'Cinzel Decorative',serif;font-size:clamp(17px,4vw,25px);color:var(--teal);text-align:center;text-shadow:0 0 22px rgba(0,212,184,.35);letter-spacing:2px;}
+.sub{text-align:center;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-top:4px;}
+.hdiv{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--teal),transparent);margin:9px auto 18px;}
+/* Panel */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:16px;margin-bottom:12px;}
+.ptitle{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.fl{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+input[type=number],input[type=text],select{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:600;padding:8px 11px;border-radius:3px;outline:none;transition:border-color .15s;}
+input:focus,select:focus{border-color:var(--teal);}
+select option{background:var(--bg);}
+/* Lookup row */
+.lookup-row{display:flex;gap:8px;align-items:flex-end;}
+.lookup-row input{flex:1;}
+.lookup-btn{padding:9px 14px;background:var(--teal-dim);border:none;border-radius:3px;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:opacity .15s;}
+.lookup-btn:hover{opacity:.85;}
+.lookup-btn:disabled{opacity:.4;cursor:not-allowed;}
+/* Checkboxes */
+.checks{display:flex;gap:10px;flex-wrap:wrap;}
+.chk{display:flex;align-items:center;gap:7px;cursor:pointer;padding:7px 12px;background:var(--bg);border:1px solid var(--border);border-radius:3px;transition:border-color .15s;user-select:none;}
+.chk:hover{border-color:var(--teal-dim);}
+.chk input{display:none;}
+.chk-box{width:13px;height:13px;border:1.5px solid var(--muted);border-radius:2px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;}
+.chk input:checked~.chk-box{background:var(--teal);border-color:var(--teal);}
+.chk-box::after{content:'✓';font-size:9px;color:#000;display:none;}
+.chk input:checked~.chk-box::after{display:block;}
+.chk-lbl{font-size:13px;font-weight:600;}
+/* MAIN TABS */
+.main-tabs{display:flex;gap:0;margin-bottom:16px;}
+.main-tab{flex:1;padding:11px;text-align:center;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--bg);color:var(--muted);transition:all .15s;}
+.main-tab:first-child{border-radius:3px 0 0 3px;}
+.main-tab:last-child{border-radius:0 3px 3px 0;border-left:none;}
+.main-tab:not(:first-child):not(:last-child){border-left:none;}
+.main-tab.active{background:var(--teal-dim);border-color:var(--teal);color:#fff;}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+/* Buttons */
+.btn{width:100%;padding:12px;border:none;border-radius:3px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:opacity .15s,transform .1s;}
+.btn:active{transform:scale(.99);}
+.btn-go{background:linear-gradient(135deg,var(--teal-dim),var(--teal));color:#000;}
+.btn-go:hover{opacity:.9;}
+.btn-go:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+.btn-stop{background:linear-gradient(135deg,#6b0000,var(--red));color:#fff;}
+/* Speed */
+.speed-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.speed-row label{font-size:10px;letter-spacing:1px;color:var(--muted);white-space:nowrap;}
+input[type=range]{flex:1;accent-color:var(--teal);cursor:pointer;}
+#speedLbl{font-size:12px;color:var(--teal);min-width:52px;}
+/* Status */
+.status{font-size:11px;color:var(--muted);text-align:right;margin-top:7px;}
+.status.ok{color:var(--teal);}
+.status.err{color:#e8a020;}
+.status.info{color:var(--teal);}
+/* OSRS WINDOW */
+.osrs-win{background:var(--osrs-bg);border:3px solid var(--osrs-out);box-shadow:inset 0 0 0 2px #1a1208,inset 0 0 0 4px var(--osrs-inn),4px 6px 16px rgba(0,0,0,.8);border-radius:2px;overflow:hidden;margin-bottom:12px;}
+.osrs-titlebar{background:var(--osrs-hdr);border-bottom:2px solid var(--osrs-out);padding:7px 12px;display:flex;align-items:center;justify-content:space-between;}
+.osrs-title-text{font-size:15px;font-weight:700;color:var(--orange);text-shadow:1px 1px 0 #000;letter-spacing:.3px;}
+.osrs-gp-txt{font-size:14px;font-weight:700;color:var(--green);text-shadow:1px 1px 0 #000;}
+.osrs-nav{background:var(--osrs-hdr);border-bottom:2px solid var(--osrs-out);padding:4px 10px 0;display:flex;gap:2px;}
+.osrs-tab-fake{padding:3px 12px;background:var(--osrs-slot);border:1px solid var(--osrs-sb);border-bottom:none;font-size:11px;font-weight:700;color:var(--orange);letter-spacing:.3px;}
+.osrs-grid{display:flex;flex-wrap:wrap;gap:3px;padding:10px;min-height:100px;}
+.osrs-slot{width:50px;height:50px;background:var(--osrs-slot);border:1px solid var(--osrs-sb);border-radius:2px;position:relative;display:flex;align-items:center;justify-content:center;cursor:default;}
+.osrs-slot img{width:36px;height:36px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(1px 1px 0 rgba(0,0,0,.9));}
+.osrs-slot .qty{position:absolute;top:1px;left:2px;font-size:11px;font-weight:700;line-height:1;text-shadow:1px 1px 0 #000,-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000;pointer-events:none;white-space:nowrap;}
+.qw{color:#fff;}.qy{color:#ffff00;}.qg{color:#00ff80;}
+.t-unique{background:radial-gradient(circle at 50% 60%,#3a2600 0%,var(--osrs-slot) 65%);border-color:#8a6010;animation:gGold 2.2s ease-in-out infinite;}
+.t-rare{background:radial-gradient(circle at 50% 60%,#220038 0%,var(--osrs-slot) 65%);border-color:#6020a0;animation:gPurp 2.2s ease-in-out infinite;}
+.t-pet{background:radial-gradient(circle at 50% 60%,#380010 0%,var(--osrs-slot) 65%);border-color:#c02040;animation:gPet 1s ease-in-out infinite;z-index:2;}
+@keyframes gGold{0%,100%{box-shadow:0 0 5px 1px rgba(200,140,0,.35)}50%{box-shadow:0 0 14px 4px rgba(220,160,0,.8)}}
+@keyframes gPurp{0%,100%{box-shadow:0 0 5px 1px rgba(130,50,220,.35)}50%{box-shadow:0 0 14px 4px rgba(150,60,240,.8)}}
+@keyframes gPet{0%,100%{box-shadow:0 0 8px 2px rgba(240,40,70,.5)}50%{box-shadow:0 0 22px 7px rgba(255,50,80,1)}}
+.pet-flash{position:fixed;inset:0;z-index:999;background:radial-gradient(ellipse at center,rgba(240,50,80,.4) 0%,transparent 65%);pointer-events:none;animation:pf .8s ease forwards;}
+@keyframes pf{0%{opacity:0}25%{opacity:1}100%{opacity:0}}
+.osrs-footer{background:var(--osrs-hdr);border-top:2px solid var(--osrs-out);padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.osrs-val{font-size:14px;font-weight:700;color:var(--orange);text-shadow:1px 1px 0 #000;}
+.osrs-val span{color:var(--green);}
+.osrs-cnt{font-size:11px;color:#999;text-shadow:1px 1px 0 #000;margin-top:2px;}
+.osrs-bar{height:5px;background:#1a1208;border:1px solid #3a2810;border-radius:2px;overflow:hidden;flex:1;max-width:180px;}
+.osrs-bar-f{height:100%;background:linear-gradient(90deg,var(--teal-dim),var(--teal));border-radius:2px;transition:width .08s;}
+.empty-msg{color:var(--muted);font-size:13px;letter-spacing:1px;text-align:center;padding:28px 0;width:100%;}
+/* XP CALC */
+.xp-result-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:14px;}
+.xp-card{background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:14px;text-align:center;}
+.xp-val{font-size:22px;font-weight:700;color:var(--teal);line-height:1;}
+.xp-val.gold{color:var(--gold);}
+.xp-val.red{color:var(--red);}
+.xp-lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:4px;}
+.xp-bar-wrap{margin-top:14px;}
+.xp-bar-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px;}
+.xp-bar-outer{height:14px;background:var(--bg);border:1px solid var(--border);border-radius:3px;overflow:hidden;}
+.xp-bar-inner{height:100%;background:linear-gradient(90deg,var(--teal-dim),var(--teal));border-radius:3px;transition:width .5s ease;}
+.xp-bar-gained{height:100%;background:var(--gold);border-radius:0 3px 3px 0;display:inline-block;}
+/* CASKET */
+.ck-controls{display:flex;gap:10px;align-items:flex-end;margin-bottom:12px;}
+.ck-input-wrap{flex:1;}
+.ck-btn-wrap{display:flex;gap:8px;}
+.ck-btn{padding:9px 16px;border:none;border-radius:3px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:opacity .15s;}
+.ck-btn-roll{background:linear-gradient(135deg,var(--teal-dim),var(--teal));color:#000;}
+.ck-btn-all{background:var(--surface);border:1px solid var(--border);color:var(--text);}
+.ck-btn:hover{opacity:.85;}
+@media(max-width:500px){.grid2,.grid3{grid-template-columns:1fr;}.osrs-slot{width:46px;height:46px;}.osrs-slot img{width:30px;height:30px;}.main-tab{font-size:10px;padding:9px 6px;letter-spacing:.5px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Tempoross</h1>
+<p class="sub">All-in-One Simulator</p>
+<div class="hdiv"></div>
+
+<!-- SHARED SETTINGS -->
+<div class="panel">
+  <div class="ptitle">Player Settings</div>
+  <div class="grid3" style="margin-bottom:12px">
+    <div>
+      <label class="fl">Username (optional)</label>
+      <div class="lookup-row">
+        <input type="text" id="username" placeholder="RSN..." oninput="clearLookup()">
+        <button class="lookup-btn" id="lookupBtn" onclick="lookupPlayer()">Lookup</button>
+      </div>
+    </div>
+    <div><label class="fl">Fishing Level</label><input type="number" id="fishLvl" value="83" min="35" max="99" oninput="onLevelChange()"></div>
+    <div><label class="fl">Current Fishing XP</label><input type="number" id="fishXp" value="2673114" min="0"></div>
+  </div>
+  <div class="ptitle" style="margin-bottom:8px">Already own? (changes reward rolls)</div>
+  <div class="checks">
+    <label class="chk"><input type="checkbox" id="ownBarrel"><span class="chk-box"></span><span class="chk-lbl">Fish Barrel</span></label>
+    <label class="chk"><input type="checkbox" id="ownTackle"><span class="chk-box"></span><span class="chk-lbl">Tackle Box</span></label>
+  </div>
+  <div class="status" id="lookupStatus">Enter username and click Lookup to auto-fill your stats</div>
+</div>
+
+<!-- MAIN TABS -->
+<div class="main-tabs">
+  <div class="main-tab active" onclick="setTab('roll')">🎣 Live Roll</div>
+  <div class="main-tab" onclick="setTab('xp')">⚡ XP Calculator</div>
+  <div class="main-tab" onclick="setTab('casket')">📦 Casket Sim</div>
+</div>
+
+<!-- TAB: LIVE ROLL -->
+<div class="tab-pane active" id="pane-roll">
+  <div class="panel">
+    <div class="grid2" style="margin-bottom:12px">
+      <div><label class="fl">Reward Permits</label><input type="number" id="permits" value="1700" min="1" max="8000"></div>
+      <div>
+        <label class="fl">Speed</label>
+        <div class="speed-row" style="margin-bottom:0">
+          <input type="range" id="speed" min="1" max="5" value="3" oninput="updSpeed()">
+          <span id="speedLbl">Normal</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-go" id="goBtn" onclick="startLive()">⚓ Open Permits</button>
+      <button class="btn btn-stop" id="stopBtn" onclick="stopLive()" style="display:none;max-width:130px">■ Stop</button>
+    </div>
+  </div>
+  <div class="osrs-win">
+    <div class="osrs-titlebar">
+      <span class="osrs-title-text">Tempoross Loot</span>
+      <span class="osrs-gp-txt" id="gpTotal">0 gp</span>
+    </div>
+    <div class="osrs-nav"><div class="osrs-tab-fake">Loot</div></div>
+    <div class="osrs-grid" id="bankGrid"><div class="empty-msg">Open some permits to see your loot</div></div>
+    <div class="osrs-footer">
+      <div>
+        <div class="osrs-val">Total: <span id="footGp">0 gp</span></div>
+        <div class="osrs-cnt" id="footCnt">0 / 0 permits</div>
+      </div>
+      <div class="osrs-bar"><div class="osrs-bar-f" id="progBar" style="width:0%"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: XP CALCULATOR -->
+<div class="tab-pane" id="pane-xp">
+  <div class="panel">
+    <div class="ptitle">What do you want to calculate?</div>
+    <div class="grid2" style="margin-bottom:14px">
+      <div>
+        <label class="fl">Method</label>
+        <select id="xpMethod">
+          <option value="cook_mass">Mass — Cooking (max permits)</option>
+          <option value="nocook_mass" selected>Mass — No Cook (max XP)</option>
+          <option value="cook_dragon">Mass — Dragon Harpoon + Cook</option>
+          <option value="nocook_crystal">Mass — Crystal Harpoon (best XP)</option>
+        </select>
+      </div>
+      <div>
+        <label class="fl">Angler / Spirit Angler outfit?</label>
+        <select id="xpOutfit">
+          <option value="0">No outfit</option>
+          <option value="2.5">Yes (+2.5% XP)</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid2" style="margin-bottom:14px">
+      <div>
+        <label class="fl">Calculate by</label>
+        <select id="xpGoalType" onchange="toggleXpGoal()">
+          <option value="permits">Number of permits</option>
+          <option value="target_level">Target fishing level</option>
+          <option value="target_xp">Target XP gained</option>
+        </select>
+      </div>
+      <div id="xpGoalWrap">
+        <label class="fl" id="xpGoalLabel">Reward Permits</label>
+        <input type="number" id="xpGoalVal" value="1700" min="1">
+      </div>
+    </div>
+    <button class="btn btn-go" onclick="calcXp()">⚡ Calculate</button>
+    <div id="xpResults"></div>
+  </div>
+</div>
+
+<!-- TAB: CASKET SIM -->
+<div class="tab-pane" id="pane-casket">
+  <div class="panel">
+    <div class="ptitle">Open Caskets from Tempoross</div>
+    <div class="ck-controls">
+      <div class="ck-input-wrap">
+        <label class="fl">Number of Caskets</label>
+        <input type="number" id="ckCount" value="1" min="1" max="5000">
+      </div>
+      <div class="ck-btn-wrap">
+        <button class="ck-btn ck-btn-roll" onclick="openCaskets(false)">📦 Open</button>
+        <button class="ck-btn ck-btn-all" onclick="openCaskets(true)">Open All (Max)</button>
+      </div>
+    </div>
+    <div id="ckStatus" class="status">Enter how many caskets to open</div>
+  </div>
+  <div class="osrs-win" id="ckWin" style="display:none">
+    <div class="osrs-titlebar">
+      <span class="osrs-title-text">Casket Loot</span>
+      <span class="osrs-gp-txt" id="ckGpTotal">0 gp</span>
+    </div>
+    <div class="osrs-nav"><div class="osrs-tab-fake">Loot</div></div>
+    <div class="osrs-grid" id="ckGrid"></div>
+    <div class="osrs-footer">
+      <div>
+        <div class="osrs-val">Total: <span id="ckFootGp">0 gp</span></div>
+        <div class="osrs-cnt" id="ckFootCnt">0 caskets</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+const IMGS = {
+  raw_manta: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAdCAMAAACOj/wDAAAAtFBMVEUAAAAAAAFCRmI6PVY9Qlw8P1hGSmdDSGVITGtKTm5MUHBNUnNQVHVRVnhSV3tVWn1YXYNWW4BiZ5BjaZNdYoleZIxgZY9mbJdla5VnbppqcJtaXoVbYYdrcZ5sc6Bxd6dvdqRudKJyeah2fa91fKxzeqt8g7d3f7F5gLJ6grWEi8J9hbl+hbtRSko/OjoVEREmKDlUTU1uZmZlXl11bWyIkMcwNEh9dHSGjsaNlclAQ143OlLMYrHQAAAAAXRSTlMAQObYZgAAAW5JREFUeNp10meTgjAQBmAWlSItZAOhd9v14jX9///rEk6QGY/3Q2bYhw0LRPkvAMps4PgGcwTvx9cXuC3LpI5cb+osCCmGZxhKQz3CMAgoRhwDa/FX/noEBZqqyGMeISKPE46MqMsVSHyS667dNHkcCyoSTplvaLoq68/9Bg/3hzLP86KWmHm2tTaNcSiAu7aqq7LfP0wdy9TU5WIc7GPbNJuyqvOER8yz14aurgZU4KcTDxatCceAXFpBGXTfdpumqmOkjPStpxHlzELLHDHMiCdbT6sJ7ndtU3DEICO+a681dYqHfSc2FZimstXQl+eJtmWCSCnLstR3LVPXrq2wbYpIWMgYy4jY13WWE6xiYTQQEfMSRt3TFdtCGg1FGKM8QU+Fwb5LTOX9FDHiSV1W6OsjdpF4ddv1oU+3rZBoI3JbfDKA8RS0ETGGi9hUF1LGQEnMyz9LrM+BRs3XF3RUmDvZ4Lkwf8IpKPOZs18s+CC2ijYdoQAAAABJRU5ErkJggg==",
+  raw_turtle: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAXCAMAAADEI2RmAAAAq1BMVEUAAABNcDRKbTJ0qE1UejkwLBFKQxpGPxhcUiBUSh1QRhpkWiRrYCZyZih1aip5bCp8byyAci6DdS6FeDBvYyZnXCSJezBgViKMfTJXTiBCOhg8NRWPgDRGZi5AYCw8Vyh8tFRypk16slJ1q055r1F3rVBwo0xpmUZtnkljkUNuoEprm0hchT1llENnlkVijkJdiD9gi0BagzxXgDpWfTlQczVRdjdIajAAAAG715p4AAAAAXRSTlMAQObYZgAAAT9JREFUeNp10ueugkAQhmEVj6CAFAXkdAUEQXr77v/KnF0Lkugbfmx4ZpNJYPIcWJO34YMFvOMvURQXFPCSP8WFK13DCxYXq6VrySzHBUZGD6kkK6rCkqXlCk/8B5A6lqKqW5ViAxi4/wXXrbrmaVvLkTDw9GflyEw1nq6tFUvGnWfdXHQtzjrL0HWN1nh4U1VLmavBMg0aWKsqeOR5WUoKZ5PamHxA07IkbropJsjS1LryhkcDulbkaRIL/H6UJOGNbYoGdOBcpiBlgTKISXmmAf5y/GHp8o5nDjJw3/ftN1PbbGc9Ht24q89Fme93tt01VU1rz6ZtN2+6FlevyjRM4gBo6yI/5UVF62en4ny/f0qOgncAneoyi6IwOgrBMcyGTyAIgg9+QhZ7QeD7vrfH+Me8H2OP+HD4H3jcePcLUpw37ANXNXAAAAAASUVORK5CYII=",
+  raw_swordfish: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAbCAIAAAALXcN4AAAABnRSTlMAAAAAAABupgeRAAACI0lEQVR42s2W7S9CYRjGPf+Qb76YD8ZmGMaGtchMo5G3ishEKO92vDZkaZY0jrUkLSWOkkOlMfw9rnbmZZpOJ87m7Fp7drrv33U/9/M855w8gRfJE+0i+o5JkQyIsXtWLdOKQSfzKkon13fUd4lCH+809khVkopmjNP1K7Spd36gdbinWqOs6ldU9kLt5UpZSVt9kaSyoKY4vzRnA7KoWR6TmqZkc4amGQygUcmUrtEADTXoIWlxS+70zW6bWWmF1rss0KpiG8JNq+rAoXUtyNfUdcN1hY05GBBAQbEP0s4h9/Gozz0W8E6E/Mbr4HQUv7hjUztnWik0DcGC0UgG+lB34jEEL2Zvb7Ye2N3H+P4zBqEF1jfJ0CPenT47+iYvUwgyIHuaI8wdaJfej2IZ6j68Hv8wiFqS8IMrAlAHFgMpAtDoBkoDGk0A6GrpjvUkIuYEuJxBkn69Xo2hXYjEYvTXDmZpQFDRt0bHzpLQ122ecKYMYvYn/ItZYgGwU3kPAeFKDtqY0F74ynHDOKPnpgic0nI+nTAnpGBTUdoNPDNwPn4yIP6dy4CVSdHtEY4ePrzNOGvyePly730I0yx/7UB/pWdx3AnrjnOR/E1HQzi9c7NK8W1e8AYTlAyhdiH7l5ys+fnRgKLpkMCzRxxzdOYUkuJaQlAODw3+wtE4SJT3w5k5AImCPt0IfCzL39PdKz6x0K5lr1gfKseURxD6H31evQFcZUVU9T8ONwAAAABJRU5ErkJggg==",
+  raw_harpoon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAXCAMAAADEI2RmAAABIFBMVEUAAAAAAAGlxoanx4ikxIWty5KqyY2fvoGdvICYt3yiwoSCm2qWtXqTsXd8lWWwzZZ7im53hWuou5aAmmebu37L1sGPq3OrvpubrorT3MuNqHLP2ca2xqieso2TpIOMnX2Km3uImXmGlnju8evU3s2pvZi1xaZxf2UVERGDk3SWqIWhtZCkuZN5iGyBkHOYqoearIlreGBhbFaFlXZmc1yVpoVzgmaLp3F+l2Zgc01vhVp6k2NyiV1keFGRr3aEnmt2j2CFoGxme1JrgFZFUjc/TDJKWDx0jF5RYkI5Qy4yPChWZ0Ztg1hIVjpbbkpMXD2gwYJUZUMqNCJpfVVYa0hidVCVsnlxh1t4kGKHom6QrHWyzpmvzJSauX2oyIusyo//OnTTAAAAAXRSTlMAQObYZgAAARhJREFUeNp9ksdygmAURv8PsBBL1BTTLCHdxPQea4oNAZGqgrz/W2TYJIzzw1ncxT1n5m4uIaBA/kEu/1y/Fup3949n+dzF+djQp4NghPLTba18UxMehOphtdL/MvQfRf60Z39B4eqyVDk+Ku34qBPT1hVJDBwBioU8cLBbPCls86xqfsjqECQAAH/sn/J8kmFZVzO+/dUq2PLicY5hE6YljoYjSgAgxjFJ87UpDWQFhALWuc3MS0OXjI5BD5BI72U1vdcFoYKYO9+wjB5ICFi2uvZYAQkDrbatTSP8vN1pgkT4VOMt2r/LUX4xs0SEa89ZuCmEambpOU46ixCdWGMZLh7L2AjzSQCM5/ZB9Tz8PcBOLHoQ+JpfGH8oVxLyFyUAAAAASUVORK5CYII=",
+  raw_monkfish: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAVCAMAAAAQExzYAAABGlBMVEUAAABrSTxuSj1nRjpxTT90TkJ2TEN0SUJxSD9uRj1rQzxnQjpdPDV5UkV2UUN8UEaCUkl/UUh5TUWFVUpkQDl8VUZ/VkiCWEmHXEyFW0pXNzAdHQCCXkmRY1J/XEh8WkaFYEqHYkyKZE55WEV2VkOMZlCPZ1GRalKUbFSKXk7Ox8Z0VEJxUj+WbVXEiIVrTTxuUD3Gvr6TZWOQZGLChoRDKiZMMCo8JCINCQmZb1abcVeMYFDg29uPYlHh3dzX0dFUNS7FvLw8KCKMYV4sHRiseHUyIhr08vK8g4C7gn6veXa1fXq5gH23f3yxeneyfHk3JB1bOTRkRTlMNCpXPDBbPTRQNSxIMChDLiY/KiRUOS5hQjddQDUAAAFHSlf6AAAAAXRSTlMAQObYZgAAAUhJREFUeNp90NdigjAUBmBZAQduxVbtXtq9p7WtHQ6GA5B13v81GiJC7QX/XfJ/hJMk4gKQiO9dF+J7bxIDADwP4vqpbv6rYSVTN+ijxsNxHctxdMPw3D/zgcgyjY3N3b3jk4tzz7GtuaPrhjlfAkBFxO9sby0IRcTMnFvRAaiQQwf7mJBjFoL0EcjXjg6XhCPCtmFl+mbrdEkajGcYHzbgREJqdp4eMZGqlXqdpiiG0Wf2+DMkoCqv3c5zq7ZWq4oc6wuKdg3T/gYIgKb0X7ptLKRKlvUFzXL+MNYYCBgp8qDfu7qU8D9EDgs6lRR4AZP7EMijQe/6rCKK2WwqnQHgUbGIUOb2AXygyIr6pQ1u5CEvpNLldcB7uQJ+nvJdMMSPNhyqcn+EBPI52SuV8ij5BsE9NFXTlPY7n0xHdwMMJuEqTCLKYvkLRdlbxys5Pv8AAAAASUVORK5CYII=",
+  spirit_flakes: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAeCAMAAADw+3VaAAABGlBMVEUAAAAAAAFIWmsrNkFDU2JFV2YqNT5MXnBRZXhmc4FuiaKEYw3YohohKjEuO0ZAUF4OERVJW2xSZnlbbHxfbn5gcH9jfJNkc4Fsh6BwVA1xe4Z6mLV8XQ1MOQmHZQ26ixXlrBpMX3FtUQ03RVJYanswPEeLZxFrhZ7CkhjIlhgjKzRyj6h1kqxYboNaa3xbQwk6SVc8S1knMDliepBjcX9BUWBBUmFCMABngppqd4MuOUNDVGMoMz1teYRueYVHWWpvi6RINQkXHCIyP0xKXG52k693lbF5lrJLXW80QU5+nbuAn7w2RFEqNUBPYnWOaxGVcBGxhRUlLjg5R1VUZ3nO2ufQnBjVoBpVaHrapBrdphpXaXvprx3usx1BaPs/AAAAAXRSTlMAQObYZgAAAPhJREFUeF5t0uVywzAQBGCvzBxmTpmZmZkZ3v81mia1ejM6/fxW8uzdWEsONPYgBZaNc87hpMshGH868w45X3o7tdkPFccaURIAJPge7eJPrS0atOO+Y/6qo0c0GPDm8q1fUypg15z07gzV7YvL4z21GT5bQVMyIH39uSUHgb5BrkDyXG1fLabBXCv4j/+O4VQ/QXq8VFqRDqOsL4TQkHl9mTLJ9ZuR2fpDz3MfQVMQn/GmY6vnO8WsYxN3MwU7wqAZHRD5r9/VKgeVXDtOHOQVtocki+qqFR5AWUvWuV88umb26L6f+PUJJqjkg0aVqwFXCMH+K3SOH8euFIvBIrLlAAAAAElFTkSuQmCC",
+  casket: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAZCAMAAAD63NUrAAAAwFBMVEUAAAD73CD42h322B3z1R3x0x3u0R3szx3pzR3lyBrixhrgxBrdwRravxrYvRrVuxrTuRrQthjLshjIrxjFrBjCqhi/qBi9pRi6oxW3oBW0nhWxmxWumBWrlRWokxWlkBWijhGfixF8bQ1nVzpkVTlhUjdjUSxdUDVgTSxbTTRbSipXSTBXSChURi5URSZQQyxQQCRMQCpMPSJIPShIOiBDOSZDNx0/NSQ/Mh08MiI5Lho3Lh00KhgyKhosJBgAAAE4HFCpAAAAAXRSTlMAQObYZgAAATBJREFUeNp10k9LAkEYx/HvPLsZmkF2SEJBD1HRoUAkiA7z2vd9dPDQv0N7SK3UnZ2tZwYGQ/zMMCx8+d2WyFp2pGRHvX3dPjz22/3h2Ko0QBmwq7cFZxJ1CGbzWwqtdpnPFmMR9DaizOy7lWWjItSPOeca031Zfg1o5SeFgKzXHs/WdW6AAOH5q/8irmoIxK4E+q4KiN05YhaABhO/qrrW6yrU0grQ6cTGJ8Fr1Q3bLC7iVH7KElXp1JNBTsZqc6jx2Un5PkXggLDUChjU8Kl2Ey9eash9CILH4MO5uLlDbTYQCXgiTzzQbFUkjpMmZcF7k6ZqZ5uKD4/GVL2YEBLTNNtbCS2thahdSNE+upr2Y0hb1HFBTgFggRIiQXMvhMSqyXR6f2q615d2z98bAfAL6ECLsRGZjcYAAAAASUVORK5CYII=",
+  soaked_pages: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAdCAMAAABopjdHAAAAe1BMVEUAAAAAAAFshohuiYprhYVpg4RmgIJlfn9SeZFUe5RVfpZWgJlXgptahJ5bhaBRd49JVZ5ejKdNWqhdiaRVYrZRXq8/QrBAQ7ZCRbhMV6NWY7lDRr0YHcJOXKtch6I/QK5SYLJQXa1UYbRieXtjfH1wi41xjY9zj5B0kZOpnwwDAAAAAXRSTlMAQObYZgAAAMZJREFUeNpt0tsWgiAQheEGUTxXZtr5LPr+TxjClqnsv2LxrZnFBQtEtsU8kmOCmcGVpFlekI2FaXVo2t2JPIThRMW+btqjl9DmqKwe1xZCFCIZJ2le3m81WXi+VBRNFidZcTlvnQCYyk3lRCkAyOxbQyzISZZmHx4wghzzlENwzxYDAomEN4jAvQkGCADIQAQRiEH9kaDrNBFDYLOHTut+GAjiDOm+dwBhwwgLG0a8sNGvsAG8MApPpi+CQMEzYZaQeR/f8w1tRwzJnnljqAAAAABJRU5ErkJggg==",
+  fish_barrel: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAdCAIAAAA/2DscAAAABnRSTlMAAAAAAABupgeRAAADOUlEQVR42p2WS2saURzFO8susshCkAFBRAYZgogYhshIxCEyERUjvvBFYh5CDCZpmpA+0jRtQpuQkkIpXRVKKfRDFLroJ+uv/OGiY7WhchCZx2/OvfecOz7420cb0/9+tLOT6tFeod/LNip22jYnofd8gAaimFt0nZiTjgJKJ003Eyu6i6ahC6JdS8kDZlG6zbS9FHFS0Xw2Xi5YvXamnLOg5FfithU5PVzjN2dng7Tj/RKXPjsqM7qD3TwUWNwDHRd3V+sfb7c5zpFELDQLJIiXp7XXTxtM02DLhQUCL9tdhx9wGTKWGWZ0ITiNpQni6qyJcDfcycn9TJMQmX6GjCMo4ZB/KujVcPV8z32+m32ys6JA4ojvWikpiwAIU0bQ5/fNTbK0zXbruGM+akX268bjXmbYSfXryY2y1SokKtloyVnIp003FXGWjOXFsB0PWdFAWH+o+x6OsrSNZhN16nUBDapGvxxez4faq8H6SrCSCZSW9ZytZy1/JuG3Y76YMW+G5qB4QSBQq1oVCWirGJ4EQbHMPxTs+ObnPUPTbMtCjXK5ViqhSqGwlsvls1nXcVbS6UwqtZxMLiUSi7FYQPdFDCMYCOh+vwJ5WVwqVxdXXQ+FsxyPR6NQBIFkstHYel1fdN6ct1h+oiT3LJgmt6FwKIRwIUZIIzkKBHyARIqlvX/bu73sKtZgw+13s71mpl1J1YpJqYha+6WEITkK6mJqxNGnux3i/+FmEyIimaScKFEI8k2aaIkkm0AKC1MekHZzXFQUCoU1no8wQu8P332XWCsQuwKBZICAxuxcHeQQICgyQCjD66/o8tsv9OLzD8qBlKO4qZNsQN6ZFikQewBGRBdffgICrSpCpr0gxaJfIgGxB6nRIaEIiH4AklhLCMZMkWbpqghHbCOUlt1SJkhAFE3FGpCijIGINYiTLQcdri9TWro22o/Rls1KNpmmHFCoPqBBy5b2e0CklHDOAtF7uqrqOll9QIwLRzIuNHVjk34wQWS6W0s31mwVawIlmyyZphzTKGNFgTXaD1lBtVurlv3jdUSUpHHSD7VqgAg0zRDQvV6QmBp9i4wGmlp49/zZLI/u82/gN6Gyf2rVREJ6AAAAAElFTkSuQmCC",
+  tackle_box: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAfCAMAAADHso01AAABelBMVEUAAAAAAAFdV1dFQEBbVVVYUlKFfVp1a1BWUFBRSkpkTiRUTU1nUiRhWlp9dlVgTCJOSUhMRkZuXT1xYD90YkJvVyZ2ZEN5ZkV8akZ/bEhyWyhIQ0OCbkkVERFrVjw/OjqFcEpbSTR5YCprVSZCPT2DeliAeFZnVDr9/Pybtc9XRSBcSSB9m7lURi75+flUQh3j4ODKw8K/uZzCqhiHf1twaWldTDXETkZMQCpbTTR8YixIPSg8KAA8OSjX0dHTzc1APCpDQC59dHRza2tqYmLxtR3x0x1xbVpva1eNhnCKhW6yq42EYw3CkhiHZQ18XQ1IQzBMRjIkIiK1rpC3r5FuZmZlXl10Vw1STTdzaU1OSjVDOSaHfn2LgoF4Wg2AYA1YVDxYUTx7c1J4cVE/NSR1b1BzbE1uZkpwakxrZEhnYkZlXkNiXEJcVD1eWkAoJiZwZkxeVkBrYUhnXkZuZEpcVj1lXENnYGB1XSosKio5NDQ8NzcyLi41MDCkq4AYAAAAAXRSTlMAQObYZgAAAfxJREFUeNpt0/dX2kAAwPEm5OQuCeMkkAQCaBlF1A5bW7v3HrbVLge0CgiIVEFQM/537xKDCY/vb8knt/LeXZkQw/gfxzozPR/QR0vXjWw+MLDOfm98+/r82WODcdUaRjFOBQL5fDZ7EoWheDyZTOojFoap+KhcztbTwIhhn+Wnp2OxmCQlErKsZAxj1ss9wgQdTasZTfMyOOYIU6RjHb7qZ4zxHMZvsKKmtey1WS9zh4CMvr0gy68VlXBmZsbHfyhLC7KiqKWnDj/wcNDmhKyoWukJnfzu+OT4ohJO4wzG41uLSVtzyj1VLd1Ka5p/bdjneEnaluna19WbGnHdc25hyPLk0DaTNOoeRkesKIo5DoTDYfq7Tx8tL+MaZccPcIi0BABAqcqvjS+rq5WKuMmQHDcXb8zz62tLHz+8q9ab7c6narW6vfXi5SvGZgtFIic/fq6vvX9bax4PB5/1SLm2+XBl0eGogAD/nXwAV+7H+Agv8qTIfLn8n6F8BCECohNrWaZpRhGK4lTqgntBiCwLCRAAzuA4YDWarfZ+d/DX5oNeMAh0CDiODYWyIRZZ9cZeq93pOvyvFyRN2d0phEm79eYeHe5w32VasVjcodza7xCmzrIeLhTCO7sNOrrTJez6lBvZG4BQEBAiO3d9QgxR143Lt26TrqH/ep4D+olltvZ0qUQAAAAASUVORK5CYII=",
+  tome_water: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAaCAMAAAB4vXe4AAABIFBMVEUAAAAAAAEmMDAiLCwsLGAqKlsoKFcmJlQkJFBKeaCstrdJd55IdZtMe6NNfaZGc5lFcZZDb5RDbZFNf6g6YYBAaYs/ZohCa448Y4M9ZYU5XHpQg605Xn01V3M3WnY0VXAsSmMwUGoyUm0uTWYsSGAqRVsVFS46SUoJCRpRha8NDSJOgaswPDwRESgoQlcAAB0NEXRNYWINEXhieXs9TU0qNDVWa2wNFYQJCVEJCUgRFY5wi41lfn9uiYpshogVGq52k5UVGrQ1N3MaGjkRGJiAn6CPsrONsLI0NXCFpaZ9m52KrK5zj5B5l5mDo6SFp6iBoaOHqKoyNG0uMGYwMmqMrq+Jq6xFVlYyP0AdHT8dIEMgIkgiJEwoKDwsLmMqKkBXC6RhAAAAAXRSTlMAQObYZgAAAWZJREFUeNp90tdyglAUheEcRRFLVKKoRJBiTe9V040VWwIWjLz/W2Qj5YRxzLrw5vs3wzjs/BlCaOefocX8HZLtvJgLolDakiBdX8wLKZaT5CJOPK5LeSoSjSfpjCggmIeXy6XOUhQEiSSdZnKpPAuJx3lgCOKJZAaCrFC6u0cOh2CUtSgENBRy8cRlMkSSNoepyLpIi0IVO0kGbQ7Dj1lwUtnvRxZ/BIMug68L/sgHbDlwCrs18Rjc5kAgZ6vrXMXnszkAy64ZOytXgS0nCIKhvJ4vTN3zZ4LIwLlnnDBzz1erJGO/XcweL5Xd81fDMP/wbCy26yxVKFbcc+PHNxhqZrLnjJcPgLF3Ot3RUFPp9OG+OTifgjsBMjRtPB4oymis0rVajWHPTmcWO2/4PVF7Pa350oem9XB7cQ7n3g+X+Jq0W+qw23/qK43LK8w4gce0P9WB8li/uca+8Zi3ZqOOeTPxfpm/5Bo2JsHTq90AAAAASUVORK5CYII=",
+  big_harpoon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAYCAMAAADat72NAAABAlBMVEUAAAAAAAGLp3Fme1KPq3OQrHWNqHKVsnm+zLGRr3Ztg1hkeFFpfVWJpG9yiV1vhVqCm2qFoGx6k2OkuZORo4F4kGIqNCJ5iGxzgmaEnmuou5aYqod3hWuMnX3a4tSsv5wVERGFlXZ/j3GGlniTpIOBkHOImXlhbFZjb1eDk3RlcVqeso2jt5GWqIWhtZCbroq/zbOKm3t9jXB1hGmfvoGdvICbu36gwYKYt3x0jF6Hom6Ammc1QCpFUjcuOSZOXkBrgFY/TDJ2j2Bbbko5Qy5idVBCTjVRYkJIVjpWZ0ZUZUNYa0hgc01xh1tKWDxdcEw8SDBMXD1+l2aWtXqTsXeauX2gmc5bAAAAAXRSTlMAQObYZgAAASFJREFUeNp9kolygjAURRsF3BBRabEira123/e9KsiWBCgI//8rBRs6I0y4M5kkc969efMmW0WBzVuq9YFo528jVB7IR5P0fnI6OOCrBnKWpu3ZJikAkqJMz87vH0ayPB7PEXKgbdpY74iEDy8v1D3pTlWPJ4dRGyFoeV9QIO6E7w9HoH97o1xNpQb8SOzW7BNsdJesev9aDFnW0db535k7E6hz7S7DsMjAGMFF8JPntQbHcYzO8y2MAl8P8hyAGsftup2UY23ug8LIKrG4LTSrGHpkNPmEbk9otlD2dNEfCrxvLQkt8tA1nKQtOsZwUYpnCaVjPyjBj67v0bPjJ63VpOPX5xemVwUUGq2iKH5/owyFqYBEqzYlPvuW7H98SdkviUEpPSy1OIMAAAAASUVORK5CYII=",
+  dragon_harp: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAeCAMAAAAB8C7XAAAAhFBMVEUAAABbVVVjXFtUTU1FQEBIQ0NuZmZnYGBdV1dOSUhlXl05NDQsKipMRkY1MDA/OjphWlo8NzdwaWlYUlJ3b25WUFBsZGR0GA2HGg1CPT0oJiYkIiJ4GA1tFQ0dCQA8CQBCDQA1CQBpFQlMDQlWEQlgEQlkFQlbEQlREQlIDQkyLi4AAAEKE99gAAAAAXRSTlMAQObYZgAAAJZJREFUeNp10scOwzAMA9C4iTOb7r1bb/P//69BzpSg2wMPIlQUKPggQYD4AQdr3qDgYvqCgQ8xMZAF3lnDBD9no6PgQziTCJ7e+4t7EQkJeBiwG4HDfslk2rqTOmsqSdoBHHZHKXIaJenXkqgsSScIep0BMGl1vt2pqOqaKWzKcUtra1SpBxpZqLJaiZJBoJ6E/9N8yR8BSBS74D3LdQAAAABJRU5ErkJggg==",
+  tiny_tempor: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAZCAMAAAD3wqVsAAABFFBMVEUAAACMrrCNsbKLra6Jq62IqaqBo6SGp6mFpqeDpKaBoaJ/n6B7mZt9m5x9nZ96l5l4lZd2k5V1kZJzj5FxjY9th4luiYtwi4xrhYZpgoRogYFmf4Bie3xgeXpfdnhUa2xacnNjfX5Zb3BTaGlXbW519vCO9vKA9vFMXl5G9e9L9e9h9fBA9e9gd3hddXZlfn8z9e5q9fB99vFm9fCL9vJu9fAf9e0Z2tQXyMMZ0swZ0MoZ1M9T9e8Z19GH9vKD9vIc6OJHWFkwPT5LXl87S0tXbm9DU1M+Tk+evL6auryR9vKRtbeUuLkqNzeOsbNTZ2hY9e9OYGFEVVdQ9e9SZmdddHWUtriXt7mStbaRtLaPsrQAAAEAH3vUAAAAAXRSTlMAQObYZgAAAYRJREFUeNpt0mdzozAQBuCTfWCaQAJEszGO03DKXXrvvTebqv//PyI5zmAy2W+aZ97ValZ/qqK8qmNNRFGzyG9MAQCCajp+J6E/KU+zDMjYJkHng9apvL+DYkNwZh0SJM+0RlnR2t0BarA3sB2/T2uUQndt/QGF+0vLiIQRrSjNmmRue0vAvcPh+oY90xvRqTnEZH5xQcLRwdvmPA660Tv9osYTy2m+7P9fHax6EJks+DqxRza+ZHe7i/Ha0bWpIUxY8JZyeimzLM2d6Ow0XlkeDVXNJH6nfzM2UGRZXijR8Uk8WIrfFG7t5PyCflmalw0vXIiH0r8V1XCZhZdX3MoizYsS6JpuQdWzIOLWmf3gxqAoG6ApiBq7y8TYdok3k7xPDDD6K0iyCHUDI2RaXrs7921Nbi1Z0aGhsWLbCPsjym2cGpsKdd1AmK+xN34ENyZSSxJVBWoG62l77aRmsqioOjNs2q4TMOJYN4Qt2yEeN450ynhLt/pRXOnEWMsKKuYGp+ETwHZPnSDi4ZQAAAAASUVORK5CYII=",
+};
+const CASKET_IMGS = {
+  rune_med_helm: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAbCAMAAAC+/9RaAAAAsVBMVEUAAAAAAAEVGh0YICQaJiogKi4iLjQmMjkoNTwqOkAuPUMwQEgyQ0w3SlI8UFg9UlxAVl5CWGI6TVY1SE4NFRgdAAAmAAA1CQBCDQBMDQlREQlWEQlgEQlbEQlkFQlpFQl0GA1wGA18Gg2AGg2EGg2HGg2RHRGbIBGYIBGVIBFdfIlbeodaeIVYdYNWc4BVcX1Sb3tRbXhQanVNZ3NMZXBIYGtGXWdDW2VKY24VERGOHRH3fCXlAAAAAXRSTlMAQObYZgAAAURJREFUeNoFwclqVFEABcA6910jxkwmgt8QcUIz0P+/iS7EdbZutcGIaOjhWBWAABQAkKvrm9uz0/PjiwAWIB9hbd/tk23AAvIBc3/xs3QuO5iQ921sRtC2TzZ0IG/bVjAPaLuMl5nkTRtwX2jb8xryum3b/QweW+15Gbnsvm3bDd2A1tpU7YL9fhTO2hbJ65z8AN1111273p9Z6zDGn8O2bdM0D7/S9VoMY3x/9vLw6OTixcWrh4eHBAIZq9VqtTpdra5vbs9Ojg8PlmVZlgyO4W+ZS5ODNojJ5dePTO7gBAIDTzHdtT7c9LEJGLj8Rn5X3s/72ZJk1wGHX9xV3s1AwrYmbHtXebvMfbdNBQYAI9KDSmzKACB29yQEJgBJ9JE8KoZ+Bpg6m/xrAZIgn65vT8+PngcAQK6uX5weHwUgAAQU4D9BvaMkWTe/MAAAAABJRU5ErkJggg==",
+  rune_full_helm: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAdCAMAAAB/hKeOAAAAolBMVEUAAAANAB1aeIVWc4BVcX1Sb3sYAC4gADwVACYkAEIdADUwCVYmCUg6CWk8DW01CWA/DXA3CWRCDXhNEYssCVFADXQVGh0iLjQgKi4qCUwmMjkyCVtGDYBYdYMaJipDW2VCWGJAVl43SlI8UFg9Ulw6TVY1SE4yQ0wwQEguPUMqOkAoNTxGXWdIYGtKY25MZXBNZ3MVERFQanVRbXgNFRgAAAHBPMLTAAAAAXRSTlMAQObYZgAAAPpJREFUeNpd0tmSgjAQQFEFJYOs4ug4qyBhJ0AS+/9/bRohhSGPp25Xp1LZaAcANmvxHVtXiPzAIdYWNAs9l1h6d/YdsrbQ+yTkTTf/27bX5r0f3MNWt8C1HKIZAJyio62RdzxFOA2LIAXOz/llBXRtkt6LKtwuJHp2o1le+RYo2slhDPPqg8BMhrmXPYsp2gUmMs1fw5A4nNfXywNGklwIKUXXpkUzdzDwnjPG4iSrmq/ZBFrHW45r6+ahbEBjnOL96tkkGpZoJYbKpjLNS9UhimdJ0Rq0CSelRVkrQ9x3cZqN2d9iu+5G75hdAUlh3yZZWaPo7/7yVf4BkCYu9qBCITEAAAAASUVORK5CYII=",
+  rune_chainbody: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAZCAMAAAAL146mAAAAflBMVEUAAABYdYNWc4BVcX1Sb3tRbXhQbXVQanVNa3NMaXBNZ3NMZXBKZW5KY25IY2tIYGtGYWdGXWdDXWVDW2VCW2JCWGJAWF5AVl49VVw9Ulw8Ulg8UFg6UFY6TVY3TFI3SlI1SU41SE4yRkwyQ0wwQEguPUMqOkAoNTwmMjkAAAGPyeqnAAAAAXRSTlMAQObYZgAAAQtJREFUeNpV0NFygyAQBVDbSExkEQ0FRGItFU34/x/s7vrg9D5cnTOwO0NFKaU6v8dP3gpn3w8sIeXtyP56vwvRnFxKaV3dSd/xyz3nKWHvj66g+DmE8SfOSxp/91dPZKM3NkS7YG+DJjLWW+t99DZlb15Ew2BQQ8Cba952Iq2HiSxOy5qfTMrpaXR+jNjr9CSSSmv3oGPuseaRqJVKSWllwE5ab4UJx/E03JD5FMgOwIDFXvqeqAHZAwydwZ77lkm0EkBrYwHi3BCJuhZC1OJowdS0UuJWWoEbmG4NwF2CwvYdj6+vSLeW6Oa7lulDNPcr3lb3q/U8/vJ5OVMLppo2UZQWjee3/5+q+gNxCCQ461eO0wAAAABJRU5ErkJggg==",
+  rune_platebody: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAXCAMAAADEI2RmAAAAh1BMVEUAAAAAAAENFRgRGiAVICYYJCwmMjkqOkAwQEguPUMoNTwiLjQaJioVGh0gKi4yQ0w3SlI1SE46TVY8UFg9UlxAVl5CWGJDW2VGXWdIYGtKY25MZXBNZ3NQanVRbXhSb3tVcX1YdYMwSVcuRVQsQlAqP0woPEgmOUMkNT8iMjwaKDIYICRWc4CSgjiyAAAAAXRSTlMAQObYZgAAASRJREFUeNpdjs1OQjEYRM8UUUAk/pOIG1EX4vs/CkZN3OnSmCBREu7tmH5Jg3BW7ZzOpFCRhApx2kXqzmY67g1GR0opSTv2oXBxdtI/HCoVYgQ6oe/PETwPyI1owmw8uhOFBNpr2mTCUbNbDPYLgHqSVX8bHowNl+HV10HY2tfUGPsVUKG3P4A6kHRjwHiMFCR1/vfDYlKSAiIVdYRJ27TtYuIC2bZ/Dk7btl1/4USU84IUIMB8D8HGsS8MxceaBBHmXwgPFqiCUgdwNoSXyGAqpVl09XaE2dULzyOs3teQoxFkKtU/2R/ePNj22SvQVXYBhEZCG+91Fz0WZ2xQSuJdm/5qiefq7BmDvbRsZAChafettRGMJZomfYJrLBBgCgK2LuYPEkqWS2vtUvsAAAAASUVORK5CYII=",
+  rune_platelegs: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAdCAMAAACpIX3rAAAAmVBMVEUAAABaeIVYdYNVcX1RbXhQanVNZ3NMZXBKY25IYGtGXWdDW2VCWGI8WGtAVl46Vmc5VGQ9Ulw3UWE8UFg6TVY1Tl00TFs3SlIwSVc1SE4uRVQyQ0wsQlAwQEgqP0wuPUMoPEgqOkAmOUMoNTwkNT8mMjkiMjwiLjQdLDcgKi4aKDIaJioYJCwVICYRGiANFRgmAAAdAAAAAAHUID5AAAAAAXRSTlMAQObYZgAAAL9JREFUeNpdzusSgiAQhuGVrDTN0kQtMc3sPHb47v/igpWpqZcB5mH/QDpwxOH5fOkwIFzl1f7EgD+L0nV9eGBAEOfl7qCBiae1ysua4QdRHER5rUco1LbtVHO8ggSZBK8PvpfLr3YLczoDXJdMDCEch2yIqttdxdUFRBhNw3Tnh2l5AsEZjb2HcL01fzTbHvt51pw1sDBYWCzlL7p+qdGDkEjVwQBkkVhIqVokBUOPNi3kH0ADGmQfFBYsgDfRG4QlHPdi+9f1AAAAAElFTkSuQmCC",
+  rune_sq_shield: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAbCAMAAAC3FHQgAAAApVBMVEUAAAAAAAFWQAlRPQlRbXhQanVSb3tNZ3NMZXBKY25IYGtGXWdDW2VCWGJAVl49Ulw8UFg6TVY3SlI1SE41KAAuIgAmHQAyQ0wwQEgdFQA8LABINQlMOQlCMABOSUhFQEBuZmZza2uJgH+BeHiflJSdkpKbkJCaj4+Yjo2EenqhlZVlXl2VioldV1dUTU1YUlJqYmKWjIt7cnKPhYVbQwlVcX08Nzdg9lqGAAAAAXRSTlMAQObYZgAAAPNJREFUeNpV0tt6gjAQRWERWqBFEMwEDdDz+axW3//RnCSfyey5/V3ZXjCDS/zNwgEWV9VkFAUHzMvrRd0s21Y7R7zg1GnXKXTU1aqnDbtEfjjqeq03CaZB+57xmETMgnZWSUtM+WE327RW4V1OcZb0rUwznNUa0iwvxSzpG5Fe8sNe3SykyZy18OpmSf/I1GtVLRqvBCnPFmWYJfoVerCzRZhV9A2p1ThLSuA/p/5P+VmlPmWa8uVOa6eQzv2l48CzFv+Efjw9v7y+bbdfzLVNDWPk8+3347BslbmLCj97GAdjJoHo74/DdA+K+W6HiIcf6glymBjEh9nJYwAAAABJRU5ErkJggg==",
+  rune_kiteshield: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAcCAMAAABBJv+bAAAAVFBMVEUAAAA8LAA8UFg9UlxCMABINQlAVl5MOQlRPQlWQAlQanVNZ3NMZXBKY25IYGtDW2VbQwkdFQAwQEgyQ0w1SE43SlI6TVZCWGI1KAAmHQAuIgAAAAGF1E+4AAAAAXRSTlMAQObYZgAAAO1JREFUeNp90lmSwjAMRVGc2JGCIT2DY+1/n+3nQSrG93t0KZLKwSZyeDNxXuSNTpMPIq95npdAIk81TeDF0yryKl6u1w9iFpE7zVNnH0I5WO3C4sanGHGAC4s7+8rxeMTBp1jcuGhlbGXRuLFXhloMnsHnwbwOzck5OOLBpntKxV3lDYx4JY1//y6Tw3wYzKzxD3iuD1UGHj8N/u7cNBDFyBw0Vg5h286EMWm858bQwqdYlKGNv/Z8w/hfHty9cVdwj83BVRs7sHlOFxeUSWPNk8aFNbbc0xiTqrlzeCvVk7F5TqmfQB+87+4j/QcSzhjcpVLnGAAAAABJRU5ErkJggg==",
+  sapphire_ring: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAWCAMAAAD6gTxzAAAA0lBMVEUAAAAAAAG3oBURFYsVGKUVHboVGre0nhXIrxiokxWlkBXVuxrlyBrixhrTuRrdwRrszx3YvRrnyx3pzR322B373CDz1R3u0R3Lshi6oxW/qBjCqhj73TW9pRj730j73S773CbavxrFrBj42h3x0x1sZGRjXFs1M1w0MltbVVV/dnZ5cXARFZWTiIhbUAltXg14ag10Zg0YHb2umBWVgxGbiBGEcw2Hdg2LeRGijhF8bQ2AcA2OfBGxmxXNtBifixGrlRWYhREVGrQRGJ8RFZENEXiHWD1GAAAAAXRSTlMAQObYZgAAAORJREFUeNpd0Oe2gjAQBGAH4RKkBkEB9fbexV4hAu//SgYMenB+fsnZM7utMkCrGeD9rYlot/OiKNAQOc+vSOaUZxkuJPMcDtl3g5Q4/nh9AVDTjaLEX5+amrJ1rQB+RsSyrSDStmOIj1IYUKfrGqa0gBCV6K7/5PUNwpaoZDKzTO92eO919XRWkTad26jiPIRpAk47Vk9waZBsSiLa8l/YPkl/S9LJag1RR11VswwasT/wTDtqOD89OjbZsc02mYyIVFftOQYdRHtKSee859D3+ry9/liKMNz5vWfTGggSCIhDHAHoQBY3+XO8HAAAAABJRU5ErkJggg==",
+  emerald_ring: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAWCAMAAAD6gTxzAAAA0lBMVEUAAAAAAAG3oBUNhBURmxgVrhoVqxoRixUNdBGYhRGrlRWfixHNtBixmxV8bQ2AcA2OfBGijhGHdg2LeRGEcw2biBGVgxGumBVtXg14ag0RlRUVsRqTiIh0Zg1bUAkNcBF5cXARjhU0WDA1WTF/dnZbVVVjXFtsZGTx0x342h3avxr73CbFrBj73S7730i9pRj73TXCqhi/qBi6oxXLshju0R3z1R373CD22B3pzR3nyx3YvRrszx3dwRrTuRrixhrlyBrVuxqlkBWokxXIrxi0nhXS3XwnAAAAAXRSTlMAQObYZgAAAOVJREFUeNpV0OeWgjAQBWAv0rGubRe2964CChKqhPd/pQ1soif355ecOXem1wboyQEen2REv2+YpglJVMMw7yRSGRmuizOpLLruPkiked7L6xsAQbqmeffPdWNbI6EArtc0z/LQryc34B+VICTpISkL5QJcGlol0Ue8K6k1QyerRV7Ev5uv+FDZi47q5TxDl/QzsB0wGlpiQkJCZ9wSrWdX3AaOfdtSRacj8DrNtJtVEt+6BMvy2ATz/8c0o0NrPHFWa6qIqvu0JFt/QAg9nvbcRPGOta++mQjDT7R/L/ItJ44AP8Qfm/cZSLO8LbQAAAAASUVORK5CYII=",
+  ruby_ring: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAWCAMAAAD6gTxzAAAA1VBMVEUAAAAAAAG3oBWoIhXIKhjgLhq6oxWYhRGrlRWfixHNtBixmxV8bQ2OfBGAcA2ijhGHdg2Ecw2biBGLeRGVgxGumBW9pRixJBWVIBFbUAltXg14ag10Zg3dLhqRHRG/KBjaLhrlMBqTiIi0JhVsZGRjXFttNzNqNjBbVVV5cXB/dnbx0x3avxr42h373CbFrBj73S7730j73TXCqhi/qBjLshju0R3z1R373CD22B3pzR3nyx3YvRrszx3dwRrTuRrixhrlyBrVuxqlkBWokxXIrxi0nhV7ZGwNAAAAAXRSTlMAQObYZgAAAOVJREFUeNpV0OeWgjAQBWAvUq1rha3I9l4UFCRUCe//SBsw0ZP780vOnDvTaQJ05AAvzzKi27Udx4Ekqm07dxKpjGzXxZlUltXKfZBI87zXp0cAgm41zXt7r2rTGAgFcL+kWZoFfjW8Af+o6AFJ9nGRKxfgUtMyDr+ibUGNGVpZTLM8+lt/R/vSnLZUzScp2iSfummBUd8QE2ISWKOGaDW75tazzMuGSjoegNepx+2sgvjGFVjmh1qfHB+TlPaN0dBaLKkiqu6Sgmz8HiH0cNpzHUZb1r78YSIMv+HuI882nDgC/BD/rHYZ0xfEkP4AAAAASUVORK5CYII=",
+  diamond_ring: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAWCAMAAAD6gTxzAAAA1VBMVEUAAAAAAAG3oBWxpaWvpKTPyMjl4uLi3t65rq2bkJCYhRGxmxWrlRWfixHNtBiOfBGAcA18bQ2ijhGHdg2Ecw2VgxGumBWbiBGLeRF0Zg14ag1tXg1vZ2dbUAnp5ubg29uTiIjGvr6aj4+8srJ5cXBjXFt/dnZbVVX42h3x0x373Cbavxr73S7FrBj730i9pRj73TXCqhi6oxW/qBjLshju0R3z1R373CD22B3pzR3nyx3YvRrszx3dwRrTuRrixhrlyBrVuxqlkBWokxXIrxi0nhVsZGTcZ2JLAAAAAXRSTlMAQObYZgAAAOhJREFUeNpV0OeWgjAQBWAvKyxEsK1tGy7buwooSKgSfP9HMmBQuT+/5My5M60yQKsZYP/QRFy1VU3T0BBZVbXnS2rLnFTLwplknvncemmQYpofb3sANV0rivn6nhc6GdQK4GnB4ih2nbx3C/FRsl0aboM0kW4gpGBZ4H3665SRGSqZTOPE/19++9tMn1aUj0cRqoQ/tm6AU4fUEwLqGv2SWD67E9Y19MeSMjYcQNQphtWslDrkHjzjXWGPjo9hxDqk3zMmCybVVTdhSldOl1K2O+259Pw1b5/94eLWv97mK4lXggQC4hAHm+0aJlY8ICwAAAAASUVORK5CYII=",
+  sapphire_necklace: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAbCAMAAABLAV/qAAAAyVBMVEUAAADYvRqHdg3TuRq/qBiumBW0nhWlkBW3oBWokxXCqhi6oxWxmxVkVwnLshjNtBjIrxi9pRirlRUVGqgVGq4VGKURFZURGJ8NEXgRFYsRGJsRGJgNFYcNFYQNEXAJDVYJDWQAADWOfBENDW0VGqsVHboVGrcJDWnlyBrnyx3pzR3szx1pWwl0Zg0JCVGEcw2fixHgxBrdwRp4ag18bQ2AcA3ixhpwYg3QthjFrBjavxqLeRGijhGRfxGYhRGVgxGbiBHVuxoAAAH6qwTSAAAAAXRSTlMAQObYZgAAAPpJREFUeNpV0tl2wiAQBuAmAkm0Lq2t1e6r3a1mXwyQef+HamQShLlh8p0MP4fDCRaowl5TksRxFIFJku7Sj8+v7wy0eWw4cNR4+gOdsREhBFSbOmNApJT2EeDwDvdGKgxjnOFmZiMRK8RO/RoOS2LhgLrQLqcmtp8Kp5E976r5wsIRYp6BgcTF/FIC9BZwF7BzyBgZtryuoD9I+JtBW2IrRa2nwHP/knjz9MylgOOhuRD18vFhIyQipgWet7pd3r+8HxUmvs+ubxaru2pv/JoXxev88mohz61ra9Zv64t5wBRqLcuw3eUMUWu4m05mBaLWPG1mTAfZD+UfkOYwwrQQL/4AAAAASUVORK5CYII=",
+  emerald_necklace: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAbCAMAAABLAV/qAAAAw1BMVEUAAAAAAAHVuxqbiBGVgxGYhRGRfxGijhGLeRHavxrFrBjQthhwYg3ixhqAcA18bQ14ag3dwRrgxBqfixEVrhoRnxh0Zg1pWwkRjhWEcw3szx3pzR0VpRjnyx3lyBoRohgRlRUNhBURkRUNfBENgBEJYA0NcBEANQCOfBENdBEJUQkJTAkNbQ0JaQ0JZA2rlRW9pRjIrxjNtBjLshhkVwmxmxW6oxXCqhiokxW3oBWlkBW0nhWumBW/qBjTuRqHdg3YvRp1M3A1AAAAAXRSTlMAQObYZgAAAPhJREFUeNpV0tl2gyAQBuCOgHFfEm3t3nRvumZp4kbw/Z8qhlECc8P4HYefw+EMC2RhryiK4jhJQCfSTsO72+urAJTVzW7fyfHwAgZrtpxzkG3YbQCxbdsxAjo24ERLhV2MM0zPtAiigzhoZcNxiQzctwL65V/H/lPiKjHnhZz3DNwi+gFoyAXmuwRgtJIJwK7jG2SYMduB8SDpeQB90RmhtpqCWlxG8eLtnREKp0MzSu2Pl8UnJYiYVtb1/Pn16/vnpLCuquaxKOZPzkT71fe8+zx/KMivcW1WlmU3edlIVOq6ab/LH6LSdLpaLz1EpX5oLRsVZD6UA8OHFLnY5IrsAAAAAElFTkSuQmCC",
+  ruby_necklace: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAbCAMAAABLAV/qAAAA0lBMVEUAAADYvRqHdg3TuRq/qBiumBW0nhWlkBW3oBWokxXCqhi6oxWxmxVkVwnLshjNtBjIrxi9pRirlRXNKhi3JhXVLBrLKhjCKBirJBWiIhGHGg2OHRGVIBFpFQmoIhW9KBi6JhWlIhVIDQl8Gg1tFQ2OfBFkFQngLhrQLBjiMBrdLhqAGg3lyBrnyx3pzR3szx10Zg2Ecw1pWwmfixF4ag3gxBrdwRp8bQ2AcA3ixhpwYg3QthjFrBjavxqLeRGijhGRfxGYhRGVgxGbiBHVuxoAAAH5ILzFAAAAAXRSTlMAQObYZgAAAPpJREFUeNpV0teWgyAQBuDVAGqyKbvJ9mzvvcTYNQLO+7/SGkYJzA3jdxx+Doc9LFCFvaYkieMwBJMkXacfn1/fGWjz2HDgqPH0DzpjI0IIqDZ1xoBIKe0jwOEdboxUGMY4w83MRiJWiJ36NWyXxMIBdaFd9k1sPxVOQ3veVfOFhSPEPAMDiYv5pQToLeAuYOeQMTKseF1Bf5DoJ4O2xEqKWk+B5/4m8eXdI5cCdofmQtTL+4cnIRExLfC8q9vlxfn7TmHi++z6ZnF6Vm2MX/OieJkfnyzkoXVtzdvr89E8YAq1lmXU7nKAqDVaTyezAlFrnjYzpoPsh/IPCmIy8wXbtxkAAAAASUVORK5CYII=",
+  diamond_necklace: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAbCAMAAABLAV/qAAAA2FBMVEUAAAAAAAHVuxqbiBGVgxGYhRGRfxGijhGLeRHavxpwYg3ixhrQthjFrBiAcA18bQ3dwRrgxBp4ag2fixF0Zg2Ecw1pWwnszx3pzR3nyx3lyBqFfHvj4ODn4+PW0M/k4eFsZGRIQ0OOfBGNg4Orn5+Viom0qajRy8vIwcG+tLSbkJCvoqLBuLfDu7qyqKedkpKBeHhza2u/trbc19dqYmLTzc29pRirlRXNtBixmxXIrxjLshhkVwm6oxXCqhiokxW3oBWlkBW0nhWumBW/qBjTuRqHdg3YvRpvhhpLAAAAAXRSTlMAQObYZgAAAPpJREFUeNpV0tdywyAQBdCsAFldspzee++JE8dNBYz+/48isxKGfWF1RstlGLawQBX2mpIkTfMcTCJ8GB4e7O8FoK2ql6tGjYe70Fm9EEKAasNmDoic8z4CGtbhwEiFZYozzMx0CKKH2GnpwnpJLFxxCe3yZ2L7qXCS2/NSzccWLhCjAAwUEvN9AtBbwSRg14g5MoyY60F/kGw7gLboiFBXT0Eld5L0/OKSEQqbQzNK3bf3j29KEDGtqKrXp8ebq6ONwqws65fnh9trb2D8GsXx6fju/pP8WtfmHJ+cfY2LWqFW38/aXX4QtWbDyWwaI2qNQmda6yD7ofwDxP8XJq9TmtkAAAAASUVORK5CYII=",
+  sapphire_bracelet: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAXCAMAAADeH4ToAAAAw1BMVEUAAAAVGqgRGKIVHboNEYDgxBqOfBFgVAmxmxWijhGlkBW0nhWYhRH22B2RfxGEcw2biBGrlRW6oxXTrBrNqBjIoxjYsBrVrhrQqRjLpRiumBW9pRiAcA2LeRHCnhjFoBi9mhi/nBi6lxW3lRVWTAlpWwnx0x3z1R2/qBjNtBjYvRpwYg1MQwl8bQ2VgxG3oBWokxXCqhjLshjIrxjdwRrFrBjTuRrVuxrQthjavxrixhru0R3szx3pzR3nyx3lyBoAAAH0n1FJAAAAAXRSTlMAQObYZgAAAM5JREFUeNpd0dcSgyAQQNFgKqb33ntVY6wB2f//qoCjgrmPZxhmdreQBaJCLjBNHWPIm2HUa3oDVLId69LrdiqgmOde7fkMt9ogrRx4vlXX8fMBKTEWflxH07RjRhHjaaKDNI4ICcuIRhxRjJB+RgUinjRCBaI4SD4jAmlRlD77Eh4NBZUgIR6hLHAVOp84RR/vbb2qiQX2frfblG++Yz7lWP52tVq7b+N1h2x8EgyH00m/u1T35IeD/niEF7mFguOxZuP/GlCz0hXLlKP9AHxSKGcpnkHnAAAAAElFTkSuQmCC",
+  emerald_bracelet: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAXCAMAAADeH4ToAAAAw1BMVEUAAAAAAAHlyBrnyx3pzR3szx3u0R3ixhravxrQthjVuxrTuRrFrBjdwRrIrxjLshjCqhiokxW3oBWVgxF8bQ1MQwnYvRpwYg3NtBi/qBjz1R3x0x1pWwlWTAm3lRW6lxW9mhjCnhi/nBjFoBjLpRjQqRjVrhqumBW9pRi6oxXYsBrIoxjNqBjTrBqLeRGrlRWbiBGAcA2Ecw2RfxH22B2YhRG0nhWlkBWijhGxmxVgVAmOfBHgxBoNeBEVrhoRmxgRnxiXRHhIAAAAAXRSTlMAQObYZgAAAM5JREFUeNpd0dcSgyAQQNEsQqwxanrvvVdJlf//qoCjgrmPZxhmdreQBaJCLvD9kFLIWxDcH+ENVHIdr7U6HF+gmGU33eWCXs4g7W1YpncPabUGKSGkl2wniqJuRhriRaKeNI6MCcsIaxxZjJB+hgUynjSCBbI4SD4jAvFXlD4rEh7WBX0gIR7ByLAVanc4aSWr7FWeiRlufzAYvuum41flWOZ4NJrY5aDSgGx8Ymw209nusFf3ZOrb3XxNT7mFgmOh6+3/GvDw0hXLlKP9ACaHF9PBNmTsAAAAAElFTkSuQmCC",
+  ruby_bracelet: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAXCAMAAADeH4ToAAAAw1BMVEUAAACLHRGHGg2bIBFpFQngxBqOfBFgVAmxmxWijhGlkBW0nhWYhRH22B2RfxGEcw2biBGrlRW6oxXTrBrNqBjIoxjYsBrVrhrQqRjLpRiumBW9pRiAcA2LeRHCnhjFoBi9mhi/nBi6lxW3lRVWTAlpWwnx0x3z1R2/qBjNtBjYvRpwYg1MQwl8bQ2VgxG3oBWokxXCqhjLshjIrxjdwRrFrBjTuRrVuxrQthjavxrixhru0R3szx3pzR3nyx3lyBoAAAG3NesuAAAAAXRSTlMAQObYZgAAAM5JREFUeNpd0dcSgyAQQNFgKqb33ntVY6wB2f//qoCjgrmPZxhmdreQBaJCLjBNHWPIm2HUa3oDVLId69LrdiqgmOde7fkMt9ogrRx4vlXX8fMBKTEWflxH07RjRhHjaaKDNI4ICcuIRhxRjJB+RgUinjRCBaI4SD4jAmlRlD77Eh4NBZUgIR6hLHAVOp84RR/vbb2qiQX2frfblG++Yz7lWP52tVq7b+N1h2x8EgyH00m/u1T35IeD/niEF7mFguOxZuP/GlCz0hXLlKP9AHxSKGcpnkHnAAAAAElFTkSuQmCC",
+  diamond_bracelet: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAXCAMAAADeH4ToAAAAw1BMVEUAAAAAAAHlyBrnyx3pzR3szx3u0R3ixhravxrQthjVuxrTuRrFrBjdwRrIrxjLshjCqhiokxW3oBXYvRqVgxF8bQ1wYg1MQwnNtBiEcw3z1R3x0x1pWwlWTAm3lRW6lxW/nBi9mhjCnhjIoxjNqBjTrBrFoBjLpRjQqRjVrhrYsBqumBW9pRi6oxWLeRGrlRWbiBG/qBiAcA322B2RfxFgVAm0nhWYhRGlkBWijhGxmxWOfBHgxBqjl5bl4uLNxsXQyspRSLvFAAAAAXRSTlMAQObYZgAAAM5JREFUeNpd0dcSgyAQQNEsQqwxanrvvXdJk///qoCjgrmPZxhmdreQBaJCLvD9kFLIWxDcn+EDVHId77Q7HF+gmGU33e2GXlsg7W1YpncPaa0BKSGkl2wniqJuRhriRaKeNI6MCcsIaxxZjJB+hgUynjSCBbI4SD4jAvFXlD4rEh7WBX0gIR7ByLAVanc4aSWr7FVviRlufzAYvSum49fkWOZwPJ7b5aBah2x8Ykwmi+XssFf3ZOrT2WpNz7mFgmOhy+P/GvD00hXLlKP9AEL9F89zrAfzAAAAAElFTkSuQmCC",
+  rune_bar: "data:image/png;base64,c3RvcmFnZTogb2JqZWN0IGRvZXNuJ3QgZXhpc3Q6IHJwYyBlcnJvcjogY29kZSA9IE5vdEZvdW5kIGRlc2MgPSBObyBzdWNoIG9iamVjdDogd2VpcmRnbG9vcGltYWdlcy9lbl9vc3Jzd2lraS9SdW5lX2Jhci5wbmcK",
+  uncut_sapphire: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAWCAMAAAAYXScKAAAAPFBMVEUAAAAAAAESFZESFZMMD28JD2MPEnsNFIsMEnkPFZQMD2wMEnQMEncABi0JDFoMD2gJDF0JDGAMD2oOFZAv3pzoAAAAAXRSTlMAQObYZgAAAItJREFUeNoFwVGKwkAUBMDq54iYeP9z7hL8CAy0VQAIAEiSJDmSACITwMGFkkwjwAGuWmjKC6FgAZ4NCBgoWkAwAFpBfGJAocUGA6D6sJ88GIUqvneBJGCBfsDfAEAbYADQEjAt2LQQGAAtEAzALkBYKnjjBsQC3vDigt1FnQA3IBBOuDn5rwACQPkBQJI1OiN28q0AAAAASUVORK5CYII=",
+  uncut_emerald: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAWCAMAAAAYXScKAAAAPFBMVEUAAAAAAAEPixUPiRMMbw8Mag8JXQwMdBIJZQ8JWgwMchIPjBUNhhQNhBQOiBUALQYMaA8JVAwJYw8JVwwAA658AAAAAXRSTlMAQObYZgAAAIdJREFUeNpd0VsOwyAMRNG4BUJo2gLZ/17jGQfxuJJ/zp81W0+2MXnKeh1f3sqlFNEMNWJWRkK1slZrnTV9oGxUMPEaFXwAr790Bau6Rb8p/RQ16hvt57lreVEWDiaTBh8XJfoYTRsDoXFSIDU2ZZ6KoMZOgzJTIgtIEew6dsVGDfnaOt6z0A1FOgoc5FWV3gAAAABJRU5ErkJggg==",
+  uncut_ruby: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAWCAMAAAAYXScKAAAAM1BMVEUAAAAAAAFODwZXEgljEwlRDwldEwlLDwZaEgkiBgB4Fgp0Fgp7FwtlEwloFQx7GQ95GQyWbtVAAAAAAXRSTlMAQObYZgAAAIlJREFUeNpl0UEOwyAMRNEQE6ClLtz/tJ0xRqnbL7F5C2Rpjrt0fJe8hnfjKF6tNaGFc4zNVlo6B2pIRKLqi2q5kpVseAYFn8TzkUzJSobmH+2qTyCiTkt7V9Sivq0LRg56FYm6sIjEL4hUiUqkiuuqmDKoc0ZUa2v2LgYk54BU32gjL/gbzxf6AA3hC14XHhRaAAAAAElFTkSuQmCC",
+  uncut_diamond: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAWCAMAAAAYXScKAAAAXVBMVEUAAAAAAAG0tLS3tbW0srK2tLSNhYWTjY2Vj49+dnWalZSEe3tza2uUjo6ZlJOYk5K6s7KLg4OMhIRyaml4b2+wqqm2rq2vqag6NjaKgoF8dHN+dXSHfn56cXB3b29ehdBOAAAAAXRSTlMAQObYZgAAAJZJREFUeNpd0dEOgjAMRmGLgiLKFEQFJ+//mJ7tH1nmSXrz9arpLmdMzlIzk3HfqGEcRyNhVdcRh+ESM2lV0526rivV3aS0Kexg6Voo/Ai4vmGUUBg9/unLuSdIQatDqJ+mnuZSz7H2G7NC28aXKmy8l2YGUV8qiFJWaqSEJj6SlKRg6kMLSHY9pYItqNi0wHTalqn0oR8kCxCbtsOsmwAAAABJRU5ErkJggg==",
+  coins: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAdCAMAAACKeiw+AAAAwFBMVEUAAAD7zzX7zi77zSb7zCD4yh32yB3zxh3xxB3uwh3swR3pvh3nvB3luhriuRrgthrdtBrashrYsBrVrhrTrBrQqRjNqBjLpRjIoxjFoBjCnhi/nBi9mhi6lxW3lRW0kxWxkBWujhWrixWoiRWlhhWihBGfgRGbfxGYfBGVeRGRdhGOdBGLcRGHbg2Eaw2AZw18ZQ14Yg10Xg1wWw1tWA1pVQlkUQlgTQlWRglMPQlCNQA8MAA1KgAuJgAdGAAAAAH5UlIpAAAAAXRSTlMAQObYZgAAAXNJREFUeNp1k01Lw0AQQGdmUxuxKupBKCiCeBPEgx8n57fnUrz4I4KC1lqheFDMfjgz2eJW6YOQIW/f0JYUCliBdfCJ0ns2/ts77ud8lH79tH37xDzPQDiGUkdEpDyn54+0BSsaS41EWGp+QLRnbEcJsdAaWNG2rXoi8bHU9uxLbupRCaZZsFr0dL6ox6BEQTW3AucawBFmHTwAcQu2sK/B9RqXGl5m73khGSks66BarsppkdSl5OVpcwliQ2ISWVVWIOrK6H3HAKYXUssteknyyhS6aN8jJl3c3PoQu28PqPoiyVEfNUdB6uZGFnY+JPUhJZm0BoNsUecjANqHtVMa53o5X2MMeUdZ98wf28P94dGB2bLme0Jwr/3rMUGZB9TkI1DxZKMabNbhaTQaaUOb9VCtxVJXg41BvROJyOkPOKy3LdRL6obBIOdE39jMfQ1aNwo4Jx51ahXAfCDDSvG289749PyK4S/sdsdnvP4ftfL4B1L0tOq3E250AAAAAElFTkSuQmCC",
+  clue_scroll_easy: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAbCAMAAACz4aQdAAAAe1BMVEUAAAAAAAGehVqWgFWiilybhFejhUymh02rjE6gh1uoik2ZglaMd1CPeVGRe1KVhGWUfVQgSCIJYA2vj1GghEqCbkkdcyCTgmOtjlCnjl6yl2WKdU6PfmB2ZEOQgGKMe150YkKJeV1uXT1xYD95ZkWHd1uHckx/bEh8akY11czrAAAAAXRSTlMAQObYZgAAARBJREFUeAF901WCwyAYBOAMhAaXunub3P+Ey791Y97gw6V6BEBVCBjnhRaoheg1Ej9dcdHoQn8hym6E0LbgXDDtPH6zkNKHgGuZ8jI6cUz9PkDlgR56j9fuoxjG/fE4ILPsxRgVXrrbmMbjcZoActpw7sRsjgt74oUPk9RPaQkppTCe16srwzAmpQthsl4vl5vMjEXPcGXHGNN59DCZEG+IeTS4LU0ppbX0D5aZ+Y23dV1LrR3xOvOOuvt4X/r+sJ1qvYj/vLxwfN764ThaWIv1hcm5c89nB2tzBTaUy+hv93Q5a5xyyM2Pa6QGvaliZoHqR4NFQ/77kS0W54JTg/OoLXiF86greYVudSj52zf6A7BPE0JeCgkyAAAAAElFTkSuQmCC",
+  clue_scroll_medium: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAbCAMAAACz4aQdAAAAe1BMVEUAAAAAAAGehVqWgFWiilybhFejhUymh02rjE6gh1uoik2ZglaPeVGRe1KUfVSVhGU6ZWdMhYeTgmOvj1GghEqCbklWlpmQgGKMd1CPfmCtjlCnjl6yl2WKdU52ZEOMe150YkJuXT1xYD+Hckx5ZkWJeV2Hd1t/bEh8akbsngWgAAAAAXRSTlMAQObYZgAAARRJREFUeAF901WCwzAMBNDKjhszdYNl7v1PuFIZM79vJpzRIwAwGggwzgcaUAgxLiX8dMVFqQf2Qgy7EULbAeeCaecBfrKQ0ocQLg2gPLEhdj6mlDPRRP85B6/zyoc61XWDmcix917By7z1sa7r2HSd7EvOrZjO4MKOeO5SiilGZCmFcbxYXBkMY1LakFKqmzMz5h2DK1vGmMaj5wsvibk3pMRcKaW1dDk3TX1micxvvCqKQmptUZuu7pbnufPIF19vVr3WW0/cXdk/3/pmV83n86su9+jcPr8IgBZzVWLmWuKnBgaRmNw88VNnjzmMe8XMHP1b43DYluTE3xvb7fa3Y7BQHQccC9VpwLFwWmy++9ff6B/VqRT5jk6ztAAAAABJRU5ErkJggg==",
+  clue_scroll_hard: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAcCAMAAACu5JSlAAAApVBMVEUAAAAAAAF1Vip8WyyehVqWgFVMNyJkSSSiilybhFejhUymh02rjE6gh1uoik0aFQmZglaPeVGRe1KUfVSVhGVbQipYKnV2MImTgmOvj1GghEqCbkmDN5iQgGKMd1CPfmCtjlCnjl6yl2WKdU52ZEOMe150YkJuXT1xYD9KNxqHckxGNBg3KBGJeV1UPR0/LB05KBokGgkqIA0wJBGHd1tQOhp8aka1IpshAAAAAXRSTlMAQObYZgAAATNJREFUeAF902Wi4yAUBeB3ZqATGkIDZOJWd5f9L+1B3c/fD+fen4cAP58D4M9ffGZCaePfR4fDWNPln92jzBWtz86Y8S/b+4wJ+cUpI0Jp4O46j8w410EQACf937i7LHzLSodRFMcwSUSqFB6nZzrIozwvTBLe1Fp7eJhe6jDP87CoKl67lErW7uDEynJXRVEYhaFhzpmvqNM7M3xCOJdBFEV5cWRCtCI4sySECLN6fOK+Zap9XI7meZ4QXMVxUeSWjVNNLzxwHIcLIY0WVV71j9OVvh59OBrXQky05erM+v7qo+ms1e2etT+3q0t554vlqizLs1omqrx7eqw3WwAGLVv3z/zwUcDcZNesPeJ38b4+d7uJax0fK3gy2X9xM2I/nrW+ubnM4Zuby/RG+NpEuOdf+wwdZqEvfbUAAAAASUVORK5CYII=",
+};
+
+
+// ── XP TABLE ──────────────────────────────────────────────
+const XP_TABLE = [0,0,83,174,276,388,512,650,801,969,1154,1358,1584,1833,2107,2411,2746,3115,3523,3973,4470,5018,5624,6291,7028,7842,8740,9730,10824,12031,13363,14833,16456,18247,20224,22406,24815,27473,30408,33648,37224,41171,45529,50339,55649,61512,67983,75127,83014,91721,101333,111945,123660,136594,150872,166636,184040,203254,224466,247886,273742,302288,333804,368599,407015,449428,496254,547953,605032,668051,737627,814445,899257,992895,1096278,1210421,1336443,1475581,1629200,1798808,1986068,2192818,2421087,2673114,2951373,3258594,3597792,3972294,4385776,4842295,5346332,5902831,6517253,7195629,7944614,8771558,9684577,10692629,11805606,13034431];
+
+function xpToLevel(xp){
+  for(let l=99;l>=1;l--) if(xp>=XP_TABLE[l]) return l;
+  return 1;
+}
+function xpForLevel(l){ return XP_TABLE[Math.min(l,99)]||0; }
+
+// ── ITEM DEFINITIONS ──────────────────────────────────────
+const ITEMS = {
+  raw_manta:    {id:389,   name:"Raw Manta Ray",   fp:1150, tier:"common"},
+  raw_turtle:   {id:396,   name:"Raw Sea Turtle",  fp:900,  tier:"common"},
+  raw_swordfish:{id:371,   name:"Raw Swordfish",   fp:270,  tier:"common"},
+  raw_harpoon:  {id:25594, name:"Raw Harpoonfish", fp:100,  tier:"common"},
+  raw_monkfish: {id:7944,  name:"Raw Monkfish",    fp:380,  tier:"common"},
+  spirit_flakes:{id:25589, name:"Spirit Flakes",   fp:80,   tier:"common"},
+  casket:       {id:25590, name:"Casket",          fp:12000,tier:"common"},
+  soaked_pages: {id:25592, name:"Soaked Pages",    fp:280,  tier:"common"},
+  fish_barrel:  {id:25591, name:"Fish Barrel",     fp:180000,tier:"unique"},
+  tackle_box:   {id:25593, name:"Tackle Box",      fp:160000,tier:"unique"},
+  tome_water:   {id:25600, name:"Tome of Water",   fp:95000, tier:"unique"},
+  big_harpoon:  {id:25596, name:"Big Harpoonfish", fp:2000,  tier:"rare"},
+  dragon_harp:  {id:11923, name:"Dragon Harpoon",  fp:45000, tier:"rare"},
+  tiny_tempor:  {id:25597, name:"Tiny Tempor",     fp:0,     tier:"pet"},
+};
+
+// ── CASKET ITEMS ──────────────────────────────────────────
+// Drop table from wiki (180,165 samples). Format: {key, name, qty:[min,max], weight, fp}
+// 9/230 common tier, 1/230 rare tier (double qty). Total weight ~230.
+const CASKET_ITEMS = [
+  // Armour 9/230
+  {k:"rune_med_helm",   n:"Rune Med Helm",     q:[1,1],   w:9,  fp:11064},
+  {k:"rune_full_helm",  n:"Rune Full Helm",    q:[1,1],   w:9,  fp:20661},
+  {k:"rune_chainbody",  n:"Rune Chainbody",    q:[1,1],   w:9,  fp:29541},
+  {k:"rune_platebody",  n:"Rune Platebody",    q:[2,3],   w:1,  fp:77010},
+  {k:"rune_platelegs",  n:"Rune Platelegs",    q:[2,3],   w:1,  fp:75982},
+  {k:"rune_sq_shield",  n:"Rune Sq Shield",    q:[3,5],   w:1,  fp:67752},
+  {k:"rune_kiteshield", n:"Rune Kiteshield",   q:[3,5],   w:1,  fp:96501},
+  // Jewellery 9/230
+  {k:"sapphire_ring",   n:"Sapphire Ring",     q:[10,14], w:9,  fp:467},
+  {k:"emerald_ring",    n:"Emerald Ring",      q:[7,11],  w:9,  fp:622},
+  {k:"ruby_ring",       n:"Ruby Ring",         q:[6,8],   w:9,  fp:1049},
+  {k:"diamond_ring",    n:"Diamond Ring",      q:[3,4],   w:9,  fp:1918},
+  {k:"sapphire_necklace",n:"Sapphire Necklace",q:[10,14], w:9,  fp:476},
+  {k:"emerald_necklace",n:"Emerald Necklace",  q:[7,11],  w:9,  fp:673},
+  {k:"ruby_necklace",   n:"Ruby Necklace",     q:[6,8],   w:9,  fp:1112},
+  {k:"diamond_necklace",n:"Diamond Necklace",  q:[3,4],   w:9,  fp:2046},
+  {k:"sapphire_bracelet",n:"Sapphire Bracelet",q:[10,14], w:9,  fp:590},
+  {k:"emerald_bracelet",n:"Emerald Bracelet",  q:[7,11],  w:9,  fp:780},
+  {k:"ruby_bracelet",   n:"Ruby Bracelet",     q:[6,8],   w:9,  fp:1158},
+  {k:"diamond_bracelet",n:"Diamond Bracelet",  q:[3,4],   w:9,  fp:1966},
+  // Jewellery bulk 1/230
+  {k:"sapphire_ring",   n:"Sapphire Ring",     q:[20,28], w:1,  fp:467},
+  {k:"emerald_ring",    n:"Emerald Ring",      q:[14,22], w:1,  fp:622},
+  {k:"ruby_ring",       n:"Ruby Ring",         q:[12,16], w:1,  fp:1049},
+  {k:"diamond_ring",    n:"Diamond Ring",      q:[6,8],   w:1,  fp:1918},
+  // Materials
+  {k:"rune_bar",        n:"Rune Bar",          q:[3,5],   w:9,  fp:12500},
+  {k:"uncut_sapphire",  n:"Uncut Sapphire",    q:[10,15], w:9,  fp:480},
+  {k:"uncut_emerald",   n:"Uncut Emerald",     q:[6,10],  w:9,  fp:650},
+  {k:"uncut_ruby",      n:"Uncut Ruby",        q:[4,6],   w:9,  fp:1200},
+  {k:"uncut_diamond",   n:"Uncut Diamond",     q:[2,3],   w:9,  fp:2700},
+  {k:"coins",           n:"Coins",             q:[3000,7000],w:9,fp:1},
+  // Tertiary (clue scrolls) ~1/25 each
+  {k:"clue_scroll_easy",  n:"Clue Scroll (Easy)",  q:[1,1], w:9, fp:0, clue:true},
+  {k:"clue_scroll_medium",n:"Clue Scroll (Medium)", q:[1,1],w:6, fp:0, clue:true},
+  {k:"clue_scroll_hard",  n:"Clue Scroll (Hard)",  q:[1,1], w:4, fp:0, clue:true},
+];
+
+// ── GE PRICES ────────────────────────────────────────────
+const prices = {};
+async function loadPrices(){
+  try{
+    const r=await fetch("https://prices.runescape.wiki/api/v1/osrs/latest",{headers:{"User-Agent":"Tempoross-Sim/2.0"}});
+    const j=await r.json();
+    for(const[k,item]of Object.entries(ITEMS)){const d=j.data?.[item.id];prices[k]=(d&&(d.high||d.low))?(d.high||d.low):item.fp;}
+    setStatus("lookupStatus","✓ Live GE prices loaded","ok");
+  }catch(e){
+    for(const[k,item]of Object.entries(ITEMS))prices[k]=item.fp;
+    setStatus("lookupStatus","⚠ Using approximate prices","err");
+  }
+}
+loadPrices();
+
+// ── HELPERS ───────────────────────────────────────────────
+const rng=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+function wPick(tbl){let x=Math.random()*tbl.reduce((s,i)=>s+i.w,0);for(const i of tbl){x-=i.w;if(x<=0)return i;}return tbl[tbl.length-1];}
+function fmtGp(n){if(n>=1e9)return(n/1e9).toFixed(2)+'B gp';if(n>=1e6)return(n/1e6).toFixed(2)+'M gp';if(n>=1e3)return(n/1e3).toFixed(1)+'K gp';return n.toLocaleString()+' gp';}
+function fmtQty(n){if(n>=1e7)return Math.floor(n/1e6)+'M';if(n>=1e5)return Math.floor(n/1e3)+'K';return n.toLocaleString();}
+function qCls(n){return n>=1e7?'qg':n>=1e5?'qy':'qw';}
+function setStatus(id,t,cls){const el=document.getElementById(id);if(el){el.textContent=t;el.className='status '+(cls||'');}}
+function fmtTime(hrs){
+  const h=Math.floor(hrs), m=Math.round((hrs-h)*60);
+  if(h===0) return `${m}m`;
+  if(m===0) return `${h}h`;
+  return `${h}h ${m}m`;
+}
+function fmtDays(hrs){
+  const days=Math.floor(hrs/8), rem=hrs%8;
+  return days>0 ? `~${days}d ${fmtTime(rem)} (8hr/day)` : fmtTime(hrs);
+}
+
+// ── HISCORES LOOKUP ───────────────────────────────────────
+function clearLookup(){
+  setStatus('lookupStatus','Enter username and click Lookup to auto-fill your stats','');
+}
+async function lookupPlayer(){
+  const name = document.getElementById('username').value.trim();
+  if(!name){setStatus('lookupStatus','Enter a username first','err');return;}
+  const btn=document.getElementById('lookupBtn');
+  btn.disabled=true; btn.textContent='...';
+  setStatus('lookupStatus','Looking up '+name+'...','info');
+  try{
+    const playerParam = name.replace(/ /g, '+');
+    const innerUrl = `https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=${playerParam}`;
+    const encodedInner = encodeURIComponent(innerUrl).replace(/%20/g, '+');
+    const url = `https://api.codetabs.com/v1/proxy/?quest=${encodedInner}`;
+    const r = await fetch(url);
+    const text = await r.text();
+    if(!text || text.includes('<!DOCTYPE') || text.trim().length < 20){
+      throw new Error('Player not found');
+    }
+    const lines = text.trim().split('\n');
+    // CSV: rank,level,xp per line. Skills order: Overall(0),Attack(1),...,Fishing(11)
+    const fishLine = lines[11];
+    if(!fishLine) throw new Error('Could not parse hiscores data');
+    const parts = fishLine.split(',');
+    const level = parseInt(parts[1]);
+    const xp = parseInt(parts[2]);
+    if(isNaN(level)||isNaN(xp)) throw new Error('Invalid data');
+    document.getElementById('fishLvl').value = level;
+    document.getElementById('fishXp').value = xp;
+    setStatus('lookupStatus',`✓ ${name}: Fishing ${level} (${xp.toLocaleString()} XP)`,'ok');
+  }catch(e){
+    setStatus('lookupStatus','⚠ Error: '+e.message,'err');
+  }
+  btn.disabled=false; btn.textContent='Lookup';
+}
+function onLevelChange(){
+  const l = parseInt(document.getElementById('fishLvl').value)||1;
+  if(l>=1&&l<=99) document.getElementById('fishXp').value = XP_TABLE[l];
+}
+
+// ── TAB SWITCHING ─────────────────────────────────────────
+function setTab(t){
+  document.querySelectorAll('.main-tab').forEach((el,i)=>{
+    const tabs=['roll','xp','casket'];
+    el.classList.toggle('active',tabs[i]===t);
+  });
+  document.querySelectorAll('.tab-pane').forEach(el=>{
+    el.classList.toggle('active',el.id==='pane-'+t);
+  });
+}
+
+// ── DROP TABLE ───────────────────────────────────────────
+const FISH_CH=45/80;
+const fishTbl=[{key:"raw_manta",qty:[1,3],w:22},{key:"raw_turtle",qty:[1,3],w:22},{key:"raw_swordfish",qty:[3,7],w:26},{key:"raw_harpoon",qty:[3,8],w:17},{key:"raw_monkfish",qty:[2,5],w:13}];
+const otherTbl=[{key:"spirit_flakes",qty:[8,16],w:55},{key:"casket",qty:[1,1],w:18},{key:"soaked_pages",qty:[5,25],w:17},{key:"raw_monkfish",qty:[10,20],w:10}];
+const UNIQ=[{key:"fish_barrel",rate:1/400,own:"ownBarrel",rr:true},{key:"tackle_box",rate:1/400,own:"ownTackle",rr:true},{key:"tome_water",rate:1/1600,own:null,rr:false},{key:"big_harpoon",rate:1/1600,own:null,rr:false},{key:"dragon_harp",rate:1/8000,own:null,rr:false},{key:"tiny_tempor",rate:1/8000,own:null,rr:false}];
+
+const sessionOwned={barrel:false,tackle:false};
+function rollPermit(){
+  const d=[];
+  if(Math.random()<FISH_CH){const f=wPick(fishTbl);d.push({key:f.key,qty:rng(f.qty[0],f.qty[1])});}
+  else{const x=wPick(otherTbl);d.push({key:x.key,qty:rng(x.qty[0],x.qty[1])});}
+  for(const u of UNIQ){
+    if(Math.random()<u.rate){
+      const owned=(u.key==='fish_barrel'&&sessionOwned.barrel)||(u.key==='tackle_box'&&sessionOwned.tackle);
+      if(u.rr&&owned){d.push({key:'soaked_pages',qty:25});}
+      else{
+        d.push({key:u.key,qty:1});
+        if(u.key==='fish_barrel')sessionOwned.barrel=true;
+        if(u.key==='tackle_box')sessionOwned.tackle=true;
+      }
+    }
+  }
+  return d;
+}
+
+// ── BANK RENDERING ────────────────────────────────────────
+const bank={};let totalGp=0,doneP=0,maxP=0;
+function addDrops(drops){for(const d of drops){bank[d.key]=(bank[d.key]||0)+d.qty;totalGp+=(prices[d.key]||ITEMS[d.key]?.fp||0)*d.qty;}}
+const TIER_ORD={pet:0,unique:1,rare:2,common:3};
+function renderBank(gridId,bankObj,imgSrc){
+  const grid=document.getElementById(gridId);
+  const keys=Object.keys(bankObj);
+  if(!keys.length){grid.innerHTML='<div class="empty-msg">No loot yet</div>';return;}
+  keys.sort((a,b)=>{const ta=TIER_ORD[ITEMS[a]?.tier||'common']??3,tb=TIER_ORD[ITEMS[b]?.tier||'common']??3;return ta!==tb?ta-tb:bankObj[b]-bankObj[a];});
+  grid.innerHTML=keys.map(k=>{
+    const item=ITEMS[k];if(!item)return'';
+    const qty=bankObj[k],tc=item.tier==='pet'?'t-pet':item.tier==='unique'?'t-unique':item.tier==='rare'?'t-rare':'';
+    const img=imgSrc?imgSrc(k):(IMGS[k]||'');
+    return `<div class="osrs-slot ${tc}" title="${item.name} \xd7${qty.toLocaleString()}"><img src="${img}" alt="${item.name}" onerror="this.style.opacity=.2"><span class="qty ${qCls(qty)}">${fmtQty(qty)}</span></div>`;
+  }).join('');
+}
+function updFoot(){
+  document.getElementById('footGp').textContent=fmtGp(totalGp);
+  document.getElementById('gpTotal').textContent=fmtGp(totalGp);
+  document.getElementById('footCnt').textContent=`${doneP.toLocaleString()} / ${maxP.toLocaleString()} permits`;
+  document.getElementById('progBar').style.width=(maxP?doneP/maxP*100:0)+'%';
+}
+
+// ── SPEED ─────────────────────────────────────────────────
+const SPD_LBL={1:'Slow',2:'Casual',3:'Normal',4:'Fast',5:'Max'};
+const SPD_MS={1:340,2:140,3:55,4:12,5:0};
+function updSpeed(){document.getElementById('speedLbl').textContent=SPD_LBL[document.getElementById('speed').value];}
+
+// ── LIVE ROLL ─────────────────────────────────────────────
+let timer=null,running=false;
+function resetBank(){Object.keys(bank).forEach(k=>delete bank[k]);totalGp=0;doneP=0;maxP=0;renderBank('bankGrid',bank,null);updFoot();}
+function petFlash(){const d=document.createElement('div');d.className='pet-flash';document.body.appendChild(d);setTimeout(()=>d.remove(),1200);}
+
+function startLive(){
+  if(running)return;
+  const perm=Math.max(1,parseInt(document.getElementById('permits').value)||1);
+  const delay=SPD_MS[document.getElementById('speed').value];
+  const o={barrel:document.getElementById('ownBarrel').checked,tackle:document.getElementById('ownTackle').checked};
+  sessionOwned.barrel=o.barrel; sessionOwned.tackle=o.tackle;
+  resetBank();maxP=perm;running=true;
+  document.getElementById('goBtn').disabled=true;
+  document.getElementById('stopBtn').style.display='block';
+  let i=0,dirty=false;
+  if(delay<55){
+    const ri=setInterval(()=>{if(dirty){renderBank('bankGrid',bank,null);updFoot();dirty=false;}},80);
+    function batch(){
+      if(!running||i>=perm){clearInterval(ri);renderBank('bankGrid',bank,null);updFoot();finish();return;}
+      const chunk=delay===0?300:80;
+      for(let c=0;c<chunk&&i<perm;c++){i++;doneP=i;const dr=rollPermit();addDrops(dr);if(dr.some(d=>d.key==='tiny_tempor'))petFlash();dirty=true;}
+      timer=setTimeout(batch,0);
+    }
+    batch();
+  }else{
+    function one(){
+      if(!running||i>=perm){finish();return;}
+      i++;doneP=i;const dr=rollPermit();addDrops(dr);
+      if(dr.some(d=>d.key==='tiny_tempor'))petFlash();
+      renderBank('bankGrid',bank,null);updFoot();timer=setTimeout(one,delay);
+    }
+    one();
+  }
+}
+function stopLive(){running=false;clearTimeout(timer);renderBank('bankGrid',bank,null);updFoot();finish();}
+function finish(){running=false;clearTimeout(timer);document.getElementById('goBtn').disabled=false;document.getElementById('stopBtn').style.display='none';}
+
+// ── XP CALCULATOR ─────────────────────────────────────────
+// XP per hour by method and level bracket
+const XP_RATES = {
+  cook_mass:      {35:20000,50:36000,60:46000,70:51000,75:52000,80:53000,83:53280,85:54000,90:56000,95:58000,99:59000, permitsHr:58},
+  nocook_mass:    {35:22000,50:38000,60:50000,70:62000,75:67000,80:72000,83:74000,85:78000,90:82000,95:86000,99:90000, permitsHr:38},
+  cook_dragon:    {35:22000,50:38000,60:49000,70:55000,75:57000,80:60000,83:62000,85:65000,90:68000,95:71000,99:73000, permitsHr:62},
+  nocook_crystal: {35:22000,50:38000,60:52000,70:66000,75:72000,80:80000,83:85000,85:90000,90:94000,95:97000,99:100000,permitsHr:38},
+};
+
+function getXpRate(method, level){
+  const rates=XP_RATES[method];
+  const lvls=Object.keys(rates).map(Number).filter(k=>k!=='permitsHr'&&!isNaN(k)).sort((a,b)=>a-b);
+  // interpolate between bracket levels
+  let lo=lvls[0],hi=lvls[lvls.length-1];
+  for(let i=0;i<lvls.length-1;i++){if(level>=lvls[i]&&level<=lvls[i+1]){lo=lvls[i];hi=lvls[i+1];break;}}
+  if(level<=lo)return rates[lo];
+  if(level>=hi)return rates[hi];
+  const t=(level-lo)/(hi-lo);
+  return Math.round(rates[lo]+(rates[hi]-rates[lo])*t);
+}
+
+function toggleXpGoal(){
+  const type=document.getElementById('xpGoalType').value;
+  const lbl=document.getElementById('xpGoalLabel');
+  const inp=document.getElementById('xpGoalVal');
+  if(type==='permits'){lbl.textContent='Reward Permits';inp.value=1700;inp.min=1;inp.max=8000;}
+  else if(type==='target_level'){lbl.textContent='Target Level';inp.value=99;inp.min=1;inp.max=99;}
+  else{lbl.textContent='XP to Gain';inp.value=2400000;inp.min=1;}
+}
+
+function calcXp(){
+  const method=document.getElementById('xpMethod').value;
+  const outfitBonus=parseFloat(document.getElementById('xpOutfit').value)||0;
+  const goalType=document.getElementById('xpGoalType').value;
+  const goalVal=parseInt(document.getElementById('xpGoalVal').value)||0;
+  const currentLvl=parseInt(document.getElementById('fishLvl').value)||83;
+  const currentXp=parseInt(document.getElementById('fishXp').value)||XP_TABLE[currentLvl];
+
+  // Determine XP to gain
+  let xpToGain=0,targetLevel=0;
+  if(goalType==='permits'){
+    // Estimate XP from permits — XP per permit varies by method
+    const permHr = XP_RATES[method].permitsHr;
+    const xpHr = getXpRate(method,currentLvl);
+    const xpPerPermit = xpHr/permHr;
+    xpToGain = Math.round(goalVal*xpPerPermit*(1+outfitBonus/100));
+    targetLevel = xpToLevel(currentXp+xpToGain);
+  } else if(goalType==='target_level'){
+    targetLevel=goalVal;
+    if(targetLevel<=currentLvl){
+      document.getElementById('xpResults').innerHTML='<div style="color:var(--red);margin-top:12px;font-size:13px">Target level must be higher than current level.</div>';
+      return;
+    }
+    xpToGain=xpForLevel(targetLevel)-currentXp;
+    if(xpToGain<0)xpToGain=0;
+  } else {
+    xpToGain=goalVal;
+    targetLevel=xpToLevel(currentXp+xpToGain);
+  }
+
+  const finalXp=currentXp+xpToGain;
+  const finalLvl=xpToLevel(finalXp);
+
+  // Simulate changing XP rate as level increases
+  let hoursTotal=0,permitsTotalCalc=0,xpRemaining=xpToGain,simLvl=currentLvl;
+  while(xpRemaining>0){
+    const nextLvlXp=xpForLevel(simLvl+1)-Math.max(currentXp,xpForLevel(simLvl));
+    const xpThisLvl=Math.min(xpRemaining,nextLvlXp>0?nextLvlXp:xpRemaining);
+    const rate=getXpRate(method,simLvl)*(1+outfitBonus/100);
+    hoursTotal+=xpThisLvl/rate;
+    permitsTotalCalc+=xpThisLvl/rate*XP_RATES[method].permitsHr;
+    xpRemaining-=xpThisLvl;
+    if(simLvl<99)simLvl++;
+    else break;
+  }
+
+  // Current level XP bar
+  const lvlStart=xpForLevel(currentLvl);
+  const lvlEnd=xpForLevel(currentLvl+1);
+  const lvlRange=lvlEnd-lvlStart;
+  const currentInLvl=currentXp-lvlStart;
+  const currentPct=lvlRange>0?(currentInLvl/lvlRange)*100:100;
+  const finalInLvl=Math.min(finalXp,lvlEnd)-lvlStart;
+  const gainedPct=lvlRange>0?(Math.min(finalInLvl,lvlRange)-currentInLvl)/lvlRange*100:0;
+
+  const days=Math.floor(hoursTotal/8);
+  const remHrs=hoursTotal%8;
+
+  document.getElementById('xpResults').innerHTML=`
+    <div class="xp-result-grid">
+      <div class="xp-card"><div class="xp-val">${Math.round(xpToGain).toLocaleString()}</div><div class="xp-lbl">XP Gained</div></div>
+      <div class="xp-card"><div class="xp-val gold">${currentLvl} → ${finalLvl}</div><div class="xp-lbl">Level Change</div></div>
+      <div class="xp-card"><div class="xp-val">${fmtTime(hoursTotal)}</div><div class="xp-lbl">Total Time</div></div>
+      <div class="xp-card"><div class="xp-val red">${days>0?days+'d ':''+''}${fmtTime(remHrs)}</div><div class="xp-lbl">At 8 hrs/day</div></div>
+      <div class="xp-card"><div class="xp-val">${Math.round(permitsTotalCalc).toLocaleString()}</div><div class="xp-lbl">Permits Earned</div></div>
+      <div class="xp-card"><div class="xp-val">${Math.round(getXpRate(method,currentLvl)*(1+outfitBonus/100)/1000)}k/hr</div><div class="xp-lbl">XP/hr (cur. lvl)</div></div>
+    </div>
+    <div class="xp-bar-wrap">
+      <div class="xp-bar-label"><span>Lv ${currentLvl}</span><span>${currentXp.toLocaleString()} / ${lvlEnd.toLocaleString()} XP</span><span>Lv ${currentLvl+1<100?currentLvl+1:'MAX'}</span></div>
+      <div class="xp-bar-outer">
+        <div style="display:inline-block;height:100%;width:${currentPct}%;background:var(--teal-dim);border-radius:3px 0 0 3px"></div><div class="xp-bar-gained" style="width:${Math.min(gainedPct,100-currentPct)}%"></div>
+      </div>
+      <div style="margin-top:4px;font-size:11px;color:var(--muted)"><span style="color:var(--teal-dim)">■</span> Current XP &nbsp;<span style="color:var(--gold)">■</span> XP Gained this level</div>
+    </div>
+    <div style="margin-top:10px;padding:10px 14px;background:rgba(240,188,58,.05);border-left:3px solid var(--gold-dim);font-size:12px;color:var(--muted)">
+      Tip: You'll earn roughly <strong style="color:var(--teal)">${Math.round(permitsTotalCalc).toLocaleString()} permits</strong> from this grind — use the <strong style="color:var(--teal)">Live Roll tab</strong> to simulate opening them!
+    </div>
+  `;
+}
+
+// ── CASKET SIMULATOR ──────────────────────────────────────
+const ckBank={};let ckGp=0,ckCount=0;
+
+function rollCasket(){
+  const drops=[];
+  const item=wPick(CASKET_ITEMS);
+  const qty=rng(item.q[0],item.q[1]);
+  drops.push({k:item.k,n:item.n,qty,fp:item.fp,clue:item.clue||false});
+  return drops;
+}
+
+function getGpForCasketItem(k,fp){
+  // Use live prices where available
+  const priceKey=k;
+  return prices[priceKey]||fp||0;
+}
+
+function openCaskets(maxAll){
+  let count=maxAll?5000:Math.max(1,parseInt(document.getElementById('ckCount').value)||1);
+  count=Math.min(count,5000);
+
+  // Reset
+  Object.keys(ckBank).forEach(k=>delete ckBank[k]);
+  ckGp=0; ckCount=count;
+
+  for(let i=0;i<count;i++){
+    const drops=rollCasket();
+    for(const d of drops){
+      // Aggregate by key+name combo
+      const bkey=d.k;
+      if(!ckBank[bkey]) ckBank[bkey]={n:d.n,qty:0,fp:d.fp,clue:d.clue,k:d.k};
+      ckBank[bkey].qty+=d.qty;
+      if(!d.clue) ckGp+=getGpForCasketItem(d.k,d.fp)*d.qty;
+    }
+  }
+
+  // Render
+  document.getElementById('ckWin').style.display='block';
+  renderCasketBank();
+  document.getElementById('ckFootGp').textContent=fmtGp(ckGp);
+  document.getElementById('ckGpTotal').textContent=fmtGp(ckGp);
+  document.getElementById('ckFootCnt').textContent=`${count.toLocaleString()} casket${count!==1?'s':''} opened`;
+  setStatus('ckStatus',`Opened ${count.toLocaleString()} casket${count!==1?'s':''} — avg ${fmtGp(Math.round(ckGp/count))} each`,'ok');
+}
+
+function renderCasketBank(){
+  const grid=document.getElementById('ckGrid');
+  const keys=Object.keys(ckBank).sort((a,b)=>ckBank[b].qty-ckBank[a].qty);
+  if(!keys.length){grid.innerHTML='<div class="empty-msg">No loot yet</div>';return;}
+  grid.innerHTML=keys.map(k=>{
+    const item=ckBank[k];
+    const qty=item.qty;
+    const img=CASKET_IMGS[k]||'';
+    const clueClass=item.clue?'t-rare':'';
+    return `<div class="osrs-slot ${clueClass}" title="${item.n} \xd7${qty.toLocaleString()}">
+      <img src="${img}" alt="${item.n}" onerror="this.style.opacity=.2">
+      <span class="qty ${qCls(qty)}">${fmtQty(qty)}</span>
+    </div>`;
+  }).join('');
+}
+</script>
+</body>
+</html>
