@@ -43,7 +43,6 @@ select option{background:var(--bg);}
 .stat-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
 .pill{padding:4px 10px;background:var(--bg);border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;}
 .pill span{color:var(--teal);}
-.pill.gold span{color:var(--gold);}
 .chks{display:flex;flex-wrap:wrap;gap:6px;}
 .chk{display:flex;align-items:center;gap:6px;cursor:pointer;padding:5px 10px;background:var(--bg);border:1px solid var(--border);border-radius:3px;transition:border-color .15s;user-select:none;font-size:12px;}
 .chk:hover{border-color:var(--teal-dim);}
@@ -213,7 +212,9 @@ async function lookupPlayer(){
   btn.disabled=true;btn.textContent='...';
   setStatus('lookupStatus','Trying WikiSync...','info');
   try{
-    const r=await fetch(`https://sync.runescape.wiki/runelite/player/${encodeURIComponent(name)}/STANDARD`,{headers:{'User-Agent':'OSRSSlayerOptimiser/1.0'}});
+    // WikiSync blocks direct browser requests - route through allorigins proxy
+    const wsUrl=`https://sync.runescape.wiki/runelite/player/${encodeURIComponent(name)}/STANDARD`;
+    const r=await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(wsUrl)}`);
     const d=await r.json();
     if(d.code==='NO_USER_DATA')throw new Error('no_wikisync');
     const lv=d.levels||{};
@@ -230,10 +231,10 @@ async function lookupPlayer(){
     autoHintUnlocks();
     document.getElementById('wikisyncBadge').style.display='inline-flex';
     document.getElementById('manualFields').style.display='none';
-    setStatus('lookupStatus',`WikiSync: ${name} — Combat ${state.combatLvl}, Slayer ${state.slayLvl}, ${state.completedQuests.size} quests (${state.questPts} QP), Sailing ${state.sailingLvl}`,'ok');
+    setStatus('lookupStatus',`⚡ WikiSync: ${name} — Combat ${state.combatLvl}, Slayer ${state.slayLvl}, ${state.completedQuests.size} quests (${state.questPts} QP), Sailing ${state.sailingLvl}`,'ok');
     renderStatPills();recalculate();
   }catch(e){
-    if(e.message!=='no_wikisync')console.warn('WikiSync error:',e.message);
+    if(e.message!=='no_wikisync')console.warn('WikiSync:',e.message);
     setStatus('lookupStatus','WikiSync unavailable — trying hiscores...','info');
     try{
       const playerParam=name.replace(/ /g,'+');
@@ -267,12 +268,10 @@ function onManualChange(){
 }
 function autoHintUnlocks(){
   const cq=state.completedQuests;
-  const hints={ul_wingsSpread:'Troubled Tortugans',ul_luredIn:null};
-  for(const[id,quest]of Object.entries(hints)){
-    if(!quest)continue;
+  [{id:'ul_wingsSpread',q:'Troubled Tortugans'}].forEach(({id,q})=>{
     const el=document.getElementById(id);
-    if(el&&cq.has(quest))el.closest('.chk').classList.add('auto-detected');
-  }
+    if(el&&cq.has(q))el.closest('.chk').classList.add('auto-detected');
+  });
 }
 function blockSlotsFromQp(qp){const t=[0,32,75,100,125,150,200];let s=0;for(let i=0;i<t.length;i++)if(qp>=t[i])s=i+1;return Math.min(s,7);}
 function getDiaryBonus(mk){const m=MASTERS[mk];const d=state.diaries[m.bonusDiary];if(!d)return m.pts;const tier=d[m.bonusTier];return(tier&&tier.complete)?m.bonusPts:m.pts;}
@@ -311,8 +310,7 @@ function getBestXp(task){
   return{xp:task.xpMelee,method:'Melee'};
 }
 function recalculate(){
-  const master=MASTERS[state.master];
-  const tasks=master.tasks;
+  const master=MASTERS[state.master],tasks=master.tasks;
   const maxBlocks=blockSlotsFromQp(state.questPts);
   document.getElementById('blockMax').textContent=maxBlocks;
   const eligible=tasks.filter(t=>isEligible(t)&&!state.blocked.has(t.name));
@@ -325,7 +323,7 @@ function recalculate(){
   const top=cands.slice(0,Math.min(remSlots,5));
   const rc=document.getElementById('recContent');
   if(top.length>0){
-    rc.innerHTML=`<div style="font-size:12px;color:var(--muted);margin-bottom:6px">Block these to maximise ${state.goal==="xp"?"XP/hr":"efficiency"} — click to block:</div><div class="rec-items">${top.map(t=>`<span class="rec-tag rec-block" onclick="toggleBlock('${t.name}')">🚫 ${t.name} <span style="font-weight:400;opacity:.7">(w:${t.weight}, ${fmtK(t.xp)}/hr)</span></span>`).join('')}</div><div style="font-size:11px;color:var(--muted);margin-top:6px">${remSlots} slot${remSlots!==1?'s':''} remaining.</div>`;
+    rc.innerHTML=`<div style="font-size:12px;color:var(--muted);margin-bottom:6px">Block these to maximise ${state.goal==="xp"?"XP/hr":"efficiency"} — click to block:</div><div class="rec-items">${top.map(t=>`<span class="rec-tag rec-block" onclick="toggleBlock('${t.name}')">\ud83d\udeab ${t.name} <span style="font-weight:400;opacity:.7">(w:${t.weight}, ${fmtK(t.xp)}/hr)</span></span>`).join('')}</div><div style="font-size:11px;color:var(--muted);margin-top:6px">${remSlots} slot${remSlots!==1?'s':''} remaining.</div>`;
   }else{
     rc.innerHTML='<div style="font-size:12px;color:var(--green)">✓ Block list looks optimal.</div>';
   }
@@ -361,7 +359,7 @@ function renderTable(){
   if(filter==='active')rows=rows.filter(r=>r.eligible&&!r.blocked);
   if(filter==='blocked')rows=rows.filter(r=>r.blocked);
   if(search)rows=rows.filter(r=>r.name.toLowerCase().includes(search));
-  rows.sort((a,b)=>{let av,bv;if(sortCol==='name')return sortAsc?a.name.localeCompare(b.name):b.name.localeCompare(a.name);av=sortCol==='xp'?a.xp:sortCol==='gp'?a.gpHr:sortCol==='weight'?a.weight:a.chance;bv=sortCol==='xp'?b.xp:sortCol==='gp'?b.gpHr:sortCol==='weight'?b.weight:b.chance;return sortAsc?av-bv:bv-av;});
+  rows.sort((a,b)=>{if(sortCol==='name')return sortAsc?a.name.localeCompare(b.name):b.name.localeCompare(a.name);const av=sortCol==='xp'?a.xp:sortCol==='gp'?a.gpHr:sortCol==='weight'?a.weight:a.chance;const bv=sortCol==='xp'?b.xp:sortCol==='gp'?b.gpHr:sortCol==='weight'?b.weight:b.chance;return sortAsc?av-bv:bv-av;});
   const ar=rows.filter(r=>r.eligible&&!r.blocked),avgXp=ar.length>0?ar.reduce((s,r)=>s+r.xp,0)/ar.length:0;
   const tbody=document.getElementById('taskBody');
   tbody.innerHTML=rows.map(t=>{
@@ -375,8 +373,8 @@ function renderTable(){
       if(t.sailingReq&&!hasSailing(t.sailingReq))req+=`<span class="badge b-req">Sail ${t.sailingReq}</span>`;
       if(t.unlock){const ul=document.getElementById(t.unlock);if(!ul||!ul.checked)req+=`<span class="badge b-req">Unlock</span>`;}
     }
-    const mBadge=t.eligible?`<span class="badge ${t.method==='Barrage'?'b-bar':t.method==='Cannon'?'b-can':''">${t.method}</span>`+''  :'';
-    const wBar=t.eligible&&!t.blocked?`<div class="w-bar" style="width:${Math.min(t.weight*6,80)}px"></div>`:'–';
+    const mBadge=t.eligible?`<span class="badge ${t.method==='Barrage'?'b-bar':t.method==='Cannon'?'b-can':''">${t.method}</span>`:'';
+    const wBar=t.eligible&&!t.blocked?`<div class="w-bar" style="width:${Math.min(t.weight*6,80)}px"></div>`:'\u2013';
     const bb=t.blocked?`<button class="tbl-btn btn-block active" onclick="toggleBlock('${t.name}')">Unblock</button>`:`<button class="tbl-btn btn-block" onclick="toggleBlock('${t.name}')"${!t.eligible?' disabled':''}>Block</button>`;
     return `<tr class="${rowCls}"><td class="name-cell">${t.name}${req}<div class="task-note">${t.notes}</div></td><td>${t.chance>0?t.chance.toFixed(1)+'%':'-'}</td><td>${t.eligible?fmtK(t.xp):'-'}</td><td>${t.eligible?fmtK(t.gpHr):'-'}</td><td>${mBadge}</td><td>${wBar}</td><td>${bb}</td></tr>`;
   }).join('');
