@@ -26,6 +26,7 @@ h1{font-family:'Cinzel Decorative',serif;font-size:clamp(16px,3.5vw,24px);color:
 .ptitle{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;}
 .fl{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
 input[type=number],input[type=text],select{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;padding:7px 10px;border-radius:3px;outline:none;transition:border-color .15s;}
 input:focus,select:focus{border-color:var(--teal);}
@@ -42,9 +43,11 @@ select option{background:var(--bg);}
 .stat-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
 .pill{padding:4px 10px;background:var(--bg);border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;}
 .pill span{color:var(--teal);}
+.pill.gold span{color:var(--gold);}
 .chks{display:flex;flex-wrap:wrap;gap:6px;}
 .chk{display:flex;align-items:center;gap:6px;cursor:pointer;padding:5px 10px;background:var(--bg);border:1px solid var(--border);border-radius:3px;transition:border-color .15s;user-select:none;font-size:12px;}
 .chk:hover{border-color:var(--teal-dim);}
+.chk.auto-detected{border-color:var(--teal-dark);background:rgba(0,212,184,.05);}
 .chk input{display:none;}
 .cb{width:12px;height:12px;border:1.5px solid var(--muted);border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;}
 .chk input:checked~.cb{background:var(--teal);border-color:var(--teal);}
@@ -73,9 +76,8 @@ select option{background:var(--bg);}
 .rec-box{background:var(--bg);border:1px solid var(--gold-dim);border-radius:3px;padding:12px 14px;margin-bottom:14px;}
 .rec-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
 .rec-items{display:flex;flex-wrap:wrap;gap:6px;}
-.rec-tag{padding:4px 10px;border-radius:3px;font-size:12px;font-weight:700;}
+.rec-tag{padding:4px 10px;border-radius:3px;font-size:12px;font-weight:700;cursor:pointer;}
 .rec-block{background:rgba(240,64,96,.15);border:1px solid var(--red-dim);color:var(--red);}
-.rec-keep{background:rgba(0,200,83,.1);border:1px solid var(--green-dim);color:var(--green);}
 .task-table-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;font-size:13px;}
 thead th{text-align:left;padding:7px 10px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:var(--surface2);border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none;}
@@ -104,7 +106,9 @@ tr.row-top td.name-cell{color:var(--green);}
 .slot-empty{width:44px;height:44px;border:1px dashed var(--border);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--muted2);}
 .slot-filled{width:44px;height:44px;border:1px solid var(--red-dim);border-radius:3px;background:rgba(240,64,96,.1);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--red);font-weight:700;text-align:center;cursor:pointer;padding:2px;}
 .slot-filled:hover{background:rgba(240,64,96,.25);}
-@media(max-width:600px){.g2,.g3{grid-template-columns:1fr 1fr;}.sum-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));}}
+.wikisync-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:rgba(0,212,184,.1);border:1px solid var(--teal-dim);border-radius:20px;font-size:10px;color:var(--teal);font-weight:700;letter-spacing:1px;}
+@media(max-width:600px){.g2,.g3,.g4{grid-template-columns:1fr 1fr;}.sum-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));}}
+@media(max-width:400px){.g2,.g3,.g4{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -113,35 +117,46 @@ tr.row-top td.name-cell{color:var(--green);}
 <p class="sub">OSRS Task Block List Builder</p>
 <div class="hdiv"></div>
 <div class="panel">
-  <div class="ptitle">Player</div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+    <div class="ptitle" style="margin:0">Player</div>
+    <div id="wikisyncBadge" style="display:none" class="wikisync-badge">⚡ WikiSync</div>
+  </div>
   <div class="g3" style="margin-bottom:10px">
     <div><label class="fl">Username (RSN)</label><div class="lookup-row"><input type="text" id="rsn" placeholder="Enter RSN..."><button class="lbtn" id="lookupBtn" onclick="lookupPlayer()">Lookup</button></div></div>
-    <div><label class="fl">Account Type</label><select id="accountType" onchange="lookupPlayer()"><option value="regular">Regular</option><option value="ironman">Ironman</option><option value="hardcore">Hardcore Ironman</option><option value="ultimate">Ultimate Ironman</option></select></div>
+    <div><label class="fl">Account Type</label><select id="accountType"><option value="regular">Regular</option><option value="ironman">Ironman</option><option value="hardcore">Hardcore Ironman</option><option value="ultimate">Ultimate Ironman</option></select></div>
     <div><label class="fl">Goal</label><select id="goal" onchange="recalculate()"><option value="xp">Fastest XP</option><option value="gp">Most GP</option><option value="balanced">Balanced (XP + GP)</option><option value="points">Points Grind</option></select></div>
   </div>
-  <div id="lookupStatus" class="status-line">Enter your RSN and click Lookup to load your stats</div>
+  <div id="manualFields" style="display:none;margin-bottom:10px">
+    <div class="g4">
+      <div><label class="fl">Slayer Level</label><input type="number" id="manSlayer" value="99" min="1" max="99" oninput="onManualChange()"></div>
+      <div><label class="fl">Combat Level</label><input type="number" id="manCombat" value="126" min="3" max="126" oninput="onManualChange()"></div>
+      <div><label class="fl">Quest Points</label><input type="number" id="manQP" value="200" min="0" max="310" oninput="onManualChange()"></div>
+      <div><label class="fl">Sailing Level</label><input type="number" id="manSailing" value="0" min="0" max="99" oninput="onManualChange()"></div>
+    </div>
+  </div>
+  <div id="lookupStatus" class="status-line">Enter your RSN — WikiSync tried first, falls back to hiscores</div>
   <div class="stat-pills" id="statPills"></div>
 </div>
 <div class="panel">
-  <div class="ptitle">Combat Method (affects XP calculations)</div>
+  <div class="ptitle">Combat Methods Available (select all that apply)</div>
   <div class="method-pills" id="methodPills">
-    <div class="mpill active" onclick="setMethod('melee')" data-m="melee">⚔️ Melee Only</div>
-    <div class="mpill" onclick="setMethod('cannon')" data-m="cannon">💣 Melee + Cannon</div>
-    <div class="mpill" onclick="setMethod('barrage')" data-m="barrage">🔮 Barrage</div>
+    <div class="mpill active" onclick="toggleMethod('melee')" data-m="melee">⚔️ Melee</div>
+    <div class="mpill active" onclick="toggleMethod('cannon')" data-m="cannon">💣 Cannon</div>
+    <div class="mpill active" onclick="toggleMethod('barrage')" data-m="barrage">🔮 Barrage</div>
   </div>
+  <div style="font-size:11px;color:var(--muted);margin-top:8px">Each task uses the best method you have available. Deselect methods you can't use.</div>
 </div>
 <div class="panel">
-  <div class="ptitle">Slayer Unlocks</div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+    <div class="ptitle" style="margin:0">Slayer Point Unlocks</div>
+    <div style="font-size:10px;color:var(--teal)">Teal border = quest detected via WikiSync</div>
+  </div>
   <div class="chks">
-    <label class="chk"><input type="checkbox" id="ul_biggerAndBadder" onchange="recalculate()"><span class="cb"></span>Bigger & Badder (50pts)</label>
     <label class="chk"><input type="checkbox" id="ul_likeABoss" onchange="recalculate()"><span class="cb"></span>Like a Boss (200pts)</label>
     <label class="chk"><input type="checkbox" id="ul_watchBirdie" onchange="recalculate()"><span class="cb"></span>Watch the Birdie (80pts)</label>
     <label class="chk"><input type="checkbox" id="ul_basilocked" onchange="recalculate()"><span class="cb"></span>Basilocked (80pts)</label>
-    <label class="chk"><input type="checkbox" id="ul_reptileFreeze" onchange="recalculate()"><span class="cb"></span>Reptile Freezer (10pts)</label>
-    <label class="chk"><input type="checkbox" id="ul_slugSalter" onchange="recalculate()"><span class="cb"></span>Slug Salter (10pts)</label>
-    <label class="chk"><input type="checkbox" id="ul_ringBling" onchange="recalculate()"><span class="cb"></span>Ring Bling (150pts)</label>
-    <label class="chk"><input type="checkbox" id="ul_luredIn" onchange="recalculate()"><span class="cb"></span>Lured In / Aquanites (80pts)</label>
     <label class="chk"><input type="checkbox" id="ul_reptileGotRipped" onchange="recalculate()"><span class="cb"></span>Reptile Got Ripped (75pts)</label>
+    <label class="chk"><input type="checkbox" id="ul_luredIn" onchange="recalculate()"><span class="cb"></span>Lured In / Aquanites (80pts)</label>
     <label class="chk"><input type="checkbox" id="ul_wingsSpread" onchange="recalculate()"><span class="cb"></span>Wings Spread / Gryphons (80pts)</label>
   </div>
 </div>
@@ -160,7 +175,7 @@ tr.row-top td.name-cell{color:var(--green);}
     <button onclick="clearAllBlocks()" style="padding:4px 10px;background:transparent;border:1px solid var(--border);border-radius:3px;color:var(--muted);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;">Clear All</button>
   </div>
   <div class="slots-row" id="blockSlots"></div>
-  <div style="margin-top:10px;font-size:11px;color:var(--muted)">Click a filled slot to unblock. Block slots scale with Quest Points (requires Smoking Kills).</div>
+  <div style="margin-top:8px;font-size:11px;color:var(--muted)">Click a filled slot to unblock. Slots scale with quest points (requires Smoking Kills).</div>
 </div>
 <div class="panel" id="recPanel" style="display:none">
   <div class="rec-box"><div class="rec-title">⚔️ Optimal Block Recommendations</div><div id="recContent"></div></div>
@@ -175,89 +190,125 @@ tr.row-top td.name-cell{color:var(--green);}
     </div>
   </div>
   <div class="task-table-wrap">
-    <table><thead><tr><th onclick="sortBy('name')">Task</th><th onclick="sortBy('chance')">Chance %</th><th onclick="sortBy('xp')">XP/hr</th><th onclick="sortBy('gp')">GP/hr</th><th>Method</th><th onclick="sortBy('weight')">Weight</th><th>Action</th></tr></thead><tbody id="taskBody"></tbody></table>
+    <table><thead><tr><th onclick="sortBy('name')">Task</th><th onclick="sortBy('chance')">Chance %</th><th onclick="sortBy('xp')">XP/hr</th><th onclick="sortBy('gp')">GP/hr</th><th>Best Method</th><th onclick="sortBy('weight')">Weight</th><th>Action</th></tr></thead><tbody id="taskBody"></tbody></table>
   </div>
   <div style="margin-top:8px;font-size:11px;color:var(--muted)" id="tableFooter"></div>
 </div>
 </div>
 <script>
-const DURADEL_TASKS=[{name:"Aberrant spectres",slayReq:60,combatReq:65,weight:7,xpMelee:25000,xpCannon:35000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"Herb drops. Nose peg/slayer helm."},{name:"Abyssal demons",slayReq:85,combatReq:85,weight:12,xpMelee:35000,xpCannon:45000,xpBarrage:55000,gpHr:150000,cannon:true,barrage:true,notes:"Barrage in Catacombs. Whip/dagger drops."},{name:"Ankou",slayReq:0,combatReq:40,weight:5,xpMelee:25000,xpCannon:35000,xpBarrage:40000,gpHr:80000,cannon:true,barrage:true,notes:"Catacombs for prayer XP."},{name:"Aquanite",slayReq:78,combatReq:0,weight:5,xpMelee:20000,xpCannon:28000,xpBarrage:0,gpHr:90000,cannon:true,barrage:false,notes:"Lured In unlock + Sailing 73 req."},{name:"Araxytes",slayReq:92,combatReq:0,weight:10,xpMelee:40000,xpCannon:52000,xpBarrage:0,gpHr:350000,cannon:false,barrage:false,notes:"Araxxor alt. No cannon in lair."},{name:"Aviansie",slayReq:0,combatReq:0,weight:8,xpMelee:28000,xpCannon:42000,xpBarrage:0,gpHr:500000,cannon:false,barrage:false,notes:"Watch the Birdie unlock. AFK in GWD."},{name:"Basilisks",slayReq:40,combatReq:0,weight:7,xpMelee:22000,xpCannon:32000,xpBarrage:0,gpHr:150000,cannon:true,barrage:false,notes:"Mirror shield/Basilocked unlock."},{name:"Black demons",slayReq:0,combatReq:80,weight:8,xpMelee:28000,xpCannon:40000,xpBarrage:50000,gpHr:100000,cannon:true,barrage:true,notes:"Demonic gorillas alt for zenyte."},{name:"Black dragons",slayReq:0,combatReq:80,weight:9,xpMelee:18000,xpCannon:25000,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Baby blacks/KBD alt."},{name:"Bloodveld",slayReq:50,combatReq:50,weight:8,xpMelee:28000,xpCannon:40000,xpBarrage:50000,gpHr:100000,cannon:true,barrage:true,notes:"Catacombs for prayer XP."},{name:"Blue dragons",slayReq:0,combatReq:65,weight:4,xpMelee:20000,xpCannon:28000,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Vorkath alt."},{name:"Boss tasks",slayReq:0,combatReq:0,weight:12,xpMelee:40000,xpCannon:0,xpBarrage:0,gpHr:800000,cannon:false,barrage:false,notes:"Like a Boss unlock required."},{name:"Cave horrors",slayReq:58,combatReq:85,weight:4,xpMelee:22000,xpCannon:30000,xpBarrage:0,gpHr:180000,cannon:true,barrage:false,notes:"Black mask drops. Cabin Fever req."},{name:"Cave kraken",slayReq:87,combatReq:80,weight:9,xpMelee:25000,xpCannon:0,xpBarrage:0,gpHr:500000,cannon:false,barrage:false,notes:"Kraken alt. Magic only."},{name:"Dagannoth",slayReq:0,combatReq:75,weight:9,xpMelee:30000,xpCannon:45000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"DKs alt."},{name:"Dark beasts",slayReq:90,combatReq:90,weight:11,xpMelee:35000,xpCannon:0,xpBarrage:0,gpHr:300000,cannon:false,barrage:false,notes:"Mournings End Pt2 req. Dark bow drops."},{name:"Drakes",slayReq:84,combatReq:0,weight:8,xpMelee:30000,xpCannon:0,xpBarrage:0,gpHr:350000,cannon:false,barrage:false,notes:"Drake tooth drops."},{name:"Dust devils",slayReq:65,combatReq:70,weight:5,xpMelee:28000,xpCannon:40000,xpBarrage:55000,gpHr:150000,cannon:true,barrage:true,notes:"Desert Treasure I partial req."},{name:"Elves",slayReq:0,combatReq:70,weight:4,xpMelee:25000,xpCannon:35000,xpBarrage:0,gpHr:300000,cannon:true,barrage:false,notes:"Regicide req. Crystal drops."},{name:"Fire giants",slayReq:0,combatReq:65,weight:7,xpMelee:25000,xpCannon:40000,xpBarrage:0,gpHr:120000,cannon:true,barrage:false,notes:"Fast with cannon."},{name:"Fossil Island Wyverns",slayReq:66,combatReq:60,weight:7,xpMelee:22000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Bone Voyage + Elemental Workshop I."},{name:"Frost dragons",slayReq:0,combatReq:85,weight:5,xpMelee:20000,xpCannon:0,xpBarrage:0,gpHr:300000,cannon:false,barrage:false,notes:"Sailing 87 req."},{name:"Gargoyles",slayReq:75,combatReq:80,weight:8,xpMelee:30000,xpCannon:40000,xpBarrage:0,gpHr:350000,cannon:true,barrage:false,notes:"GG alt. Rock hammer needed."},{name:"Greater demons",slayReq:0,combatReq:75,weight:9,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:120000,cannon:true,barrage:false,notes:"Krils alt."},{name:"Gryphons",slayReq:51,combatReq:0,weight:7,xpMelee:28000,xpCannon:38000,xpBarrage:0,gpHr:250000,cannon:true,barrage:false,notes:"Wings Spread unlock. Sailing 45 req."},{name:"Hellhounds",slayReq:0,combatReq:75,weight:10,xpMelee:25000,xpCannon:38000,xpBarrage:0,gpHr:80000,cannon:true,barrage:false,notes:"Cerberus alt (91 slayer). Clue scrolls."},{name:"Kalphite",slayReq:0,combatReq:15,weight:9,xpMelee:25000,xpCannon:40000,xpBarrage:0,gpHr:100000,cannon:true,barrage:false,notes:"KQ alt."},{name:"Kurask",slayReq:70,combatReq:65,weight:4,xpMelee:20000,xpCannon:28000,xpBarrage:0,gpHr:150000,cannon:true,barrage:false,notes:"Leaf-bladed/broad weapons req."},{name:"Lizardmen",slayReq:0,combatReq:0,weight:10,xpMelee:30000,xpCannon:45000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"Reptile Got Ripped unlock. Shayzien armour."},{name:"Metal dragons",slayReq:0,combatReq:0,weight:8,xpMelee:15000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Anti-dragon shield req. Slow. Common block."},{name:"Muttadiles",slayReq:97,combatReq:0,weight:8,xpMelee:30000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Raids prep task."},{name:"Nechryael",slayReq:80,combatReq:0,weight:10,xpMelee:32000,xpCannon:45000,xpBarrage:55000,gpHr:200000,cannon:true,barrage:true,notes:"Slayer Tower or Catacombs."},{name:"Red dragons",slayReq:0,combatReq:68,weight:6,xpMelee:20000,xpCannon:0,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Brutal reds alt (77 slayer)."},{name:"Rune dragons",slayReq:0,combatReq:0,weight:4,xpMelee:18000,xpCannon:0,xpBarrage:0,gpHr:600000,cannon:false,barrage:false,notes:"Dragon metal drops."},{name:"Skeletal wyverns",slayReq:72,combatReq:0,weight:8,xpMelee:22000,xpCannon:0,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Elemental/mind shield req."},{name:"Smoke devils",slayReq:93,combatReq:0,weight:10,xpMelee:35000,xpCannon:50000,xpBarrage:0,gpHr:300000,cannon:true,barrage:false,notes:"DT2 req. Occult necklace drops."},{name:"Spiritual creatures",slayReq:0,combatReq:60,weight:7,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:300000,cannon:true,barrage:false,notes:"GWD area. Ranger boots/spirit shields."},{name:"Steel dragons",slayReq:0,combatReq:0,weight:8,xpMelee:15000,xpCannon:0,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Slow. Consider blocking."},{name:"Suqahs",slayReq:0,combatReq:0,weight:8,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:100000,cannon:true,barrage:false,notes:"Lunar isle."},{name:"Vampyres",slayReq:0,combatReq:0,weight:8,xpMelee:25000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Flail/silver req."},{name:"Warped creatures",slayReq:56,combatReq:0,weight:8,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:150000,cannon:true,barrage:false,notes:"Hosidius favour."},{name:"Waterfiend",slayReq:0,combatReq:0,weight:3,xpMelee:20000,xpCannon:0,xpBarrage:0,gpHr:100000,cannon:false,barrage:false,notes:"Barbarian Training partial req."},{name:"Wyrms",slayReq:62,combatReq:0,weight:10,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"Dragon sword/harpoon drops."},{name:"Zygomites",slayReq:57,combatReq:0,weight:2,xpMelee:18000,xpCannon:0,xpBarrage:0,gpHr:100000,cannon:false,barrage:false,notes:"Fungicide spray needed."}];
-const NIEVE_TASKS=[{name:"Aberrant spectres",slayReq:60,combatReq:65,weight:8,xpMelee:25000,xpCannon:35000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"Nose peg/slayer helm."},{name:"Abyssal demons",slayReq:85,combatReq:85,weight:9,xpMelee:35000,xpCannon:45000,xpBarrage:55000,gpHr:150000,cannon:true,barrage:true,notes:"Barrage in Catacombs."},{name:"Ankou",slayReq:0,combatReq:40,weight:5,xpMelee:25000,xpCannon:35000,xpBarrage:40000,gpHr:80000,cannon:true,barrage:true,notes:"Catacombs for prayer XP."},{name:"Araxytes",slayReq:92,combatReq:0,weight:10,xpMelee:40000,xpCannon:52000,xpBarrage:0,gpHr:350000,cannon:false,barrage:false,notes:"Araxxor alt."},{name:"Aviansie",slayReq:0,combatReq:0,weight:8,xpMelee:28000,xpCannon:42000,xpBarrage:0,gpHr:500000,cannon:false,barrage:false,notes:"Watch the Birdie unlock."},{name:"Basilisks",slayReq:40,combatReq:0,weight:7,xpMelee:22000,xpCannon:32000,xpBarrage:0,gpHr:150000,cannon:true,barrage:false,notes:"Basilocked unlock."},{name:"Black demons",slayReq:0,combatReq:80,weight:9,xpMelee:28000,xpCannon:40000,xpBarrage:50000,gpHr:100000,cannon:true,barrage:true,notes:"Demonic gorillas alt."},{name:"Black dragons",slayReq:0,combatReq:80,weight:9,xpMelee:18000,xpCannon:25000,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Baby blacks alt."},{name:"Bloodveld",slayReq:50,combatReq:50,weight:8,xpMelee:28000,xpCannon:40000,xpBarrage:50000,gpHr:100000,cannon:true,barrage:true,notes:"Catacombs for prayer XP."},{name:"Blue dragons",slayReq:0,combatReq:65,weight:4,xpMelee:20000,xpCannon:28000,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Vorkath alt."},{name:"Boss tasks",slayReq:0,combatReq:0,weight:12,xpMelee:40000,xpCannon:0,xpBarrage:0,gpHr:800000,cannon:false,barrage:false,notes:"Like a Boss unlock."},{name:"Brine rats",slayReq:47,combatReq:0,weight:3,xpMelee:15000,xpCannon:0,xpBarrage:0,gpHr:60000,cannon:false,barrage:false,notes:"Slow. Block candidate."},{name:"Cave horrors",slayReq:58,combatReq:85,weight:4,xpMelee:22000,xpCannon:30000,xpBarrage:0,gpHr:180000,cannon:true,barrage:false,notes:"Black mask drops."},{name:"Cave kraken",slayReq:87,combatReq:80,weight:9,xpMelee:25000,xpCannon:0,xpBarrage:0,gpHr:500000,cannon:false,barrage:false,notes:"Kraken alt. Magic only."},{name:"Dagannoth",slayReq:0,combatReq:75,weight:9,xpMelee:30000,xpCannon:45000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"DKs alt."},{name:"Dark beasts",slayReq:90,combatReq:90,weight:5,xpMelee:35000,xpCannon:0,xpBarrage:0,gpHr:300000,cannon:false,barrage:false,notes:"Mournings End Pt2 req."},{name:"Drakes",slayReq:84,combatReq:0,weight:8,xpMelee:30000,xpCannon:0,xpBarrage:0,gpHr:350000,cannon:false,barrage:false,notes:"Drake tooth drops."},{name:"Dust devils",slayReq:65,combatReq:70,weight:6,xpMelee:28000,xpCannon:40000,xpBarrage:55000,gpHr:150000,cannon:true,barrage:true,notes:"Desert Treasure I partial."},{name:"Elves",slayReq:0,combatReq:70,weight:4,xpMelee:25000,xpCannon:35000,xpBarrage:0,gpHr:300000,cannon:true,barrage:false,notes:"Regicide req."},{name:"Fire giants",slayReq:0,combatReq:65,weight:9,xpMelee:25000,xpCannon:40000,xpBarrage:0,gpHr:120000,cannon:true,barrage:false,notes:"Fast with cannon."},{name:"Gargoyles",slayReq:75,combatReq:80,weight:8,xpMelee:30000,xpCannon:40000,xpBarrage:0,gpHr:350000,cannon:true,barrage:false,notes:"GG alt. Rock hammer needed."},{name:"Greater demons",slayReq:0,combatReq:75,weight:9,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:120000,cannon:true,barrage:false,notes:"Krils alt."},{name:"Hellhounds",slayReq:0,combatReq:75,weight:10,xpMelee:25000,xpCannon:38000,xpBarrage:0,gpHr:80000,cannon:true,barrage:false,notes:"Cerberus alt."},{name:"Kalphite",slayReq:0,combatReq:15,weight:8,xpMelee:25000,xpCannon:40000,xpBarrage:0,gpHr:100000,cannon:true,barrage:false,notes:"KQ alt."},{name:"Kurask",slayReq:70,combatReq:65,weight:4,xpMelee:20000,xpCannon:28000,xpBarrage:0,gpHr:150000,cannon:true,barrage:false,notes:"Broad/leaf-bladed req."},{name:"Lizardmen",slayReq:0,combatReq:0,weight:8,xpMelee:30000,xpCannon:45000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"Shayzien armour."},{name:"Metal dragons",slayReq:0,combatReq:0,weight:9,xpMelee:15000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Common block candidate."},{name:"Muttadiles",slayReq:97,combatReq:0,weight:7,xpMelee:30000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:""},{name:"Nechryael",slayReq:80,combatReq:0,weight:10,xpMelee:32000,xpCannon:45000,xpBarrage:55000,gpHr:200000,cannon:true,barrage:true,notes:"Slayer Tower/Catacombs."},{name:"Red dragons",slayReq:0,combatReq:68,weight:7,xpMelee:20000,xpCannon:0,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Brutal reds alt."},{name:"Skeletal wyverns",slayReq:72,combatReq:0,weight:7,xpMelee:22000,xpCannon:0,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Shield req."},{name:"Smoke devils",slayReq:93,combatReq:0,weight:10,xpMelee:35000,xpCannon:50000,xpBarrage:0,gpHr:300000,cannon:true,barrage:false,notes:"DT2 req."},{name:"Spiritual creatures",slayReq:0,combatReq:60,weight:7,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:300000,cannon:true,barrage:false,notes:"GWD area."},{name:"Steel dragons",slayReq:0,combatReq:0,weight:8,xpMelee:15000,xpCannon:0,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Slow. Block candidate."},{name:"Suqahs",slayReq:0,combatReq:0,weight:7,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:100000,cannon:true,barrage:false,notes:""},{name:"Turoths",slayReq:55,combatReq:60,weight:4,xpMelee:18000,xpCannon:25000,xpBarrage:0,gpHr:100000,cannon:true,barrage:false,notes:"Broad/leaf-bladed req."},{name:"Vampyres",slayReq:0,combatReq:0,weight:7,xpMelee:25000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Flail req."},{name:"Warped creatures",slayReq:56,combatReq:0,weight:7,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:150000,cannon:true,barrage:false,notes:""},{name:"Wyrms",slayReq:62,combatReq:0,weight:10,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:""},{name:"Zygomites",slayReq:57,combatReq:0,weight:2,xpMelee:18000,xpCannon:0,xpBarrage:0,gpHr:100000,cannon:false,barrage:false,notes:"Fungicide needed."}];
-let state={rsn:'',slayLvl:99,combatLvl:126,questPts:275,attack:99,strength:99,defence:99,magic:99,ranged:99,prayer:82,agility:87,master:'duradel',method:'cannon',goal:'xp',blocked:new Set()};
-const MASTERS={duradel:{name:'Duradel',pts:15,blockCost:100,tasks:DURADEL_TASKS},nieve:{name:'Nieve/Steve',pts:12,blockCost:90,tasks:NIEVE_TASKS},konar:{name:'Konar',pts:18,blockCost:100,tasks:NIEVE_TASKS}};
+const QUEST_QP={"Cook's Assistant":1,"Demon Slayer":3,"The Restless Ghost":1,"Romeo & Juliet":5,"Sheep Shearer":1,"Shield of Arrav":1,"Ernest the Chicken":4,"Vampyre Slayer":3,"Imp Catcher":1,"Prince Ali Rescue":3,"Doric's Quest":1,"Black Knights' Fortress":3,"Witch's Potion":1,"The Knight's Sword":1,"Goblin Diplomacy":5,"Pirate's Treasure":2,"Dragon Slayer I":2,"Druidic Ritual":4,"Lost City":3,"Witch's House":4,"Merlin's Crystal":6,"Heroes' Quest":1,"Scorpion Catcher":1,"Family Crest":1,"Tribal Totem":1,"Fishing Contest":1,"Monk's Friend":1,"Temple of Ikov":1,"Clock Tower":1,"Holy Grail":2,"Tree Gnome Village":2,"Fight Arena":2,"Hazeel Cult":1,"Sheep Herder":4,"Plague City":1,"Sea Slug":1,"Waterfall Quest":1,"Biohazard":3,"Jungle Potion":1,"The Grand Tree":5,"Shilo Village":2,"Underground Pass":5,"Observatory Quest":2,"The Tourist Trap":2,"Watchtower":4,"Dwarf Cannon":1,"Murder Mystery":3,"The Dig Site":2,"Gertrude's Cat":1,"Legends' Quest":4,"Big Chompy Bird Hunting":2,"Elemental Workshop I":1,"Priest in Peril":1,"Nature Spirit":2,"Death Plateau":1,"Troll Stronghold":1,"Tai Bwo Wannai Trio":2,"Regicide":3,"Eadgar's Ruse":1,"Shades of Mort'ton":3,"Shadow of the Storm":3,"Animal Magnetism":1,"Haunted Mine":2,"Troll Romance":2,"In Search of the Myreque":2,"Creature of Fenkenstrain":2,"Rum Deal":2,"Zogre Flesh Eaters":2,"One Small Favour":2,"Mountain Daughter":2,"Between a Rock...":2,"The Feud":1,"Ghosts Ahoy":2,"Icthlarin's Little Helper":4,"Tears of Guthix":1,"Mourning's End Part I":2,"Recipe for Disaster":10,"In Aid of the Myreque":2,"Lunar Diplomacy":2,"Devious Minds":1,"The Hand in the Sand":1,"Enakhra's Lament":2,"Cabin Fever":2,"Fairytale I - Growing Pains":2,"Garden of Tranquillity":2,"A Tail of Two Cats":2,"Wanted!":1,"Mourning's End Part II":2,"Skippy and the Mogres":1,"Lair of Tarn Razorlor":1,"Horror from the Deep":4,"Throne of Miscellania":1,"Monkey Madness I":3,"Fairytale II - Cure a Queen":2,"Grim Tales":1,"King's Ransom":1,"Monkey Madness II":4,"Enlightened Journey":1,"Eagles' Peak":2,"Cold War":1,"The Fremennik Isles":1,"Tower of Life":2,"Ratcatchers":2,"Swan Song":2,"Royal Trouble":1,"Death to the Dorgeshuun":1,"Forgettable Tale...":2,"Another Slice of H.A.M.":1,"Dream Mentor":2,"My Arm's Big Adventure":1,"Darkness of Hallowvale":2,"The Slug Menace":1,"Elemental Workshop II":1,"The Eyes of Glouphrie":2,"Desert Treasure I":3,"Olaf's Quest":1,"A Soul's Bane":1,"The Fremennik Trials":3,"Bone Voyage":1,"Client of Kourend":1,"Dragon Slayer II":4,"Sins of the Father":2,"Making Friends with My Arm":1,"The Forsaken Tower":1,"The Ascent of Arceuus":1,"X Marks the Spot":1,"Children of the Sun":1,"Desert Treasure II - The Fallen Empire":5,"A Night at the Theatre":2,"A Kingdom Divided":1,"Below Ice Mountain":1,"A Porcine of Interest":1,"Daddy's Home":1,"Getting Ahead":1,"Sleeping Giants":1,"His Faithful Servants":1,"Hopespear's Will":1,"Into the Tombs":1,"Ethically Acquired Antiquities":1,"Death on the Isle":1,"At First Light":1,"Current Affairs":1,"The Path of Glouphrie":2,"Beneath Cursed Sands":2,"Curse of the Empty Lord":1,"Defender of Varrock":1,"Enter the Abyss":1,"A Taste of Hope":2,"While Guthix Sleeps":5,"The Fremennik Exiles":2,"Land of the Goblins":2,"Song of the Elves":4,"The Great Brain Robbery":2,"Making History":3,"Recruitment Drive":1,"What Lies Below":1,"Roving Elves":1,"The Corsair Curse":1,"The Lost Tribe":1,"The Golem":1,"The General's Shadow":1,"The Giant Dwarf":1,"Temple of the Eye":1,"Tale of the Righteous":1,"The Queen of Thieves":1,"The Depths of Despair":1,"The Curse of Arrav":1,"The Garden of Death":1,"Secrets of the North":1,"Perilous Moons":1,"Twilight's Promise":1,"Troubled Tortugans":1,"Pandemonium":1,"Prying Times":1,"Meat and Greet":1,"Scrambled!":1,"Vale Totems":1,"The Ides of Milk":1,"Rag and Bone Man I":1,"Rag and Bone Man II":1,"Misthalin Mystery":1,"Shadows of Custodia":1,"The Final Dawn":2,"The Heart of Darkness":2,"The Ribbiting Tale of a Lily Pad Labour Dispute":1,"Spirits of the Elid":2,"Recipe for Disaster - Another Cook's Quest":1,"Recipe for Disaster - Culinaromancer":1,"Recipe for Disaster - Evil Dave":1,"Recipe for Disaster - King Awowogei":1,"Recipe for Disaster - Lumbridge Guide":1,"Recipe for Disaster - Mountain Dwarf":1,"Recipe for Disaster - Pirate Pete":1,"Recipe for Disaster - Sir Amik Varze":1,"Recipe for Disaster - Skrach Uglogwee":1,"Recipe for Disaster - Wartface & Bentnoze":1};
+function calcQpFromQuests(completed){let qp=0;for(const q of completed)qp+=QUEST_QP[q]||0;return qp;}
+const QUEST_REQ_MAP={dragonSlayer:"Dragon Slayer I",priestInPeril:"Priest in Peril",regicide:"Regicide",desertTreasure:"Desert Treasure I",cabinFever:"Cabin Fever",horrorFromDeep:"Horror from the Deep",boneVoyage:"Bone Voyage",elementalWorkshop:"Elemental Workshop I",mourningsEnd2:"Mourning's End Part II",whileGuthixSleeps:"While Guthix Sleeps",troubledTortugans:"Troubled Tortugans",lunarDiplomacy:"Lunar Diplomacy",skippyMogres:"Skippy and the Mogres"};
+const DURADEL_TASKS=[{name:"Aberrant spectres",slayReq:60,combatReq:65,weight:7,xpMelee:25000,xpCannon:35000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"Herb drops. Nose peg/slayer helm.",questReq:null},{name:"Abyssal demons",slayReq:85,combatReq:85,weight:12,xpMelee:35000,xpCannon:45000,xpBarrage:55000,gpHr:150000,cannon:true,barrage:true,notes:"Barrage in Catacombs. Whip/dagger drops.",questReq:null},{name:"Ankou",slayReq:0,combatReq:40,weight:5,xpMelee:25000,xpCannon:35000,xpBarrage:40000,gpHr:80000,cannon:true,barrage:true,notes:"Catacombs for prayer XP.",questReq:null},{name:"Aquanite",slayReq:78,combatReq:0,weight:5,xpMelee:20000,xpCannon:28000,xpBarrage:0,gpHr:90000,cannon:true,barrage:false,notes:"Lured In unlock + Sailing 73 req.",questReq:null,unlock:"ul_luredIn",sailingReq:73},{name:"Araxytes",slayReq:92,combatReq:0,weight:10,xpMelee:40000,xpCannon:52000,xpBarrage:0,gpHr:350000,cannon:false,barrage:false,notes:"Araxxor alt.",questReq:null},{name:"Aviansie",slayReq:0,combatReq:0,weight:8,xpMelee:28000,xpCannon:42000,xpBarrage:0,gpHr:500000,cannon:false,barrage:false,notes:"Watch the Birdie unlock. GWD.",questReq:null,unlock:"ul_watchBirdie"},{name:"Basilisks",slayReq:40,combatReq:0,weight:7,xpMelee:22000,xpCannon:32000,xpBarrage:0,gpHr:150000,cannon:true,barrage:false,notes:"Basilocked unlock. Mirror shield.",questReq:null,unlock:"ul_basilocked"},{name:"Black demons",slayReq:0,combatReq:80,weight:8,xpMelee:28000,xpCannon:40000,xpBarrage:50000,gpHr:100000,cannon:true,barrage:true,notes:"Demonic gorillas alt for zenyte.",questReq:null},{name:"Black dragons",slayReq:0,combatReq:80,weight:9,xpMelee:18000,xpCannon:25000,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Baby blacks/KBD alt.",questReq:"dragonSlayer"},{name:"Bloodveld",slayReq:50,combatReq:50,weight:8,xpMelee:28000,xpCannon:40000,xpBarrage:50000,gpHr:100000,cannon:true,barrage:true,notes:"Catacombs for prayer XP.",questReq:"priestInPeril"},{name:"Blue dragons",slayReq:0,combatReq:65,weight:4,xpMelee:20000,xpCannon:28000,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Vorkath alt.",questReq:"dragonSlayer"},{name:"Boss tasks",slayReq:0,combatReq:0,weight:12,xpMelee:40000,xpCannon:0,xpBarrage:0,gpHr:800000,cannon:false,barrage:false,notes:"Like a Boss unlock required.",questReq:null,unlock:"ul_likeABoss"},{name:"Cave horrors",slayReq:58,combatReq:85,weight:4,xpMelee:22000,xpCannon:30000,xpBarrage:0,gpHr:180000,cannon:true,barrage:false,notes:"Black mask drops. Cabin Fever req.",questReq:"cabinFever"},{name:"Cave kraken",slayReq:87,combatReq:80,weight:9,xpMelee:25000,xpCannon:0,xpBarrage:0,gpHr:500000,cannon:false,barrage:false,notes:"Kraken alt. Magic only.",questReq:null},{name:"Dagannoth",slayReq:0,combatReq:75,weight:9,xpMelee:30000,xpCannon:45000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"DKs alt.",questReq:"horrorFromDeep"},{name:"Dark beasts",slayReq:90,combatReq:90,weight:11,xpMelee:35000,xpCannon:0,xpBarrage:0,gpHr:300000,cannon:false,barrage:false,notes:"Dark bow drops.",questReq:"mourningsEnd2"},{name:"Drakes",slayReq:84,combatReq:0,weight:8,xpMelee:30000,xpCannon:0,xpBarrage:0,gpHr:350000,cannon:false,barrage:false,notes:"Drake tooth drops.",questReq:null},{name:"Dust devils",slayReq:65,combatReq:70,weight:5,xpMelee:28000,xpCannon:40000,xpBarrage:55000,gpHr:150000,cannon:true,barrage:true,notes:"Desert Treasure I partial req.",questReq:"desertTreasure"},{name:"Elves",slayReq:0,combatReq:70,weight:4,xpMelee:25000,xpCannon:35000,xpBarrage:0,gpHr:300000,cannon:true,barrage:false,notes:"Regicide req. Crystal drops.",questReq:"regicide"},{name:"Fire giants",slayReq:0,combatReq:65,weight:7,xpMelee:25000,xpCannon:40000,xpBarrage:0,gpHr:120000,cannon:true,barrage:false,notes:"Fast with cannon.",questReq:null},{name:"Fossil Island Wyverns",slayReq:66,combatReq:60,weight:7,xpMelee:22000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Bone Voyage + Elemental Workshop I.",questReq:"boneVoyage"},{name:"Frost dragons",slayReq:0,combatReq:85,weight:5,xpMelee:20000,xpCannon:0,xpBarrage:0,gpHr:300000,cannon:false,barrage:false,notes:"Sailing 87 req.",questReq:null,sailingReq:87},{name:"Gargoyles",slayReq:75,combatReq:80,weight:8,xpMelee:30000,xpCannon:40000,xpBarrage:0,gpHr:350000,cannon:true,barrage:false,notes:"GG alt. Rock hammer needed.",questReq:"priestInPeril"},{name:"Greater demons",slayReq:0,combatReq:75,weight:9,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:120000,cannon:true,barrage:false,notes:"K'ril alt.",questReq:null},{name:"Gryphons",slayReq:51,combatReq:0,weight:7,xpMelee:28000,xpCannon:38000,xpBarrage:0,gpHr:250000,cannon:true,barrage:false,notes:"Wings Spread unlock + Sailing 45.",questReq:"troubledTortugans",unlock:"ul_wingsSpread",sailingReq:45},{name:"Hellhounds",slayReq:0,combatReq:75,weight:10,xpMelee:25000,xpCannon:38000,xpBarrage:0,gpHr:80000,cannon:true,barrage:false,notes:"Cerberus alt (91 slayer). Clue scrolls.",questReq:null},{name:"Kalphite",slayReq:0,combatReq:15,weight:9,xpMelee:25000,xpCannon:40000,xpBarrage:0,gpHr:100000,cannon:true,barrage:false,notes:"KQ alt.",questReq:null},{name:"Kurask",slayReq:70,combatReq:65,weight:4,xpMelee:20000,xpCannon:28000,xpBarrage:0,gpHr:150000,cannon:true,barrage:false,notes:"Leaf-bladed/broad weapons req.",questReq:null},{name:"Lizardmen",slayReq:0,combatReq:0,weight:10,xpMelee:30000,xpCannon:45000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"Reptile Got Ripped unlock. Shayzien armour.",questReq:null,unlock:"ul_reptileGotRipped"},{name:"Metal dragons",slayReq:0,combatReq:0,weight:8,xpMelee:15000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Anti-dragon shield req. Slow. Common block.",questReq:"dragonSlayer"},{name:"Muttadiles",slayReq:97,combatReq:0,weight:8,xpMelee:30000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Raids prep task.",questReq:null},{name:"Nechryael",slayReq:80,combatReq:0,weight:10,xpMelee:32000,xpCannon:45000,xpBarrage:55000,gpHr:200000,cannon:true,barrage:true,notes:"Slayer Tower or Catacombs.",questReq:null},{name:"Red dragons",slayReq:0,combatReq:68,weight:6,xpMelee:20000,xpCannon:0,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Brutal reds alt (77 slayer).",questReq:"dragonSlayer"},{name:"Rune dragons",slayReq:0,combatReq:0,weight:4,xpMelee:18000,xpCannon:0,xpBarrage:0,gpHr:600000,cannon:false,barrage:false,notes:"Dragon metal drops. BiS gear recommended.",questReq:"dragonSlayer"},{name:"Skeletal wyverns",slayReq:72,combatReq:0,weight:8,xpMelee:22000,xpCannon:0,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Elemental/mind shield req. Granite legs.",questReq:"elementalWorkshop"},{name:"Smoke devils",slayReq:93,combatReq:0,weight:10,xpMelee:35000,xpCannon:50000,xpBarrage:0,gpHr:300000,cannon:true,barrage:false,notes:"DT2 req. Occult necklace drops.",questReq:null},{name:"Spiritual creatures",slayReq:0,combatReq:60,weight:7,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:300000,cannon:true,barrage:false,notes:"GWD area. Ranger boots/spirit shields.",questReq:null},{name:"Suqahs",slayReq:0,combatReq:0,weight:8,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:100000,cannon:true,barrage:false,notes:"Lunar isle.",questReq:"lunarDiplomacy"},{name:"Vampyres",slayReq:0,combatReq:0,weight:8,xpMelee:25000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Flail/silver req.",questReq:"priestInPeril"},{name:"Warped creatures",slayReq:56,combatReq:0,weight:8,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:150000,cannon:true,barrage:false,notes:"Hosidius favour required.",questReq:null},{name:"Waterfiend",slayReq:0,combatReq:0,weight:3,xpMelee:20000,xpCannon:0,xpBarrage:0,gpHr:100000,cannon:false,barrage:false,notes:"Barbarian Training partial req.",questReq:"whileGuthixSleeps"},{name:"Wyrms",slayReq:62,combatReq:0,weight:10,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"Dragon sword/harpoon drops.",questReq:null},{name:"Zygomites",slayReq:57,combatReq:0,weight:2,xpMelee:18000,xpCannon:0,xpBarrage:0,gpHr:100000,cannon:false,barrage:false,notes:"Fungicide spray needed.",questReq:null}];
+const NIEVE_TASKS=[{name:"Aberrant spectres",slayReq:60,combatReq:65,weight:8,xpMelee:25000,xpCannon:35000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"Nose peg/slayer helm.",questReq:null},{name:"Abyssal demons",slayReq:85,combatReq:85,weight:9,xpMelee:35000,xpCannon:45000,xpBarrage:55000,gpHr:150000,cannon:true,barrage:true,notes:"Barrage in Catacombs.",questReq:null},{name:"Ankou",slayReq:0,combatReq:40,weight:5,xpMelee:25000,xpCannon:35000,xpBarrage:40000,gpHr:80000,cannon:true,barrage:true,notes:"Catacombs for prayer XP.",questReq:null},{name:"Araxytes",slayReq:92,combatReq:0,weight:10,xpMelee:40000,xpCannon:52000,xpBarrage:0,gpHr:350000,cannon:false,barrage:false,notes:"Araxxor alt.",questReq:null},{name:"Aviansie",slayReq:0,combatReq:0,weight:8,xpMelee:28000,xpCannon:42000,xpBarrage:0,gpHr:500000,cannon:false,barrage:false,notes:"Watch the Birdie unlock.",questReq:null,unlock:"ul_watchBirdie"},{name:"Basilisks",slayReq:40,combatReq:0,weight:7,xpMelee:22000,xpCannon:32000,xpBarrage:0,gpHr:150000,cannon:true,barrage:false,notes:"Basilocked unlock.",questReq:null,unlock:"ul_basilocked"},{name:"Black demons",slayReq:0,combatReq:80,weight:9,xpMelee:28000,xpCannon:40000,xpBarrage:50000,gpHr:100000,cannon:true,barrage:true,notes:"Demonic gorillas alt.",questReq:null},{name:"Black dragons",slayReq:0,combatReq:80,weight:9,xpMelee:18000,xpCannon:25000,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Baby blacks alt.",questReq:"dragonSlayer"},{name:"Bloodveld",slayReq:50,combatReq:50,weight:8,xpMelee:28000,xpCannon:40000,xpBarrage:50000,gpHr:100000,cannon:true,barrage:true,notes:"Catacombs for prayer XP.",questReq:"priestInPeril"},{name:"Blue dragons",slayReq:0,combatReq:65,weight:4,xpMelee:20000,xpCannon:28000,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Vorkath alt.",questReq:"dragonSlayer"},{name:"Boss tasks",slayReq:0,combatReq:0,weight:12,xpMelee:40000,xpCannon:0,xpBarrage:0,gpHr:800000,cannon:false,barrage:false,notes:"Like a Boss unlock.",questReq:null,unlock:"ul_likeABoss"},{name:"Brine rats",slayReq:47,combatReq:0,weight:3,xpMelee:15000,xpCannon:0,xpBarrage:0,gpHr:60000,cannon:false,barrage:false,notes:"Slow. Block candidate.",questReq:"skippyMogres"},{name:"Cave horrors",slayReq:58,combatReq:85,weight:4,xpMelee:22000,xpCannon:30000,xpBarrage:0,gpHr:180000,cannon:true,barrage:false,notes:"Black mask drops.",questReq:"cabinFever"},{name:"Cave kraken",slayReq:87,combatReq:80,weight:9,xpMelee:25000,xpCannon:0,xpBarrage:0,gpHr:500000,cannon:false,barrage:false,notes:"Kraken alt. Magic only.",questReq:null},{name:"Dagannoth",slayReq:0,combatReq:75,weight:9,xpMelee:30000,xpCannon:45000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"DKs alt.",questReq:"horrorFromDeep"},{name:"Dark beasts",slayReq:90,combatReq:90,weight:5,xpMelee:35000,xpCannon:0,xpBarrage:0,gpHr:300000,cannon:false,barrage:false,notes:"Dark bow drops.",questReq:"mourningsEnd2"},{name:"Drakes",slayReq:84,combatReq:0,weight:8,xpMelee:30000,xpCannon:0,xpBarrage:0,gpHr:350000,cannon:false,barrage:false,notes:"Drake tooth drops.",questReq:null},{name:"Dust devils",slayReq:65,combatReq:70,weight:6,xpMelee:28000,xpCannon:40000,xpBarrage:55000,gpHr:150000,cannon:true,barrage:true,notes:"Desert Treasure I partial.",questReq:"desertTreasure"},{name:"Elves",slayReq:0,combatReq:70,weight:4,xpMelee:25000,xpCannon:35000,xpBarrage:0,gpHr:300000,cannon:true,barrage:false,notes:"Regicide req.",questReq:"regicide"},{name:"Fire giants",slayReq:0,combatReq:65,weight:9,xpMelee:25000,xpCannon:40000,xpBarrage:0,gpHr:120000,cannon:true,barrage:false,notes:"Fast with cannon.",questReq:null},{name:"Gargoyles",slayReq:75,combatReq:80,weight:8,xpMelee:30000,xpCannon:40000,xpBarrage:0,gpHr:350000,cannon:true,barrage:false,notes:"GG alt. Rock hammer.",questReq:"priestInPeril"},{name:"Greater demons",slayReq:0,combatReq:75,weight:9,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:120000,cannon:true,barrage:false,notes:"K'ril alt.",questReq:null},{name:"Hellhounds",slayReq:0,combatReq:75,weight:10,xpMelee:25000,xpCannon:38000,xpBarrage:0,gpHr:80000,cannon:true,barrage:false,notes:"Cerberus alt.",questReq:null},{name:"Kalphite",slayReq:0,combatReq:15,weight:8,xpMelee:25000,xpCannon:40000,xpBarrage:0,gpHr:100000,cannon:true,barrage:false,notes:"KQ alt.",questReq:null},{name:"Kurask",slayReq:70,combatReq:65,weight:4,xpMelee:20000,xpCannon:28000,xpBarrage:0,gpHr:150000,cannon:true,barrage:false,notes:"Broad/leaf-bladed req.",questReq:null},{name:"Lizardmen",slayReq:0,combatReq:0,weight:8,xpMelee:30000,xpCannon:45000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"Shayzien armour.",questReq:null,unlock:"ul_reptileGotRipped"},{name:"Metal dragons",slayReq:0,combatReq:0,weight:9,xpMelee:15000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Common block candidate.",questReq:"dragonSlayer"},{name:"Muttadiles",slayReq:97,combatReq:0,weight:7,xpMelee:30000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"",questReq:null},{name:"Nechryael",slayReq:80,combatReq:0,weight:10,xpMelee:32000,xpCannon:45000,xpBarrage:55000,gpHr:200000,cannon:true,barrage:true,notes:"Slayer Tower/Catacombs.",questReq:null},{name:"Red dragons",slayReq:0,combatReq:68,weight:7,xpMelee:20000,xpCannon:0,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Brutal reds alt.",questReq:"dragonSlayer"},{name:"Skeletal wyverns",slayReq:72,combatReq:0,weight:7,xpMelee:22000,xpCannon:0,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Shield req.",questReq:"elementalWorkshop"},{name:"Smoke devils",slayReq:93,combatReq:0,weight:10,xpMelee:35000,xpCannon:50000,xpBarrage:0,gpHr:300000,cannon:true,barrage:false,notes:"DT2 req.",questReq:null},{name:"Spiritual creatures",slayReq:0,combatReq:60,weight:7,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:300000,cannon:true,barrage:false,notes:"GWD area.",questReq:null},{name:"Suqahs",slayReq:0,combatReq:0,weight:7,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:100000,cannon:true,barrage:false,notes:"Lunar isle.",questReq:"lunarDiplomacy"},{name:"Turoths",slayReq:55,combatReq:60,weight:4,xpMelee:18000,xpCannon:25000,xpBarrage:0,gpHr:100000,cannon:true,barrage:false,notes:"Broad/leaf-bladed req.",questReq:null},{name:"Vampyres",slayReq:0,combatReq:0,weight:7,xpMelee:25000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Flail req.",questReq:"priestInPeril"},{name:"Warped creatures",slayReq:56,combatReq:0,weight:7,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:150000,cannon:true,barrage:false,notes:"",questReq:null},{name:"Wyrms",slayReq:62,combatReq:0,weight:10,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"",questReq:null},{name:"Zygomites",slayReq:57,combatReq:0,weight:2,xpMelee:18000,xpCannon:0,xpBarrage:0,gpHr:100000,cannon:false,barrage:false,notes:"Fungicide needed.",questReq:null}];
+let state={rsn:'',slayLvl:99,combatLvl:126,questPts:275,sailingLvl:0,methods:{melee:true,cannon:true,barrage:true},master:'duradel',goal:'xp',blocked:new Set(),completedQuests:new Set(),diaries:{},wikisyncLoaded:false};
+const MASTERS={duradel:{name:'Duradel',pts:15,blockCost:100,tasks:DURADEL_TASKS,bonusDiary:'Kourend & Kebos',bonusTier:'Elite',bonusPts:15},nieve:{name:'Nieve/Steve',pts:12,blockCost:90,tasks:NIEVE_TASKS,bonusDiary:'Western Provinces',bonusTier:'Elite',bonusPts:15},konar:{name:'Konar',pts:18,blockCost:100,tasks:NIEVE_TASKS,bonusDiary:'Kourend & Kebos',bonusTier:'Elite',bonusPts:20}};
 const UNLOCK_MAP={ul_watchBirdie:'Aviansie',ul_basilocked:'Basilisks',ul_reptileGotRipped:'Lizardmen',ul_luredIn:'Aquanite',ul_wingsSpread:'Gryphons',ul_likeABoss:'Boss tasks'};
 function fmtK(n){if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return Math.round(n/1e3)+'K';return n.toLocaleString();}
 function setStatus(id,t,cls){const el=document.getElementById(id);if(el){el.textContent=t;el.className='status-line '+(cls||'');}}
-const SKILL_IDX={overall:0,attack:1,defence:2,strength:3,hitpoints:4,ranged:5,prayer:6,magic:7,cooking:8,woodcutting:9,fletching:10,fishing:11,firemaking:12,crafting:13,smithing:14,mining:15,herblore:16,agility:17,thieving:18,slayer:19,farming:20,runecrafting:21,hunter:22,construction:23};
-const ENDPOINT={regular:'hiscore_oldschool',ironman:'hiscore_oldschool_ironman',hardcore:'hiscore_oldschool_hardcore_ironman',ultimate:'hiscore_oldschool_ultimate'};
 async function lookupPlayer(){
   const name=document.getElementById('rsn').value.trim();
   if(!name){setStatus('lookupStatus','Enter a username first','err');return;}
   const btn=document.getElementById('lookupBtn');
   btn.disabled=true;btn.textContent='...';
-  setStatus('lookupStatus','Looking up '+name+'...','info');
+  setStatus('lookupStatus','Trying WikiSync...','info');
   try{
-    const mode=document.getElementById('accountType').value;
-    const ep=ENDPOINT[mode]||ENDPOINT.regular;
-    const playerParam=name.replace(/ /g,'+');
-    const innerUrl=`https://secure.runescape.com/m=${ep}/index_lite.ws?player=${playerParam}`;
-    const url=`https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(innerUrl)}`;
-    const r=await fetch(url);
-    const text=await r.text();
-    if(!text||text.includes('<!DOCTYPE')||text.trim().length<20)throw new Error('Player not found');
-    const lines=text.trim().split('\n');
-    const get=(skill)=>{const l=lines[SKILL_IDX[skill]];return l?parseInt(l.split(',')[1])||1:1;};
-    state.slayLvl=get('slayer');state.attack=get('attack');state.strength=get('strength');
-    state.defence=get('defence');state.magic=get('magic');state.ranged=get('ranged');
-    state.prayer=get('prayer');state.agility=get('agility');
-    const hp=get('hitpoints');
-    const base=0.25*(state.defence+hp+Math.floor(state.prayer/2));
-    const melee=0.325*(state.attack+state.strength);
-    const range=0.325*(Math.floor(state.ranged*1.5));
-    const mage=0.325*(Math.floor(state.magic*1.5));
-    state.combatLvl=Math.floor(base+Math.max(melee,range,mage));
-    const qpLine=lines[64];
-    state.questPts=qpLine?parseInt(qpLine.split(',')[1])||0:0;
-    state.rsn=name;
-    renderStatPills();
-    setStatus('lookupStatus',`Loaded: ${name} - Combat ${state.combatLvl}, Slayer ${state.slayLvl}, QP ${state.questPts}`,'ok');
-    recalculate();
-  }catch(e){setStatus('lookupStatus','Error: '+e.message,'err');}
+    const r=await fetch(`https://sync.runescape.wiki/runelite/player/${encodeURIComponent(name)}/STANDARD`,{headers:{'User-Agent':'OSRSSlayerOptimiser/1.0'}});
+    const d=await r.json();
+    if(d.code==='NO_USER_DATA')throw new Error('no_wikisync');
+    const lv=d.levels||{};
+    state.slayLvl=lv['Slayer']||99;
+    state.sailingLvl=lv['Sailing']||0;
+    const atk=lv['Attack']||99,str=lv['Strength']||99,def=lv['Defence']||99,hp=lv['Hitpoints']||99,pray=lv['Prayer']||70,rng=lv['Ranged']||99,mag=lv['Magic']||99;
+    const base=0.25*(def+hp+Math.floor(pray/2));
+    state.combatLvl=Math.floor(base+Math.max(0.325*(atk+str),0.325*Math.floor(rng*1.5),0.325*Math.floor(mag*1.5)));
+    const q=d.quests||{};
+    state.completedQuests=new Set(Object.keys(q).filter(k=>q[k]===2));
+    state.questPts=calcQpFromQuests(state.completedQuests);
+    state.diaries=d.achievement_diaries||{};
+    state.rsn=name;state.wikisyncLoaded=true;
+    autoHintUnlocks();
+    document.getElementById('wikisyncBadge').style.display='inline-flex';
+    document.getElementById('manualFields').style.display='none';
+    setStatus('lookupStatus',`WikiSync: ${name} — Combat ${state.combatLvl}, Slayer ${state.slayLvl}, ${state.completedQuests.size} quests (${state.questPts} QP), Sailing ${state.sailingLvl}`,'ok');
+    renderStatPills();recalculate();
+  }catch(e){
+    if(e.message!=='no_wikisync')console.warn('WikiSync error:',e.message);
+    setStatus('lookupStatus','WikiSync unavailable — trying hiscores...','info');
+    try{
+      const playerParam=name.replace(/ /g,'+');
+      const innerUrl=`https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=${playerParam}`;
+      const r2=await fetch(`https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(innerUrl)}`);
+      const text=await r2.text();
+      if(!text||text.includes('<!DOCTYPE')||text.trim().length<20)throw new Error('Player not found');
+      const lines=text.trim().split('\n');
+      const get=(i)=>{const l=lines[i];return l?parseInt(l.split(',')[1])||1:1;};
+      const atk=get(1),def=get(2),str=get(3),hp=get(4),rng=get(5),pray=get(6),mag=get(7);
+      state.slayLvl=get(19);
+      const base=0.25*(def+hp+Math.floor(pray/2));
+      state.combatLvl=Math.floor(base+Math.max(0.325*(atk+str),0.325*Math.floor(rng*1.5),0.325*Math.floor(mag*1.5)));
+      state.wikisyncLoaded=false;state.rsn=name;
+      document.getElementById('wikisyncBadge').style.display='none';
+      document.getElementById('manualFields').style.display='block';
+      document.getElementById('manSlayer').value=state.slayLvl;
+      document.getElementById('manCombat').value=state.combatLvl;
+      setStatus('lookupStatus',`Hiscores: ${name} — Combat ${state.combatLvl}, Slayer ${state.slayLvl}. Enter QP manually below.`,'ok');
+      renderStatPills();recalculate();
+    }catch(e2){setStatus('lookupStatus','Error: '+e2.message,'err');}
+  }
   btn.disabled=false;btn.textContent='Lookup';
 }
-function blockSlotsFromQp(qp){
-  const t=[0,32,75,100,125,150,200];let s=0;
-  for(let i=0;i<t.length;i++)if(qp>=t[i])s=i+1;
-  return Math.min(s,7);
+function onManualChange(){
+  state.slayLvl=parseInt(document.getElementById('manSlayer').value)||1;
+  state.combatLvl=parseInt(document.getElementById('manCombat').value)||3;
+  state.questPts=parseInt(document.getElementById('manQP').value)||0;
+  state.sailingLvl=parseInt(document.getElementById('manSailing').value)||0;
+  renderStatPills();recalculate();
 }
+function autoHintUnlocks(){
+  const cq=state.completedQuests;
+  const hints={ul_wingsSpread:'Troubled Tortugans',ul_luredIn:null};
+  for(const[id,quest]of Object.entries(hints)){
+    if(!quest)continue;
+    const el=document.getElementById(id);
+    if(el&&cq.has(quest))el.closest('.chk').classList.add('auto-detected');
+  }
+}
+function blockSlotsFromQp(qp){const t=[0,32,75,100,125,150,200];let s=0;for(let i=0;i<t.length;i++)if(qp>=t[i])s=i+1;return Math.min(s,7);}
+function getDiaryBonus(mk){const m=MASTERS[mk];const d=state.diaries[m.bonusDiary];if(!d)return m.pts;const tier=d[m.bonusTier];return(tier&&tier.complete)?m.bonusPts:m.pts;}
 function renderStatPills(){
-  const pills=[`Combat: <span>${state.combatLvl}</span>`,`Slayer: <span>${state.slayLvl}</span>`,`QP: <span>${state.questPts}</span>`,`Block Slots: <span>${blockSlotsFromQp(state.questPts)}</span>`,`Prayer: <span>${state.prayer}</span>`,`Agility: <span>${state.agility}</span>`];
+  const slots=blockSlotsFromQp(state.questPts);
+  const pills=[`Combat: <span>${state.combatLvl}</span>`,`Slayer: <span>${state.slayLvl}</span>`,`QP: <span>${state.questPts}</span>`,`Block Slots: <span>${slots}</span>`,`Sailing: <span>${state.sailingLvl}</span>`];
+  if(state.wikisyncLoaded)pills.push(`Quests: <span>${state.completedQuests.size}</span>`);
   document.getElementById('statPills').innerHTML=pills.map(p=>`<div class="pill">${p}</div>`).join('');
 }
 function setMaster(m){
   state.master=m;
   document.querySelectorAll('.mtab').forEach((el,i)=>el.classList.toggle('active',['duradel','nieve','konar'][i]===m));
-  const info=MASTERS[m];
-  document.getElementById('masterInfo').textContent=`${info.name} - ${info.pts} pts/task, Block cost: ${info.blockCost}pts`;
+  const pts=getDiaryBonus(m);
+  document.getElementById('masterInfo').textContent=`${MASTERS[m].name} - ${pts}pts/task, ${pts*10}pts/10th, Block cost: ${MASTERS[m].blockCost}pts`;
+  renderStatPills();recalculate();
+}
+function toggleMethod(m){
+  state.methods[m]=!state.methods[m];
+  if(!state.methods.melee&&!state.methods.cannon&&!state.methods.barrage)state.methods.melee=true;
+  document.querySelectorAll('.mpill').forEach(el=>{if(el.dataset.m)el.classList.toggle('active',state.methods[el.dataset.m]);});
   recalculate();
 }
-function setMethod(m){
-  state.method=m;
-  document.querySelectorAll('.mpill').forEach(el=>el.classList.toggle('active',el.dataset.m===m));
-  recalculate();
-}
+function hasQuest(qk){if(!qk)return true;const qn=QUEST_REQ_MAP[qk];if(!qn)return true;if(state.wikisyncLoaded)return state.completedQuests.has(qn);return true;}
+function hasSailing(r){return!r||state.sailingLvl>=r;}
 function isEligible(task){
   if(task.slayReq>0&&state.slayLvl<task.slayReq)return false;
   if(task.combatReq>0&&state.combatLvl<task.combatReq)return false;
-  for(const[ulId,taskName]of Object.entries(UNLOCK_MAP)){
-    if(task.name===taskName){const ul=document.getElementById(ulId);if(!ul||!ul.checked)return false;}
-  }
+  if(!hasQuest(task.questReq))return false;
+  if(!hasSailing(task.sailingReq))return false;
+  if(task.unlock){const ul=document.getElementById(task.unlock);if(!ul||!ul.checked)return false;}
   return true;
 }
-function getXpForTask(task){
-  if(state.method==='barrage'&&task.xpBarrage>0)return task.xpBarrage;
-  if(state.method==='cannon'&&task.xpCannon>0)return task.xpCannon;
-  return task.xpMelee;
+function getBestXp(task){
+  if(state.methods.barrage&&task.xpBarrage>0)return{xp:task.xpBarrage,method:'Barrage'};
+  if(state.methods.cannon&&task.xpCannon>0)return{xp:task.xpCannon,method:'Cannon'};
+  return{xp:task.xpMelee,method:'Melee'};
 }
 function recalculate(){
   const master=MASTERS[state.master];
@@ -267,72 +318,70 @@ function recalculate(){
   const eligible=tasks.filter(t=>isEligible(t)&&!state.blocked.has(t.name));
   const totalWeight=eligible.reduce((s,t)=>s+t.weight,0);
   let wXp=0,wGp=0;
-  eligible.forEach(t=>{const pct=totalWeight>0?t.weight/totalWeight:0;wXp+=pct*getXpForTask(t);wGp+=pct*t.gpHr;});
-  const remainingSlots=maxBlocks-state.blocked.size;
-  const blockCandidates=eligible.filter(t=>!state.blocked.has(t.name)).map(t=>{const xp=getXpForTask(t);const improvement=(wXp-xp)*(t.weight/totalWeight);return{...t,improvement,xp};}).filter(t=>t.improvement>0).sort((a,b)=>b.improvement-a.improvement);
+  eligible.forEach(t=>{const p=totalWeight>0?t.weight/totalWeight:0;const{xp}=getBestXp(t);wXp+=p*xp;wGp+=p*t.gpHr;});
+  const remSlots=maxBlocks-state.blocked.size;
+  const cands=eligible.map(t=>{const{xp}=getBestXp(t);return{...t,xp,imp:(wXp-xp)*(t.weight/totalWeight)};}).filter(t=>t.imp>0).sort((a,b)=>b.imp-a.imp);
   document.getElementById('recPanel').style.display='block';
-  const topBlocks=blockCandidates.slice(0,Math.min(remainingSlots,5));
-  const recContent=document.getElementById('recContent');
-  if(topBlocks.length>0){
-    recContent.innerHTML=`<div style="font-size:12px;color:var(--muted);margin-bottom:6px">Block these to maximise ${state.goal==="xp"?"XP/hr":"efficiency"} - ordered by impact:</div><div class="rec-items">${topBlocks.map(t=>`<span class="rec-tag rec-block" onclick="toggleBlock('${t.name}')" style="cursor:pointer">🚫 ${t.name} (w:${t.weight})</span>`).join('')}</div><div style="font-size:11px;color:var(--muted);margin-top:6px">Click a tag to block. ${remainingSlots} slot${remainingSlots!==1?'s':''} remaining.</div>`;
+  const top=cands.slice(0,Math.min(remSlots,5));
+  const rc=document.getElementById('recContent');
+  if(top.length>0){
+    rc.innerHTML=`<div style="font-size:12px;color:var(--muted);margin-bottom:6px">Block these to maximise ${state.goal==="xp"?"XP/hr":"efficiency"} — click to block:</div><div class="rec-items">${top.map(t=>`<span class="rec-tag rec-block" onclick="toggleBlock('${t.name}')">🚫 ${t.name} <span style="font-weight:400;opacity:.7">(w:${t.weight}, ${fmtK(t.xp)}/hr)</span></span>`).join('')}</div><div style="font-size:11px;color:var(--muted);margin-top:6px">${remSlots} slot${remSlots!==1?'s':''} remaining.</div>`;
   }else{
-    recContent.innerHTML=`<div style="font-size:12px;color:var(--green)">✓ Block list looks optimal!</div>`;
+    rc.innerHTML='<div style="font-size:12px;color:var(--green)">✓ Block list looks optimal.</div>';
   }
-  document.getElementById('sumCards').innerHTML=`<div class="sum-card"><div class="sum-val">${fmtK(Math.round(wXp))}</div><div class="sum-lbl">Avg XP/hr</div></div><div class="sum-card"><div class="sum-val gold">${fmtK(Math.round(wGp))}</div><div class="sum-lbl">Avg GP/hr</div></div><div class="sum-card"><div class="sum-val">${eligible.length}</div><div class="sum-lbl">Active Tasks</div></div><div class="sum-card"><div class="sum-val red">${state.blocked.size}</div><div class="sum-lbl">Blocked</div></div><div class="sum-card"><div class="sum-val green">${master.pts}</div><div class="sum-lbl">Pts/Task</div></div><div class="sum-card"><div class="sum-val">${totalWeight}</div><div class="sum-lbl">Total Weight</div></div>`;
+  const pts=getDiaryBonus(state.master);
+  document.getElementById('sumCards').innerHTML=`<div class="sum-card"><div class="sum-val">${fmtK(Math.round(wXp))}</div><div class="sum-lbl">Avg XP/hr</div></div><div class="sum-card"><div class="sum-val gold">${fmtK(Math.round(wGp))}</div><div class="sum-lbl">Avg GP/hr</div></div><div class="sum-card"><div class="sum-val">${eligible.length}</div><div class="sum-lbl">Active Tasks</div></div><div class="sum-card"><div class="sum-val red">${state.blocked.size}</div><div class="sum-lbl">Blocked</div></div><div class="sum-card"><div class="sum-val green">${pts}</div><div class="sum-lbl">Pts/Task</div></div><div class="sum-card"><div class="sum-val">${totalWeight}</div><div class="sum-lbl">Total Weight</div></div>`;
   renderBlockSlots();renderTable();
 }
 function renderBlockSlots(){
-  const maxBlocks=blockSlotsFromQp(state.questPts);
-  const blocked=[...state.blocked];
-  document.getElementById('blockCount').textContent=blocked.length;
-  let html='';
-  for(let i=0;i<maxBlocks;i++){
-    if(i<blocked.length){html+=`<div class="slot-filled" onclick="toggleBlock('${blocked[i]}')" title="Unblock: ${blocked[i]}">${blocked[i].split(' ').map(w=>w[0]).join('').slice(0,4)}<br><span style="font-size:7px">${blocked[i].slice(0,8)}</span></div>`;}
-    else{html+=`<div class="slot-empty">+</div>`;}
+  const max=blockSlotsFromQp(state.questPts),bl=[...state.blocked];
+  document.getElementById('blockCount').textContent=bl.length;
+  let h='';
+  for(let i=0;i<max;i++){
+    if(i<bl.length)h+=`<div class="slot-filled" onclick="toggleBlock('${bl[i]}')" title="Unblock: ${bl[i]}">${bl[i].split(' ').map(w=>w[0]).join('').slice(0,4)}<br><span style="font-size:7px">${bl[i].slice(0,8)}</span></div>`;
+    else h+='<div class="slot-empty">+</div>';
   }
-  document.getElementById('blockSlots').innerHTML=html;
+  document.getElementById('blockSlots').innerHTML=h;
 }
 function toggleBlock(name){
   if(state.blocked.has(name)){state.blocked.delete(name);}
-  else{
-    const maxBlocks=blockSlotsFromQp(state.questPts);
-    if(state.blocked.size>=maxBlocks){alert(`Only ${maxBlocks} block slots available.`);return;}
-    state.blocked.add(name);
-  }
+  else{const m=blockSlotsFromQp(state.questPts);if(state.blocked.size>=m){alert(`Only ${m} block slots available.`);return;}state.blocked.add(name);}
   recalculate();
 }
 function clearAllBlocks(){state.blocked.clear();recalculate();}
 let sortCol='chance',sortAsc=false;
 function sortBy(col){if(sortCol===col)sortAsc=!sortAsc;else{sortCol=col;sortAsc=col==='name';}renderTable();}
 function renderTable(){
-  const master=MASTERS[state.master];
-  const tasks=master.tasks;
-  const activeTasks=tasks.filter(t=>isEligible(t)&&!state.blocked.has(t.name));
-  const totalWeight=activeTasks.reduce((s,t)=>s+t.weight,0);
+  const master=MASTERS[state.master],tasks=master.tasks;
+  const active=tasks.filter(t=>isEligible(t)&&!state.blocked.has(t.name));
+  const tw=active.reduce((s,t)=>s+t.weight,0);
   const search=document.getElementById('taskSearch').value.toLowerCase();
   const filter=document.getElementById('filterStatus').value;
-  let rows=tasks.map(t=>{const eligible=isEligible(t);const blocked=state.blocked.has(t.name);const chance=eligible&&!blocked&&totalWeight>0?(t.weight/totalWeight*100):0;const xp=getXpForTask(t);return{...t,eligible,blocked,chance,xp};});
+  let rows=tasks.map(t=>{const eligible=isEligible(t),blocked=state.blocked.has(t.name),chance=eligible&&!blocked&&tw>0?t.weight/tw*100:0;const{xp,method}=getBestXp(t);return{...t,eligible,blocked,chance,xp,method};});
   if(filter==='active')rows=rows.filter(r=>r.eligible&&!r.blocked);
   if(filter==='blocked')rows=rows.filter(r=>r.blocked);
   if(search)rows=rows.filter(r=>r.name.toLowerCase().includes(search));
-  rows.sort((a,b)=>{let av,bv;if(sortCol==='name'){av=a.name;bv=b.name;return sortAsc?av.localeCompare(bv):bv.localeCompare(av);}if(sortCol==='chance'){av=a.chance;bv=b.chance;}else if(sortCol==='xp'){av=a.xp;bv=b.xp;}else if(sortCol==='gp'){av=a.gpHr;bv=b.gpHr;}else if(sortCol==='weight'){av=a.weight;bv=b.weight;}else{av=a.chance;bv=b.chance;}return sortAsc?av-bv:bv-av;});
-  const activeRows=rows.filter(r=>r.eligible&&!r.blocked);
-  const avgXp=activeRows.length>0?activeRows.reduce((s,r)=>s+r.xp,0)/activeRows.length:0;
+  rows.sort((a,b)=>{let av,bv;if(sortCol==='name')return sortAsc?a.name.localeCompare(b.name):b.name.localeCompare(a.name);av=sortCol==='xp'?a.xp:sortCol==='gp'?a.gpHr:sortCol==='weight'?a.weight:a.chance;bv=sortCol==='xp'?b.xp:sortCol==='gp'?b.gpHr:sortCol==='weight'?b.weight:b.chance;return sortAsc?av-bv:bv-av;});
+  const ar=rows.filter(r=>r.eligible&&!r.blocked),avgXp=ar.length>0?ar.reduce((s,r)=>s+r.xp,0)/ar.length:0;
   const tbody=document.getElementById('taskBody');
   tbody.innerHTML=rows.map(t=>{
-    const isTop=!t.blocked&&t.eligible&&t.xp>=avgXp*1.2;
-    const isBad=!t.blocked&&t.eligible&&t.xp<avgXp*0.6;
+    const isTop=!t.blocked&&t.eligible&&t.xp>=avgXp*1.2,isBad=!t.blocked&&t.eligible&&t.xp<avgXp*0.6;
     const rowCls=t.blocked?'row-blocked':isTop?'row-top':isBad?'row-skip':'';
-    const canBadge=t.cannon?'<span class="badge b-can">CANNON</span>':'';
-    const barBadge=t.barrage?'<span class="badge b-bar">BARRAGE</span>':'';
-    const reqBadge=!t.eligible?`<span class="badge b-req">Need ${t.slayReq>state.slayLvl?'Slay '+t.slayReq:'CB '+t.combatReq}</span>`:'';
+    let req='';
+    if(!t.eligible){
+      if(t.slayReq>0&&state.slayLvl<t.slayReq)req+=`<span class="badge b-req">Slay ${t.slayReq}</span>`;
+      if(t.combatReq>0&&state.combatLvl<t.combatReq)req+=`<span class="badge b-req">CB ${t.combatReq}</span>`;
+      if(t.questReq&&!hasQuest(t.questReq))req+=`<span class="badge b-req">${(QUEST_REQ_MAP[t.questReq]||'').split(' ').slice(0,2).join(' ')}</span>`;
+      if(t.sailingReq&&!hasSailing(t.sailingReq))req+=`<span class="badge b-req">Sail ${t.sailingReq}</span>`;
+      if(t.unlock){const ul=document.getElementById(t.unlock);if(!ul||!ul.checked)req+=`<span class="badge b-req">Unlock</span>`;}
+    }
+    const mBadge=t.eligible?`<span class="badge ${t.method==='Barrage'?'b-bar':t.method==='Cannon'?'b-can':''">${t.method}</span>`+''  :'';
     const wBar=t.eligible&&!t.blocked?`<div class="w-bar" style="width:${Math.min(t.weight*6,80)}px"></div>`:'–';
-    const blockBtn=t.blocked?`<button class="tbl-btn btn-block active" onclick="toggleBlock('${t.name}')">Unblock</button>`:`<button class="tbl-btn btn-block" onclick="toggleBlock('${t.name}')" ${!t.eligible?'disabled':''}>Block</button>`;
-    return `<tr class="${rowCls}"><td class="name-cell">${t.name}${canBadge}${barBadge}${reqBadge}<div class="task-note">${t.notes}</div></td><td>${t.chance>0?t.chance.toFixed(1)+'%':'-'}</td><td>${t.eligible?fmtK(t.xp):'-'}</td><td>${t.eligible?fmtK(t.gpHr):'-'}</td><td style="font-size:11px">${t.cannon&&t.barrage?'Both':t.cannon?'Cannon':t.barrage?'Barrage':'Melee'}</td><td>${wBar}</td><td>${blockBtn}</td></tr>`;
+    const bb=t.blocked?`<button class="tbl-btn btn-block active" onclick="toggleBlock('${t.name}')">Unblock</button>`:`<button class="tbl-btn btn-block" onclick="toggleBlock('${t.name}')"${!t.eligible?' disabled':''}>Block</button>`;
+    return `<tr class="${rowCls}"><td class="name-cell">${t.name}${req}<div class="task-note">${t.notes}</div></td><td>${t.chance>0?t.chance.toFixed(1)+'%':'-'}</td><td>${t.eligible?fmtK(t.xp):'-'}</td><td>${t.eligible?fmtK(t.gpHr):'-'}</td><td>${mBadge}</td><td>${wBar}</td><td>${bb}</td></tr>`;
   }).join('');
-  const activeCount=rows.filter(r=>r.eligible&&!r.blocked).length;
-  document.getElementById('tableFooter').textContent=`Showing ${rows.length} tasks. ${activeCount} active, ${state.blocked.size} blocked.`;
-  document.querySelectorAll('thead th').forEach((th,i)=>{const cols=['name','chance','xp','gp',null,'weight',null];th.className=cols[i]===sortCol?`sorted${sortAsc?' asc':''}`:'';});
+  document.getElementById('tableFooter').textContent=`Showing ${rows.length} tasks. ${ar.length} active, ${state.blocked.size} blocked.`;
+  document.querySelectorAll('thead th').forEach((th,i)=>{const c=['name','chance','xp','gp',null,'weight',null];th.className=c[i]===sortCol?`sorted${sortAsc?' asc':''}`:'';});
 }
 setMaster('duradel');
 recalculate();
