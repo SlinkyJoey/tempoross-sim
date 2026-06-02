@@ -1,1 +1,341 @@
-PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVuIj4KPGhlYWQ+CjxtZXRhIGNoYXJzZXQ9IlVURi04Ij4KPG1ldGEgbmFtZT0idmlld3BvcnQiIGNvbnRlbnQ9IndpZHRoPWRldmljZS13aWR0aCwgaW5pdGlhbC1zY2FsZT0xLjAiPgo8dGl0bGU+T1NSUyBTbGF5ZXIgT3B0aW1pc2VyPC90aXRsZT4KPGxpbmsgaHJlZj0iaHR0cHM6Ly9mb250cy5nb29nbGVhcGlzLmNvbS9jc3MyP2ZhbWlseT1DaW56ZWwrRGVjb3JhdGl2ZTp3Z2h0QDcwMCZmYW1pbHk9QmFybG93K0NvbmRlbnNlZDp3Z2h0QDMwMDs0MDA7NjAwOzcwMCZkaXNwbGF5PXN3YXAiIHJlbD0ic3R5bGVzaGVldCI+CjxzdHlsZT4KOnJvb3R7CiAgLS1iZzojMDYwZTFjOy0tc3VyZmFjZTojMGMxZTMzOy0tc3VyZmFjZTI6IzEwMjU0MDstLWJvcmRlcjojMWEzYTU4OwogIC0tdGVhbDojMDBkNGI4Oy0tdGVhbC1kaW06IzAwOGY3YzstLXRlYWwtZGFyazojMDA1NTQ4OwogIC0tZ29sZDojZjBiYzNhOy0tZ29sZC1kaW06IzdhNWUxODsKICAtLXB1cnBsZTojYjA2ZWYzOy0tcmVkOiNmMDQwNjA7LS1yZWQtZGltOiM3YTAwMjA7CiAgLS1ncmVlbjojMDBjODUzOy0tZ3JlZW4tZGltOiMwMDVjMjU7CiAgLS1vcmFuZ2U6I2ZmOGMwMDsKICAtLXRleHQ6I2MwZDhlYzstLW11dGVkOiM0YTcwOTA7LS1tdXRlZDI6IzJhNGE2NDsKfQoqe2JveC1zaXppbmc6Ym9yZGVyLWJveDttYXJnaW46MDtwYWRkaW5nOjA7fQpib2R5e2JhY2tncm91bmQ6dmFyKC0tYmcpO2NvbG9yOnZhcigKLS10ZXh0KTtmb250LWZhbWlseTonQmFybG93IENvbmRlbnNlZCcsc2Fucy1zZXJpZjtmb250LXNpemU6MTV4O21pbi1oZWlnaHQ6MTAweGg7fQpib2R5OjpiZWZvcmV7Y29udGVudDonJztwb3NpdGlvbjpmaXhlZDtpbnNldDowO2JhY2tncm91bmQ6cmFkaWFsLWdyYWRpZW50KGVsbGlwc2UgODAlIDQwJSBhdCA1MCUgLTEwJSxyZ2JhKDAsMjEyLDE4NCwuMDUpIDAldHJhbnNwYXJlbnQgNzAlKTtwb2ludGVyLWV2ZW50czpub25lO30KLndyYXB7bWF4LXdpZHRoOjExMDBweDttYXJnaW46MCBhdXRvO3BhZGRpbmc6MjBweCAxNHB4IDgwcHg7fQoKLyogSGVhZGVyICovCmgxe2ZvbnQtZmFtaWx5OidDaW56ZWwgRGVjb3JhdGl2ZScsc2VyaWY7Zm9udC1zaXplOmNsYW1wKDE2cHgsMy41dncsMjRweCk7Y29sb3I6dmFyKC0tdGVhbCk7dGV4dC1hbGlnbjpjZW50ZXI7dGV4dC1zaGFkb3c6MCAwIDIwcHggcmdiYSgwLDIxMiwxODQsLjM1KTtsZXR0ZXItc3BhY2luZzoycHg7fQouc3Vie3RleHQtYWxpZ246Y2VudGVyO2ZvbnQtc2l6ZToxMXB4O2xldHRlci1zcGFjaW5nOjNweDt0ZXh0LXRyYW5zZm9ybTp1cHBlcmNhc2U7Y29sb3I6dmFyKC0tbXV0ZWQpO21hcmdpbi10b3A6NHB4O30KLmhkaXZ7d2lkdGg6ODBweDtoZWlnaHQ6MXB4O2JhY2tncm91bmQ6bGluZWFyLWdyYWRpZW50KDkwZGVnLHRyYW5zcGFyZW50LHZhcigKLS10ZWFsKSx0cmFuc3BhcmVudCk7bWFyZ2luOjhweCBhdXRvIDE4cHg7fQoKLyogUGFuZWwgKi8KLnBhbmVse2JhY2tncm91bmQ6dmFyKC0tc3VyZmFjZSk7Ym9yZGVyOjFweCBzb2xpZCB2YXIoLS1ib3JkZXIpO2JvcmRlci1yYWRpdXM6NHB4O3BhZGRpbmc6MTRweDttYXJnaW4tYm90dG9tOjEycHg7fQoucHRpdGxle2ZvbnQtc2l6ZToxMHB4O2xldHRlci1zcGFjaW5nOjJweDt0ZXh0LXRyYW5zZm9ybTp1cHBlcmNhc2U7Y29sb3I6dmFyKC0tbXV0ZWQpO21hcmdpbi1ib3R0b206MTBweDt9CgovKiBHcmlkICovCi5nMntkaXNwbGF5OmdyaWQ7Z3JpZC10ZW1wbGF0ZS1jb2x1bW5zOjFmciAxZnI7Z2FwOjEwcHg7fQouZzN7ZGlzcGxheTpncmlkO2dyaWQtdGVtcGxhdGUtY29sdW1uczoxZnIgMWZyIDFmcjtnYXA6MTBweDt9Ci5nNHtkaXNwbGF5OmdyaWQ7Z3JpZC10ZW1wbGF0ZS1jb2x1bW5zOjFmciAxZnIgMWZyIDFmcjtnYXA6MTBweDt9CgovKiBJbnB1dHMgKi8KLmZse2Rpc3BsYXk6YmxvY2s7Zm9udC1zaXplOjEwcHg7bGV0dGVyLXNwYWNpbmc6MS41cHg7dGV4dC10cmFuc2Zvcm06dXBwZXJjYXNlO2NvbG9yOnZhcigKLS1tdXRlZCk7bWFyZ2luLWJvdHRvbTo0cHg7fQppbnB1dFt0eXBlPW51bWJlcl0saW5wdXRbdHlwZT10ZXh0XSxzZWxlY3R7d2lkdGg6MTAwJTtiYWNrZ3JvdW5kOnZhcigKLS1iZyk7Ym9yZGVyOjFweCBzb2xpZCB2YXIoLS1ib3JkZXIpO2NvbG9yOnZhcigKLS10ZXh0KTtmb250LWZhbWlseTonQmFybG93IENvbmRlbnNlZCcsc2Fucy1zZXJpZjtmb250LXNpemU6MTV4O2ZvbnQtd2VpZ2h0OjYwMDtwYWRkaW5nOjdweCA8cHg7Ym9yZGVyLXJhZGl1czozcHg7b3V0bGluZTpub25lO3RyYW5zaXRpb246Ym9yZGVyLWNvbG9yIC4xNXM7fQppbnB1dDpmb2N1cyxzZWxlY3Q6Zm9jdXN7Ym9yZGVyLWNvbG9yOnZhcigKLS10ZWFsKTt9CnNlbGVjdCBvcHRpb257YmFja2dyb3VuZDp2YXIoLS1iZyk7fQoubG9va3VwLXJvd3tkaXNwbGF5OmZsZXg7Z2FwOjhweDt9Ci5sb29rdXAtcm93IGlucHV0e2ZsZXg6MTt9Ci5sYnRue3BhZGRpbmc6OHB4IDEycHg7YmFja2dyb3VuZDp2YXIoLS10ZWFsLWRhcmspO2JvcmRlcjoxcHggc29saWQgdmFyKC0tdGVhbC1kaW0pO2JvcmRlci1yYWRpdXM6M3B4O2NvbG9yOnZhcigKLS10ZWFsKTtmb250LWZhbWlseTonQmFybG93IENvbmRlbnNlZCcsc2Fucy1zZXJpZjtmb250LXNpemU6MTJweDtmb250LXdlaWdodDo3MDA7bGV0dGVyLXNwYWNpbmc6MXB4O2N1cnNvcjpwb2ludGVyO3doaXRlLXNwYWNlOm5vd3JhcDt0cmFuc2l0aW9uOmFsbCAuMTVzO30KLmxidG46aG92ZXJ7YmFja2dyb3VuZDp2YXIoLS10ZWFsLWRpbSk7Y29sb3I6IzAwMDt9Ci5sYnRuOmRpc2FibGVke29wYWNpdHk6LjQ7Y3Vyc29yOm5vdC1hbGxvd2VkO30KCi8qIFN0YXR1cyAqLwouc3RhdHVzLWxpbmV7Zm9udC1zaXplOjExcHg7Y29sb3I6dmFyKC0tbXV0ZWQpO21hcmdpbi10b3A6NnB4O30KLnN0YXR1cy1saW5lLm9re2NvbG9yOnZhcigKLS10ZWFsKTt9Ci5zdGF0dXMtbGluZS5lcnJ7Y29sb3I6dmFyKC0tcmVkKTt9Ci5zdGF0dXMtbGluZS5pbmZve2NvbG9yOnZhcigKLS1nb2xkKTt9CgovKiBTdGF0IHBpbGxzICovCi5zdGF0LXBpbGxze2Rpc3BsYXk6ZmxleDtmbGV4LXdyYXA6d3JhcDtnYXA6NnB4O21hcmdpbi10b3A6OHB4O30KLnBpbGx7cGFkZGluZzo0cHggMTBweDtiYWNrZ3JvdW5kOnZhcigKLS1iZyk7Ym9yZGVyOjFweCBzb2xpZCB2YXIoLS1ib3JkZXIpO2JvcmRlci1yYWRpdXM6MjBweDtmb250LXNpemU6MTJweDtmb250LXdlaWdodDo2MDA7fQoucGlsbCBzcGFue2NvbG9yOnZhcigKLS10ZWFsKTt9CgovKiBDaGVja2JveGVzICovCi5jaGtze2Rpc3BsYXk6ZmxleDtmbGV4LXdyYXA6d3JhcDtnYXA6NnB4O30KLmNoa3tkaXNwbGF5OmZsZXg7YWxpZ24taXRlbXM6Y2VudGVyO2dhcDo2cHg7Y3Vyc29yOnBvaW50ZXI7cGFkZGluZzo1cHggMTBweDtiYWNrZ3JvdW5kOnZhcigKLS1iZyk7Ym9yZGVyOjFweCBzb2xpZCB2YXIoLS1ib3JkZXIpO2JvcmRlci1yYWRpdXM6M3B4O3RyYW5zaXRpb246Ym9yZGVyLWNvbG9yIC4xNXM7dXNlci1zZWxlY3Q6bm9uZTtmb250LXNpemU6MTJweDt9Ci5jaGs6aG92ZXJ7Ym9yZGVyLWNvbG9yOnZhcigKLS10ZWFsLWRpbSk7fQouY2hrIGlucHV0e2Rpc3BsYXk6bm9uZTt9Ci5jYnt3aWR0aDoxM3B4O2hlaWdodDoxM3B4O2JvcmRlcjoxLjVweCBzb2xpZCB2YXIoLS1tdXRlZCk7Ym9yZGVyLXJhZGl1czoycHg7ZGlzcGxheTpmbGV4O2FsaWduLWl0ZW1zOmNlbnRlcjtqdXN0aWZ5LWNvbnRlbnQ6Y2VudGVyO2ZsZXgtc2hyaW5rOjA7dHJhbnNpdGlvbjphbGwgLjE1czt9Ci5jaGsgaW5wdXQ6Y2hlY2tlZH4uY2J7YmFja2dyb3VuZDp2YXIoLS10ZWFsKTtib3JkZXItY29sb3I6dmFyKC0tdGVhbCk7fQouY2I6OmFmdGVye2NvbnRlbnQ6J+Kckyc7Zm9udC1zaXplOjlweDtjb2xvcjojMDAwO2Rpc3BsYXk6bm9uZTt9Ci5jaGsgaW5wdXQ6Y2hlY2tlZH4uY2I6OmFmdGVye2Rpc3BsYXk6YmxvY2s7fQoKLyogTWV0aG9kIHBpbGxzICovCi5tZXRob2QtcGlsbHN7ZGlzcGxheTpmbGV4O2dhcDo2cHg7ZmxleC13cmFwOndyYXA7fQoubXBpbGx7cGFkZGluZzo1cHggMTJweDtib3JkZXI6MXB4IHNvbGlkIHZhcigKLS1ib3JkZXIpO2JvcmRlci1yYWRpdXM6MjBweDtmb250LXNpemU6MTFweDtmb250LXdlaWdodDo3MDA7bGV0dGVyLXNwYWNpbmc6MXB4O2N1cnNvcjpwb2ludGVyO2JhY2tncm91bmQ6dmFyKC0tYmcpO2NvbG9yOnZhcigKLS1tdXRlZCk7dHJhbnNpdGlvbjphbGwgLjE1czt9Ci5tcGlsbC5hY3RpdmV7YmFja2dyb3VuZDp2YXIoLS10ZWFsLWRpbSk7Ym9yZGVyLWNvbG9yOnZhcigKLS10ZWFsKTtjb2xvcjojMDAwO30KLm1waWxsOmhvdmVyOm5vdCguYWN0aXZlKXtib3JkZXItY29sb3I6dmFyKC0tdGVhbC1kaW0pO2NvbG9yOnZhcigKLS10ZWFsKTt9CgovKiBCaWcgYnV0dG9uICovCi5idG57d2lkdGg6MTAwJTtwYWRkaW5nOjExcHg7Ym9yZGVyOm5vbmU7Ym9yZGVyLXJhZGl1czozcHg7Zm9udC1mYW1pbHk6J0JhcmxvdyBDb25kZW5zZWQnLHNhbnMtc2VyaWY7Zm9udC1zaXplOjE0cHg7Zm9udC13ZWlnaHQ6NzAwO2xldHRlci1zcGFjaW5nOjJweDt0ZXh0LXRyYW5zZm9ybTp1cHBlcmNhc2U7Y3Vyc29yOnBvaW50ZXI7YmFja2dyb3VuZDpsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLHZhcigKLS10ZWFsLWRpbSksdmFyKC0tdGVhbCkpO2NvbG9yOiMwMDA7dHJhbnNpdGlvbjpvcGFjaXR5IC4xNXM7fQouYnRuOmhvdmVye29wYWNpdHk6Ljg4O30KLmJ0bjpkaXNhYmxlZHtvcGFjaXR5Oi4zNTtjdXJzb3I6bm90LWFsbG93ZWQ7fQoKLyogTWFzdGVyIHRhYnMgKi8KLm10YWJze2Rpc3BsYXk6ZmxleDtnYXA6MDttYXJnaW4tYm90dG9tOjE0cHg7fQoubXRhYntmbGV4OjE7cGFkZGluZzo5cHg7dGV4dC1hbGlnbjpjZW50ZXI7Zm9udC1zaXplOjExcHg7bGV0dGVyLXNwYWNpbmc6MS41cHg7dGV4dC10cmFuc2Zvcm06dXBwZXJjYXNlO2ZvbnQtd2VpZ2h0OjcwMDtjdXJzb3I6cG9pbnRlcjtib3JkZXI6MXB4IHNvbGlkIHZhcigKLS1ib3JkZXIpO2JhY2tncm91bmQ6dmFyKC0tYmcpO2NvbG9yOnZhcigKLS1tdXRlZCk7dHJhbnNpdGlvbjphbGwgLjE1czt9Ci5tdGFiOmZpcnN0LWNoaWxke2JvcmRlci1yYWRpdXM6M3B4IDAgMCAzcHg7fQoubXRhYjpsYXN0LWNoaWxke2JvcmRlci1yYWRpdXM6MCAzcHggM3B4IDA7Ym9yZGVyLWxlZnQ6bm9uZTt9Ci5tdGFiOm5vdCg6Zmlyc3QtY2hpbGQpOm5vdCg6bGFzdC1jaGlsZCl7Ym9yZGVyLWxlZnQ6bm9uZTt9Ci5tdGFiLmFjdGl2ZXtiYWNrZ3JvdW5kOnZhcigKLS10ZWFsLWRhcmspO2JvcmRlci1jb2xvcjp2YXIoLS10ZWFsKTtjb2xvcjp2YXIoLS10ZWFsKTt9CgovKiBTdW1tYXJ5IGNhcmRzICovCi5zdW0tZ3JpZHtkaXNwbGF5OmdyaWQ7Z3JpZC10ZW1wbGF0ZS1jb2x1bW5zOnJlcGVhdChhdXRvLWZpbGwsbWlubWF4KDEzMHB4LDFmcikpO2dhcDo4cHg7bWFyZ2luLWJvdHRvbToxNHB4O30KLnN1bS1jYXJke2JhY2tncm91bmQ6dmFyKC0tYmcpO2JvcmRlcjoxcHggc29saWQgdmFyKC0tYm9yZGVyKTtib3JkZXItcmFkaXVzOjNweDtwYWRkaW5nOjEycHg7dGV4dC1hbGlnbjpjZW50ZXI7fQouc3VtLXZhbHtmb250LXNpemU6MjBweDtmb250LXdlaWdodDo3MDA7Y29sb3I6dmFyKC0tdGVhbCk7bGluZS1oZWlnaHQ6MTt9Ci5zdW0tdmFsLmdvbGR7Y29sb3I6dmFyKC0tZ29sZCk7fQouc3VtLXZhbC5ncmVlbnRyYW5zZm9ybTp0cmFuc2xhdGVZKC0xMDApO29wYWNpdHk6MDt9Ci5zdW0tdmFsLmdyZWVue2NvbG9yOnZhcigKLS1ncmVlbik7fQouc3VtLXZhbC5yZWR7Y29sb3I6dmFyKC0tcmVkKTt9Ci5zdW0tbGJse2ZvbnQtc2l6ZToxMHB4O2xldHRlci1zcGFjaW5nOjEuNXB4O3RleHQtdHJhbnNmb3JtOnVwcGVyY2FzZTtjb2xvcjp2YXIoLS1tdXRlZCk7bWFyZ2luLXRvcDozcHg7fQoKLyogUmVjb21tZW5kIGJveCAqLwoucmVjLWJveHtiYWNrZ3JvdW5kOnZhcigKLS1iZyk7Ym9yZGVyOjFweCBzb2xpZCB2YXIoLS1nb2xkLWRpbSk7Ym9yZGVyLXJhZGl1czozcHg7cGFkZGluZzoxMnB4IDE0cHg7bWFyZ2luLWJvdHRvbToxNHB4O30KLnJlYy10aXRsZXtmb250LXNpemU6MTFweDtsZXR0ZXItc3BhY2luZzoycHg7dGV4dC10cmFuc2Zvcm06dXBwZXJjYXNlO2NvbG9yOnZhcigKLS1nb2xkKTttYXJnaW4tYm90dG9tOjhweDt9Ci5yZWMtaXRlbXN7ZGlzcGxheTpmbGV4O2ZsZXgtd3JhcDp3cmFwO2dhcDo2cHg7fQoucmVjLXRhZ3twYWRkaW5nOjRweCAxMHB4O2JvcmRlci1yYWRpdXM6M3B4O2ZvbnQtc2l6ZToxMnB4O2ZvbnQtd2VpZ2h0OjcwMDt9Ci5yZWMtYmxvY2t7YmFja2dyb3VuZDpyZ2JhKDI0MCw2NCw5NiwuMTUpO2JvcmRlcjoxcHggc29saWQgdmFyKC0tcmVkLWRpbSk7Y29sb3I6dmFyKC0tcmVkKTt9Ci5yZWMtc2tpcHtiYWNrZ3JvdW5kOnJnYmEoMjU1LDE0MCwwLC4xMik7Ym9yZGVyOjFweCBzb2xpZCAjN2E0NTAwO2NvbG9yOnZhcigKLS1vcmFuZ2UpO30KLnJlYy1rZWVwe2JhY2tncm91bmQ6cmdiYSgwLDIwMCw4MywuMSk7Ym9yZGVyOjFweCBzb2xpZCB2YXIoLS1ncmVlbi1kaW0pO2NvbG9yOnZhcigKLS1ncmVlbik7fQoKLyogVGFzayB0YWJsZSAqLwoudGFzay10YWJsZS13cmFwe292ZXJmbG93LXg6YXV0bzt9CnRhYmxle3dpZHRoOjEwMCU7Ym9yZGVyLWNvbGxhcHNlOmNvbGxhcHNlO2ZvbnQtc2l6ZToxM3B4O30KdGhlYWQgdGh7dGV4dC1hbGlnbjpsZWZ0O3BhZGRpbmc6N3B4IDEwcHg7Zm9udC1zaXplOjEwcHg7bGV0dGVyLXNwYWNpbmc6MnB4O3RleHQtdHJhbnNmb3JtOnVwcGVyY2FzZTtjb2xvcjp2YXIoLS1tdXRlZCk7YmFja2dyb3VuZDp2YXIoLS1zdXJmYWNlMik7Ym9yZGVyLWJvdHRvbToxcHggc29saWQgdmFyKC0tYm9yZGVyKTt3aGl0ZS1zcGFjZTpub3dyYXA7Y3Vyc29yOnBvaW50ZXI7dXNlci1zZWxlY3Q6bm9uZTt9CnRoZWFkIHRoOmhvdmVye2NvbG9yOnZhcigKLS10ZWFsKTt9CnRoZWFkIHRoLnNvcnRlZHtjb2xvcjp2YXIoLS10ZWFsKTt9CnRoZWFkIHRoLnNvcnRlZDo6YWZ0ZXJ7Y29udGVudDonIOKGkyc7fQp0aGVhZCB0aC5zb3J0ZWQuYXNjOjphZnRlcntjb250ZW50OicgJiN4MjE5MTsnO30KdGJvZHkgdHJ7Ym9yZGVyLWJvdHRvbToxcHggc29saWQgcmdiYSgyNiw1OCw4OCwuMjUpO3RyYW5zaXRpb246YmFja2dyb3VuZCAuMXM7fQp0Ym9keSB0cjpob3Zlcntib3JkZXItY29sb3I6cmdiYSgwLDIxMiwxODQsLjAzKTt9CnRke3BhZGRpbmc6N3B4IDEwcHg7dmVydGljYWwtYWxpZ246bWlkZGxlO30KdGQubmFtZS1jZWxse2ZvbnQtd2VpZ2h0OjcwMDttYXgtd2lkdGg6MTYwcHg7fQp0ZC5uYW1lLWNlbGwgLnRhc2stbm90ZXtmb250LXNpemU6MTBweDtjb2xvcjp2YXIoLS1tdXRlZCk7Zm9udC13ZWlnaHQ6NDAwO21hcmdpbi10b3A6MXB4O30KCi8qIFJvdyBzdGF0dXMgY29sb3VycyAqLwp0ci5yb3ctYmxvY2tlZCB0ZHtvcGFjaXR5Oi41O30KdHIucm93LWJsb2NrZWQgdGQubmFtZS1jZWxse29wYWNpdHk6MTt0ZXh0LWRlY29yYXRpb246bGluZS10aHJvdWdoO2NvbG9yOnZhcigKLS1yZWQpO30KdHIucm93LXNraXAgdGQubmFtZS1jZWxse2NvbG9yOnZhcigKLS1vcmFuZ2UpO30KdHIucm93LXRvcCB0ZC5uYW1lLWNlbGx7Y29sb3I6dmFyKC0tZ3JlZW4pO30KCi8qIEJhZGdlcyAqLwouYmFkZ2V7ZGlzcGxheTppbmxpbmUtYmxvY2s7Zm9udC1zaXplOjlweDtsZXR0ZXItc3BhY2luZzouOHB4O3BhZGRpbmc6MXB4IDVweDtib3JkZXItcmFkaXVzOjJweDttYXJnaW4tbGVmdDo0cHg7dmVydGljYWwtYWxpZ246bWlkZGxlO2ZvbnQtd2VpZ2h0OjcwMDt9Ci5iLWNhbntib3JkZXI6MXB4IHNvbGlkIHZhcigKLS1ncmVlbi1kaW0pO2NvbG9yOnZhcigKLS1ncmVlbik7YmFja2dyb3VuZDpyZ2JhKDAsMjAwLDgzLC4xMik7fQouYi1iYXJ7Ym9yZGVyOjFweCBzb2xpZCAjNWIyZDhhO2NvbG9yOnZhcigKLS1wdXJwbGUpO2JhY2tncm91bmQ6cmdiYSgxNzYsMTEwLDI0MywuMTIpO30KLmItcmVxe2JvcmRlcjoxcHggc29saWQgdmFyKC0tcmVkLWRpbSk7Y29sb3I6dmFyKC0tcmVkKTtiYWNrZ3JvdW5kOnJnYmEoMjQwLDY0LDk2LC4xKTt9CgovKiBXZWlnaHQgYmFyICovCi53LWJhcntkaXNwbGF5OmlubGluZS1ibG9jaztoZWlnaHQ6NnB4O2JhY2tncm91bmQ6dmFyKC0tdGVhbC1kaW0pO2JvcmRlci1yYWRpdXM6M3B4O3ZlcnRpY2FsLWFsaWduOm1pZGRsZTttaW4td2lkdGg6NHB4O30KCi8qIEFjdGlvbiBidXR0b25zIGluIHRhYmxlICovCi50YmwtYnRue3BhZGRpbmc6M3B4IDhweDtib3JkZXI6MXB4IHNvbGlkO2JvcmRlci1yYWRpdXM6MnB4O2ZvbnQtc2l6ZToxMHB4O2ZvbnQtd2VpZ2h0OjcwMDtsZXR0ZXItc3BhY2luZzouNXB4O2N1cnNvcjpwb2ludGVyO2JhY2tncm91bmQ6dHJhbnNwYXJlbnQ7Zm9udC1mYW1pbHk6J0JhcmxvdyBDb25kZW5zZWQnLHNhbnMtc2VyaWY7dHJhbnNpdGlvbjphbGwgLjFzO30KLmJ0bi1ibG9ja3tib3JkZXItY29sb3I6dmFyKC0tcmVkLWRpbSk7Y29sb3I6dmFyKC0tcmVkKTt9Ci5idG4tYmxvY2s6aG92ZXIsLmJ0bi1ibG9jay5hY3RpdmV7YmFja2dyb3VuZDp2YXIoLS1yZWQpO2NvbG9yOiNmZmY7fQouYnRuLXNraXB7Ym9yZGVyLWNvbG9yOiM3YTQ1MDA7Y29sb3I6dmFyKC0tb3JhbmdlKTt9Ci5idG4tc2tpcDpob3ZlciwuYnRuLXNraXAuYWN0aXZle2JhY2tncm91bmQ6dmFyKC0tb3JhbmdlKTtjb2xvcjojMDAwO30KLmJ0bi1yZXNldHtib3JkZXItY29sb3I6dmFyKC0tbXV0ZWQyKTtjb2xvcjp2YXIoLS1tdXRlZCk7fQouYnRuLXJlc2V0OmhvdmVye2JvcmRlci1jb2xvcjp2YXIoLS1tdXRlZCk7Y29sb3I6dmFyKC0tdGV4dCk7fQoKLyogU2xvdHMgZGlzcGxheSAqLwouc2xvdHMtcm93e2Rpc3BsYXk6ZmxleDtnYXA6NnB4O2ZsZXgtd3JhcDp3cmFwO21hcmdpbi10b3A6OHB4O30KLnNsb3QtZW1wdHl7d2lkdGg6NDRweDtoZWlnaHQ6NDRweDtib3JkZXI6MXB4IGRhc2hlZCB2YXIoLS1ib3JkZXIpO2JvcmRlci1yYWRpdXM6M3B4O2Rpc3BsYXk6ZmxleDthbGlnbi1pdGVtczpjZW50ZXI7anVzdGlmeS1jb250ZW50OmNlbnRlcjtmb250LXNpemU6MThweDtjb2xvcjp2YXIoLS1tdXRlZDIpO30KLnNsb3QtZmlsbGVke3dpZHRoOjQ0cHg7aGVpZ2h0OjQ0cHg7Ym9yZGVyOjFweCBzb2xpZCB2YXIoLS1yZWQtZGltKTtib3JkZXItcmFkaXVzOjNweDtiYWNrZ3JvdW5kOnJnYmEoMjQwLDY0LDk2LC4xKTtkaXNwbGF5OmZsZXg7YWxpZ24taXRlbXM6Y2VudGVyO2p1c3RpZnktY29udGVudDpjZW50ZXI7Zm9udC1zaXplOjlweDtjb2xvcjp2YXIoLS1yZWQpO2ZvbnQtd2VpZ2h0OjcwMDt0ZXh0LWFsaWduOmNlbnRlcjtjdXJzb3I6cG9pbnRlcjtwYWRkaW5nOjJweDt9Ci5zbG90LWZpbGxlZDpob3Zlcntib3JkZXItY29sb3I6cmdiYSgyNDAsNjQsOTYsLjI1KTt9CgovKiBSZXNwb25zaXZlICovCkBtZWRpYShtYXgtd2lkdGg6NjAwcHgpey5nMiwuZzMsLmc0e2dyaWQtdGVtcGxhdGUtY29sdW1uczoxZnIgMWZyO30uc3VtLWdyaWR7Z3JpZC10ZW1wbGF0ZS1jb2x1bW5zOnJlcGVhdChhdXRvLWZpbGwsbWlubWF4KDExMHB4LDFmcikpO319CkBtZWRpYShtYXgtd2lkdGg6NDAvcHgpey5nMiwuZzMsLmc0e2dyaWQtdGVtcGxhdGUtY29sdW1uczoxZnI7fX0KPC9zdHlsZT4KPC9oZWFkPgo8Ym9keT4KPGRpdiBjbGFzcz0id3JhcCI+CgkKPGgxPlNsYXllciBPcHRpbWlzZXI8L2gxPgo8cCBjbGFzcz0ic3ViIj5PU1JTIFRhc2sgQmxvY2sgTGlzdCBCdWlsZGVyPC9wPgo8ZGl2IGNsYXNzPSJoZGl2Ij48L2Rpdj4KCjwhLS0gUExBWUVSIFBBTkVMIC0tPgo8ZGl2IGNsYXNzPSJwYW5lbCI+CiAgPGRpdiBjbGFzcz0icHRpdGxlIj5QbGF5ZXI8L2Rpdj4KICA8ZGl2IGNsYXNzPSJnMyIgc3R5bGU9Im1hcmdpbi1ib3R0b206MTBweCI+CiAgICA8ZGl2PgogICAgICA8bGFiZWwgY2xhc3M9ImZsIj5Vc2VybmFtZSAoUlNOKTwvbGFiZWw+CiAgICAgIDxkaXYgY2xhc3M9Imxvb2t1cC1yb3ciPgogICAgICAgIDxpbnB1dCB0eXBlPSJ0ZXh0IiBpZD0icnNuIiBwbGFjZWhvbGRlcj0iRW50ZXIgUlNOLi4uIiB2YWx1ZT0iIj4KICAgICAgICA8YnV0dG9uIGNsYXNzPSJsYnRuIiBpZD0ibG9va3VwQnRuIiBvbmNsaWNrPSJsb29rdXBQbGF5ZXIoKSI+TG9va3VwPC9idXR0b24+CiAgICAgIDwvZGl2PgogICAgPC9kaXY+CiAgICA8ZGl2PgogICAgICA8bGFiZWwgY2xhc3M9ImZsIj5BY2NvdW50IFR5cGU8L2xhYmVsPgogICAgICA8c2VsZWN0IGlkPSJhY2NvdW50VHlwZSIgb25jaGFuZ2U9Imxvb2t1cFBsYXllcigpIj4KICAgICAgICA8b3B0aW9uIHZhbHVlPSJyZWd1bGFyIj5SZWd1bGFyPC9vcHRpb24+CiAgICAgICAgPG9wdGlvbiB2YWx1ZT0iaXJvbm1hbiI+SXJvbm1hbjwvb3B0aW9uPgogICAgICAgIDxvcHRpb24gdmFsdWU9ImhhcmRjb3JlIj5IYXJkY29yZSBJcm9ubWFuPC9vcHRpb24+CiAgICAgICAgPG9wdGlvbiB2YWx1ZT0idWx0aW1hdGUiPlVsdGltYXRlIElyb25tYW48L29wdGlvbj4KICAgICAgPC9zZWxlY3Q+CiAgICA8L2Rpdj4KICAgIDxkaXY+CiAgICAgIDxsYWJlbCBjbGFzcz0iZmwiPkdvYWw8L2xhYmVsPgogICAgICA8c2VsZWN0IGlkPSJnb2FsIiBvbmNoYW5nZT0icmVjYWxjdWxhdGUoKSI+CiAgICAgICAgPG9wdGlvbiB2YWx1ZT0ieHAiPkZhc3Rlc3QgWFA8L29wdGlvbj4KICAgICAgICA8b3B0aW9uIHZhbHVlPSJncCI+TW9zdCBHUDwvb3B0aW9uPgogICAgICAgIDxvcHRpb24gdmFsdWU9ImJhbGFuY2VkIj5CYWxhbmNlZCAoWFAgKyBHUCk8L29wdGlvbj4KICAgICAgICA8b3B0aW9uIHZhbHVlPSJwb2ludHMiPlBvaW50cyBHcmluZDwvb3B0aW9uPgogICAgICA8L3NlbGVjdD4KICAgIDwvZGl2PgogIDwvZGl2PgogIDxkaXYgaWQ9Imxvb2t1cFN0YXR1cyIgY2xhc3M9InN0YXR1cy1saW5lIj5FbnRlciB5b3VyIFJTTiBhbmQgY2xpY2sgTG9va3VwIHRvIGxvYWQgeW91ciBzdGF0czwvZGl2PgogIDxkaXYgY2xhc3M9InN0YXQtcGlsbHMiIGlkPSJzdGF0UGlsbHMiPjwvZGl2Pgo8L2Rpdj4KCjwhLS0gQ09NQEFUIE1FVEhPRCAtLT4KPGRpdiBjbGFzcz0icGFuZWwiPgogIDxkaXYgY2xhc3M9InB0aXRsZSI+Q29tYmF0IE1ldGhvZCAoYWZmZWN0cyBYUCBjYWxjdWxhdGlvbnMpPC9kaXY+CiAgPGRpdiBjbGFzcz0ibWV0aG9kLXBpbGxzIiBpZD0ibWV0aG9kUGlsbHMiPgogICAgPGRpdiBjbGFzcz0ibXBpbGwgYWN0aXZlIiBvbmNsaWNrPSJzZXRNZXRob2QoJ21lbGVlJykiIGRhdGEtbT0ibWVsZWUiPuKavO+4jyBNZWxlZSBPbmx5PC9kaXY+CiAgICA8ZGl2IGNsYXNzPSJtcGlsbCIgb25jbGljaz0ic2V0TWV0aG9kKCdjYW5ub24nKSIgZGF0YS1tPSJjYW5ub24iPvCfkqMgTWVsZWUgKyBDYW5ub248L2Rpdj4KICAgIDxkaXYgY2xhc3M9Im1waWxsIiBvbmNsaWNrPSJzZXRNZXRob2QoJ2JhcnJhZ2UnKSIgZGF0YS1tPSJiYXJyYWdlIj7wn5SuIEJhcnJhZ2U8L2Rpdj4KICA8L2Rpdj4KPC9kaXY+Cgo8IS0tIFVOTE9DS1MgLS0+CjxkaXYgY2xhc3M9InBhbmVsIj4KICA8ZGl2IGNsYXNzPSJwdGl0bGUiPlNsYXllciBVbmxvY2tzPC9kaXY+CiAgPGRpdiBjbGFzcz0iY2hrcyIgaWQ9InVubG9ja0Noa3MiPgogICAgPGxhYmVsIGNsYXNzPSJjaGsiPjxpbnB1dCB0eXBlPSJjaGVja2JveCIgaWQ9InVsX2JpZ2dlckFuZEJhZGRlciIgb25jaGFuZ2U9InJlY2FsY3VsYXRlKCkiPjxzcGFuIGNsYXNzPSJjYiI+PC9zcGFuPkJpZ2dlciAmYW1wOyBCYWRkZXIgKDUwcHRzKTwvbGFiZWw+CiAgICA8bGFiZWwgY2xhc3M9ImNoayI+PGlucHV0IHR5cGU9ImNoZWNrYm94IiBpZD0idWxfbGlrZUFCb3NzIiBvbmNoYW5nZT0icmVjYWxjdWxhdGUoKSI+PHNwYW4gY2xhc3M9ImNiIj48L3NwYW4+TGlrZSBhIEJvc3MgKDIwMHB0cyk8L2xhYmVsPgogICAgPGxhYmVsIGNsYXNzPSJjaGsiPjxpbnB1dCB0eXBlPSJjaGVja2JveCIgaWQ9InVsX3dhdGNoQmlyZGllIiBvbmNoYW5nZT0icmVjYWxjdWxhdGUoKSI+PHNwYW4gY2xhc3M9ImNiIj48L3NwYW4+V2F0Y2ggdGhlIEJpcmRpZSAoODBwdHMpPC9sYWJlbD4KICAgIDxsYWJlbCBjbGFzcz0iY2hrIj48aW5wdXQgdHlwZT0iY2hlY2tib3giIGlkPSJ1bF9iYXNpbG9ja2VkIiBvbmNoYW5nZT0icmVjYWxjdWxhdGUoKSI+PHNwYW4gY2xhc3M9ImNiIj48L3NwYW4+QmFzaWxvY2tlZCAoODBwdHMpPC9sYWJlbD4KICAgIDxsYWJlbCBjbGFzcz0iY2hrIj48aW5wdXQgdHlwZT0iY2hlY2tib3giIGlkPSJ1bF9yZXB0aWxlRnJlZXplIiBvbmNoYW5nZT0icmVjYWxjdWxhdGUoKSI+PHNwYW4gY2xhc3M9ImNiIj48L3NwYW4+UmVwdGlsZSBGcmVlemVyICgxMHB0cyk8L2xhYmVsPgogICAgPGxhYmVsIGNsYXNzPSJjaGsiPjxpbnB1dCB0eXBlPSJjaGVja2JveCIgaWQ9InVsX3NsdWdTYWx0ZXIiIG9uY2hhbmdlPSJyZWNhbGN1bGF0ZSgpIj48c3BhbiBjbGFzcz0iY2IiPjwvc3Bhbj5TbHVnIFNhbHRlciAoMTBwdHMpPC9sYWJlbD4KICAgIDxsYWJlbCBjbGFzcz0iY2hrIj48aW5wdXQgdHlwZT0iY2hlY2tib3giIGlkPSJ1bF9yaW5nQmxpbmciIG9uY2hhbmdlPSJyZWNhbGN1bGF0ZSgpIj48c3BhbiBjbGFzcz0iY2IiPjwvc3Bhbj5SaW5nIEJsaW5nICgxNTBwdHMpPC9sYWJlbD4KICAgIDxsYWJlbCBjbGFzcz0iY2hrIj48aW5wdXQgdHlwZT0iY2hlY2tib3giIGlkPSJ1bF9sdXJlZEluIiBvbmNoYW5nZT0icmVjYWxjdWxhdGUoKSI+PHNwYW4gY2xhc3M9ImNiIj48L3NwYW4+THVyZWQgSW4gLyBBcXVhbml0ZXMgKDgwcHRzKTwvbGFiZWw+CiAgICA8bGFiZWwgY2xhc3M9ImNoayI+PGlucHV0IHR5cGU9ImNoZWNrYm94IiBpZD0idWxfcmVwdGlsZUdvdFJpcHBlZCIgb25jaGFuZ2U9InJlY2FsY3VsYXRlKCkiPjxzcGFuIGNsYXNzPSJjYiI+PC9zcGFuPlJlcHRpbGUgR290IFJpcHBlZCAoNzVwdHMpPC9sYWJlbD4KICAgIDxsYWJlbCBjbGFzcz0iY2hrIj48aW5wdXQgdHlwZT0iY2hlY2tib3giIGlkPSJ1bF93aW5nc1NwcmVhZCIgb25jaGFuZ2U9InJlY2FsY3VsYXRlKCkiPjxzcGFuIGNsYXNzPSJjYiI+PC9zcGFuPldpbmdzIFNwcmVhZCAvIEdyeXBob25zICg4MHB0cyk8L2xhYmVsPgogIDwvZGl2Pgo8L2Rpdj4KCjwhLS0gTUFTVEVSIFNFTEVDVE9SIC0tPgo8ZGl2IGNsYXNzPSJwYW5lbCI+CiAgPGRpdiBjbGFzcz0icHRpdGxlIj5TbGF5ZXIgTWFzdGVyPC9kaXY+CiAgPGRpdiBjbGFzcz0ibXRhYnMiPgogICAgPGRpdiBjbGFzcz0ibXRhYiBhY3RpdmUiIG9uY2xpY2s9InNldE1hc3RlcignZHVyYWRlbCcpIj5EdXJhZGVsPC9kaXY+CiAgICA8ZGl2IGNsYXNzPSJtdGFiIiBvbmNsaWNrPSJzZXRNYXN0ZXIoJ25pZXZlJykiPk5pZXZlIC8gU3RldmU8L2Rpdj4KICAgIDxkaXYgY2xhc3M9Im10YWIiIG9uY2xpY2s9InNldE1hc3Rlcigna29uYXInKSI+S29uYXI8L2Rpdj4KICA8L2Rpdj4KICA8ZGl2IGlkPSJtYXN0ZXJJbmZvIiBzdHlsZT0iZm9udC1zaXplOjEycHg7Y29sb3I6dmFyKC0tbXV0ZWQpIj48L2Rpdj4KPC9kaXY+Cgo8IS0tIEJMT0NLIFNMT1RTIC0tPgo8ZGl2IGNsYXNzPSJwYW5lbCI+CiAgPGRpdiBzdHlsZT0iZGlzcGxheTpmbGV4O2FsaWduLWl0ZW1zOmNlbnRlcjtqdXN0aWZ5LWNvbnRlbnQ6c3BhY2UtYmV0d2Vlbjs8bWFyZ2luLWJvdHRvbTo4cHgiPgogICAgPGRpdiBjbGFzcz0icHRpdGxlIiBzdHlsZT0ibWFyZ2luOjAiPkJsb2NrIFNsb3RzIDxzcGFuIGlkPSJibG9ja0NvdW50IiBzdHlsZT0iY29sb3I6dmFyKC0tdGVhbCkiPjA8L3NwYW4+IC8gPHNwYW4gaWQ9ImJsb2NrTWF4Ij43PC9zcGFuPjwvZGl2PgogICAgPGJ1dHRvbiBvbmNsaWNrPSJjbGVhckFsbEJsb2NrcygpIiBzdHlsZT0icGFkZGluZzo0cHggMTBweDtiYWNrZ3JvdW5kOnRyYW5zcGFyZW50O2JvcmRlcjoxcHggc29saWQgdmFyKC0tYm9yZGVyKTtib3JkZXItcmFkaXVzOjNweDtjb2xvcjp2YXIoLS1tdXRlZCk7Zm9udC1zaXplOjExcHg7Y3Vyc29yOnBvaW50ZXI7Zm9udC1mYW1pbHk6J0JhcmxvdyBDb25kZW5zZWQnLHNhbnMtc2VyaWY7Ij5DbGVhciBBbGw8L2J1dHRvbj4KICA8L2Rpdj4KICA8ZGl2IGNsYXNzPSJzbG90cy1yb3ciIGlkPSJibG9ja1Nsb3RzIj48L2Rpdj4KICA8ZGl2IHN0eWxlPSJtYXJnaW4tdG9wOjEwcHg7Zm9udC1zaXplOjExcHg7Y29sb3I6dmFyKC0tbXV0ZWQpIj5DbGljayBhIGZpbGxlZCBzbG90IHRvIHVuYmxvY2suIEJsb2NrIHNsb3RzIHNjYWxlIHdpdGggUXVlc3QgUG9pbnRzIChyZXF1aXJlcyBTbW9raW5nIEtpbGxzKS48L2Rpdj4KPC9kaXY+Cgo8IS0tIFJFQ09NTUVOREFJT04gLS0+CjxkaXYgY2xhc3M9InBhbmVsIiBpZD0icmVjUGFuZWwiIHN0eWxlPSJkaXNwbGF5Om5vbmUiPgogIDxkaXYgY2xhc3M9InJlYy1ib3giPgogICAgPGRpdiBjbGFzcz0icmVjLXRpdGxlIj7inaDvuI8gT3B0aW1hbCBCbG9jayBSZWNvbW1lbmRhdGlvbnM8L2Rpdj4KICAgIDxkaXYgaWQ9InJlY0NvbnRlbnQiPjwvZGl2PgogIDwvZGl2PgogIDxkaXYgY2xhc3M9InN1bS1ncmlkIiBpZD0ic3VtQ2FyZHMiPjwvZGl2Pgo8L2Rpdj4KCjwhLS0gVEFTSyBUQUJMRSAtLT4KPGRpdiBjbGFzcz0icGFuZWwiPgogIDxkaXYgc3R5bGU9ImRpc3BsYXk6ZmxleDthbGlnbi1pdGVtczpjZW50ZXI7anVzdGlmeS1jb250ZW50OnNwYWNlLWJldHdlZW47bWFyZ2luLWJvdHRvbToxMHB4O2ZsZXgtd3JhcDp3cmFwO2dhcDo4cHgiPgogICAgPGRpdiBjbGFzcz0icHRpdGxlIiBzdHlsZT0ibWFyZ2luOjAiPlRhc2sgTGlzdDwvZGl2PgogICAgPGRpdiBzdHlsZT0iZGlzcGxheTpmbGV4O2dhcDo2cHg7YWxpZ24taXRlbXM6Y2VudGVyO2ZsZXgtd3JhcDp3cmFwIj4KICAgICAgPGlucHV0IHR5cGU9InRleHQiIGlkPSJ0YXNrU2VhcmNoIiBwbGFjZWhvbGRlcj0iU2VhcmNoIHRhc2tzLi4uIiBzdHlsZT0id2lkdGg6MTUwcHg7Zm9udC1zaXplOjEycHg7cGFkZGluZzo1cHggOHB4IiBvbmlucHV0PSJyZW5kZXJUYWJsZSgpIj4KICAgICAgPHNlbGVjdCBpZD0iZmlsdGVyU3RhdHVzIiBvbmNoYW5nZT0icmVuZGVyVGFibGUoKSIgc3R5bGU9IndpZHRoOjEyMHB4O2ZvbnQtc2l6ZToxMnB4O3BhZGRpbmc6NXB4IDhweCI+CiAgICAgICAgPG9wdGlvbiB2YWx1ZT0iYWxsIj5BbGwgdGFza3M8L29wdGlvbj4KICAgICAgICA8b3B0aW9uIHZhbHVlPSJhY3RpdmUiPkFjdGl2ZSBvbmx5PC9vcHRpb24+CiAgICAgICAgPG9wdGlvbiB2YWx1ZT0iYmxvY2tlZCI+QmxvY2tlZDwvb3B0aW9uPgogICAgICA8L3NlbGVjdD4KICAgIDwvZGl2PgogIDwvZGl2PgogIDxkaXYgY2xhc3M9InRhc2stdGFibGUtd3JhcCI+CiAgICA8dGFibGUgaWQ9InRhc2tUYWJsZSI+CiAgICAgIDx0aGVhZD4KICAgICAgICA8dHI+CiAgICAgICAgICA8dGggb25jbGljaz0ic29ydEJ5KCduYW1lJykiPlRhc2s8L3RoPgogICAgICAgICAgPHRoIG9uY2xpY2s9InNvcnRCeSgnY2hhbmNlJykiPkNoYW5jZSAlPC90aD4KICAgICAgICAgIDx0aCBvbmNsaWNrPSJzb3J0QnkoJ3hwJykiPlhQL2hyPC90aD4KICAgICAgICAgIDx0aCBvbmNsaWNrPSJzb3J0QnkoJ2dwJykiPkdQL2hyPC90aD4KICAgICAgICAgIDx0aD5NZXRob2Q8L3RoPgogICAgICAgICAgPHRoIG9uY2xpY2s9InNvcnRCeSgnd2VpZ2h0JykiPldlaWdodDwvdGg+CiAgICAgICAgICA8dGg+QWN0aW9uPC90aD4KICAgICAgICA8L3RyPgogICAgICA8L3RoZWFkPgogICAgICA8dGJvZHkgaWQ9InRhc2tCb2R5Ij48L3Rib2R5PgogICAgPC90YWJsZT4KICA8L2Rpdj4KICA8ZGl2IHN0eWxlPSJtYXJnaW4tdG9wOjhweDtmb250LXNpemU6MTFweDtjb2xvcjp2YXIoLS1tdXRlZCkiIGlkPSJ0YWJsZUZvb3RlciI+PC9kaXY+CjwvZGl2PgoKPC9kaXY+CjxzY3JpcHQ+CmNvbnN0IERVUkFERUxfVEFTS1MgPSBbCiAge25hbWU6IkFiZXJyYW50IHNwZWN0cmVzIixzbGF5UmVxOjYwLGNvbWJhdFJlcTo2NSx3ZWlnaHQ6Nyp4cE1lbGVlOjI1MDAwLHhwQ2Fubm9uOjM1MDAwLHhwQmFycmFnZTowLGdwSHI6MjAwMDAwLGNhbm5vbjp0cnVlLGJhcnJhZ2U6ZmFsc2Usbm90ZXM6IkJyaW5nIG5vc2UgcGVnL3NsYXllciBoZWxtLiBIZXJiIGRyb3BzLiJ9LAogIHtuYW1lOiJBYnlzc2FsIGRlbW9ucyIsc2xheVJlcTo4NSxjb21iYXRSZXE6ODUsd2VpZ2h0OjEyLHhwTWVsZWU6MzUwMDAseHBDYW5ub246NDUwMDAseHBCYXJyYWdlOjU1MDAwLGdwSHI6MTUwMDAwLGNhbm5vbjp0cnVlLGJhcnJhZ2U6dHJ1ZSxub3Rlczo"Best with barrage in Catacombs. Whip/dagger drops."}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSRS Slayer Optimiser</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060e1c;--surface:#0c1e33;--surface2:#102540;--border:#1a3a58;
+  --teal:#00d4b8;--teal-dim:#008f7c;--teal-dark:#005548;
+  --gold:#f0bc3a;--gold-dim:#7a5e18;
+  --purple:#b06ef3;--red:#f04060;--red-dim:#7a0020;
+  --green:#00c853;--green-dim:#005c25;
+  --orange:#ff8c00;
+  --text:#c0d8ec;--muted:#4a7090;--muted2:#2a4a64;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 40% at 50% -10%,rgba(0,212,184,.05) 0%,transparent 70%);pointer-events:none;}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 14px 80px;}
+h1{font-family:'Cinzel Decorative',serif;font-size:clamp(16px,3.5vw,24px);color:var(--teal);text-align:center;text-shadow:0 0 20px rgba(0,212,184,.35);letter-spacing:2px;}
+.sub{text-align:center;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-top:4px;}
+.hdiv{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--teal),transparent);margin:8px auto 18px;}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:14px;margin-bottom:12px;}
+.ptitle{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.fl{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+input[type=number],input[type=text],select{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;padding:7px 10px;border-radius:3px;outline:none;transition:border-color .15s;}
+input:focus,select:focus{border-color:var(--teal);}
+select option{background:var(--bg);}
+.lookup-row{display:flex;gap:8px;}
+.lookup-row input{flex:1;}
+.lbtn{padding:8px 12px;background:var(--teal-dark);border:1px solid var(--teal-dim);border-radius:3px;color:var(--teal);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:all .15s;}
+.lbtn:hover{background:var(--teal-dim);color:#000;}
+.lbtn:disabled{opacity:.4;cursor:not-allowed;}
+.status-line{font-size:11px;color:var(--muted);margin-top:6px;}
+.status-line.ok{color:var(--teal);}
+.status-line.err{color:var(--red);}
+.status-line.info{color:var(--gold);}
+.stat-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.pill{padding:4px 10px;background:var(--bg);border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;}
+.pill span{color:var(--teal);}
+.chks{display:flex;flex-wrap:wrap;gap:6px;}
+.chk{display:flex;align-items:center;gap:6px;cursor:pointer;padding:5px 10px;background:var(--bg);border:1px solid var(--border);border-radius:3px;transition:border-color .15s;user-select:none;font-size:12px;}
+.chk:hover{border-color:var(--teal-dim);}
+.chk input{display:none;}
+.cb{width:12px;height:12px;border:1.5px solid var(--muted);border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;}
+.chk input:checked~.cb{background:var(--teal);border-color:var(--teal);}
+.cb::after{content:'✓';font-size:8px;color:#000;display:none;}
+.chk input:checked~.cb::after{display:block;}
+.method-pills{display:flex;gap:6px;flex-wrap:wrap;}
+.mpill{padding:5px 12px;border:1px solid var(--border);border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;background:var(--bg);color:var(--muted);transition:all .15s;}
+.mpill.active{background:var(--teal-dim);border-color:var(--teal);color:#000;}
+.mpill:hover:not(.active){border-color:var(--teal-dim);color:var(--teal);}
+.btn{width:100%;padding:11px;border:none;border-radius:3px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;background:linear-gradient(135deg,var(--teal-dim),var(--teal));color:#000;transition:opacity .15s;}
+.btn:hover{opacity:.88;}
+.btn:disabled{opacity:.35;cursor:not-allowed;}
+.mtabs{display:flex;gap:0;margin-bottom:14px;}
+.mtab{flex:1;padding:9px;text-align:center;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--bg);color:var(--muted);transition:all .15s;}
+.mtab:first-child{border-radius:3px 0 0 3px;}
+.mtab:last-child{border-radius:0 3px 3px 0;border-left:none;}
+.mtab:not(:first-child):not(:last-child){border-left:none;}
+.mtab.active{background:var(--teal-dark);border-color:var(--teal);color:var(--teal);}
+.sum-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:14px;}
+.sum-card{background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:12px;text-align:center;}
+.sum-val{font-size:20px;font-weight:700;color:var(--teal);line-height:1;}
+.sum-val.gold{color:var(--gold);}
+.sum-val.green{color:var(--green);}
+.sum-val.red{color:var(--red);}
+.sum-lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+.rec-box{background:var(--bg);border:1px solid var(--gold-dim);border-radius:3px;padding:12px 14px;margin-bottom:14px;}
+.rec-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.rec-items{display:flex;flex-wrap:wrap;gap:6px;}
+.rec-tag{padding:4px 10px;border-radius:3px;font-size:12px;font-weight:700;}
+.rec-block{background:rgba(240,64,96,.15);border:1px solid var(--red-dim);color:var(--red);}
+.rec-keep{background:rgba(0,200,83,.1);border:1px solid var(--green-dim);color:var(--green);}
+.task-table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead th{text-align:left;padding:7px 10px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:var(--surface2);border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none;}
+thead th:hover{color:var(--teal);}
+thead th.sorted{color:var(--teal);}
+thead th.sorted::after{content:' ↓';}
+thead th.sorted.asc::after{content:' ↑';}
+tbody tr{border-bottom:1px solid rgba(26,58,88,.25);transition:background .1s;}
+tbody tr:hover{background:rgba(0,212,184,.03);}
+td{padding:7px 10px;vertical-align:middle;}
+td.name-cell{font-weight:700;max-width:160px;}
+td.name-cell .task-note{font-size:10px;color:var(--muted);font-weight:400;margin-top:1px;}
+tr.row-blocked td{opacity:.5;}
+tr.row-blocked td.name-cell{opacity:1;text-decoration:line-through;color:var(--red);}
+tr.row-skip td.name-cell{color:var(--orange);}
+tr.row-top td.name-cell{color:var(--green);}
+.badge{display:inline-block;font-size:9px;letter-spacing:.8px;padding:1px 5px;border-radius:2px;margin-left:4px;vertical-align:middle;font-weight:700;}
+.b-can{background:rgba(0,200,83,.12);color:var(--green);border:1px solid var(--green-dim);}
+.b-bar{background:rgba(176,110,243,.12);color:var(--purple);border:1px solid #5b2d8a;}
+.b-req{background:rgba(240,64,96,.1);color:var(--red);border:1px solid var(--red-dim);}
+.w-bar{display:inline-block;height:6px;background:var(--teal-dim);border-radius:3px;vertical-align:middle;min-width:4px;}
+.tbl-btn{padding:3px 8px;border:1px solid;border-radius:2px;font-size:10px;font-weight:700;letter-spacing:.5px;cursor:pointer;background:transparent;font-family:'Barlow Condensed',sans-serif;transition:all .1s;}
+.btn-block{border-color:var(--red-dim);color:var(--red);}
+.btn-block:hover,.btn-block.active{background:var(--red);color:#fff;}
+.slots-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.slot-empty{width:44px;height:44px;border:1px dashed var(--border);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--muted2);}
+.slot-filled{width:44px;height:44px;border:1px solid var(--red-dim);border-radius:3px;background:rgba(240,64,96,.1);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--red);font-weight:700;text-align:center;cursor:pointer;padding:2px;}
+.slot-filled:hover{background:rgba(240,64,96,.25);}
+@media(max-width:600px){.g2,.g3{grid-template-columns:1fr 1fr;}.sum-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Slayer Optimiser</h1>
+<p class="sub">OSRS Task Block List Builder</p>
+<div class="hdiv"></div>
+<div class="panel">
+  <div class="ptitle">Player</div>
+  <div class="g3" style="margin-bottom:10px">
+    <div><label class="fl">Username (RSN)</label><div class="lookup-row"><input type="text" id="rsn" placeholder="Enter RSN..."><button class="lbtn" id="lookupBtn" onclick="lookupPlayer()">Lookup</button></div></div>
+    <div><label class="fl">Account Type</label><select id="accountType" onchange="lookupPlayer()"><option value="regular">Regular</option><option value="ironman">Ironman</option><option value="hardcore">Hardcore Ironman</option><option value="ultimate">Ultimate Ironman</option></select></div>
+    <div><label class="fl">Goal</label><select id="goal" onchange="recalculate()"><option value="xp">Fastest XP</option><option value="gp">Most GP</option><option value="balanced">Balanced (XP + GP)</option><option value="points">Points Grind</option></select></div>
+  </div>
+  <div id="lookupStatus" class="status-line">Enter your RSN and click Lookup to load your stats</div>
+  <div class="stat-pills" id="statPills"></div>
+</div>
+<div class="panel">
+  <div class="ptitle">Combat Method (affects XP calculations)</div>
+  <div class="method-pills" id="methodPills">
+    <div class="mpill active" onclick="setMethod('melee')" data-m="melee">⚔️ Melee Only</div>
+    <div class="mpill" onclick="setMethod('cannon')" data-m="cannon">💣 Melee + Cannon</div>
+    <div class="mpill" onclick="setMethod('barrage')" data-m="barrage">🔮 Barrage</div>
+  </div>
+</div>
+<div class="panel">
+  <div class="ptitle">Slayer Unlocks</div>
+  <div class="chks">
+    <label class="chk"><input type="checkbox" id="ul_biggerAndBadder" onchange="recalculate()"><span class="cb"></span>Bigger & Badder (50pts)</label>
+    <label class="chk"><input type="checkbox" id="ul_likeABoss" onchange="recalculate()"><span class="cb"></span>Like a Boss (200pts)</label>
+    <label class="chk"><input type="checkbox" id="ul_watchBirdie" onchange="recalculate()"><span class="cb"></span>Watch the Birdie (80pts)</label>
+    <label class="chk"><input type="checkbox" id="ul_basilocked" onchange="recalculate()"><span class="cb"></span>Basilocked (80pts)</label>
+    <label class="chk"><input type="checkbox" id="ul_reptileFreeze" onchange="recalculate()"><span class="cb"></span>Reptile Freezer (10pts)</label>
+    <label class="chk"><input type="checkbox" id="ul_slugSalter" onchange="recalculate()"><span class="cb"></span>Slug Salter (10pts)</label>
+    <label class="chk"><input type="checkbox" id="ul_ringBling" onchange="recalculate()"><span class="cb"></span>Ring Bling (150pts)</label>
+    <label class="chk"><input type="checkbox" id="ul_luredIn" onchange="recalculate()"><span class="cb"></span>Lured In / Aquanites (80pts)</label>
+    <label class="chk"><input type="checkbox" id="ul_reptileGotRipped" onchange="recalculate()"><span class="cb"></span>Reptile Got Ripped (75pts)</label>
+    <label class="chk"><input type="checkbox" id="ul_wingsSpread" onchange="recalculate()"><span class="cb"></span>Wings Spread / Gryphons (80pts)</label>
+  </div>
+</div>
+<div class="panel">
+  <div class="ptitle">Slayer Master</div>
+  <div class="mtabs">
+    <div class="mtab active" onclick="setMaster('duradel')">Duradel</div>
+    <div class="mtab" onclick="setMaster('nieve')">Nieve / Steve</div>
+    <div class="mtab" onclick="setMaster('konar')">Konar</div>
+  </div>
+  <div id="masterInfo" style="font-size:12px;color:var(--muted)"></div>
+</div>
+<div class="panel">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+    <div class="ptitle" style="margin:0">Block Slots <span id="blockCount" style="color:var(--teal)">0</span> / <span id="blockMax">7</span></div>
+    <button onclick="clearAllBlocks()" style="padding:4px 10px;background:transparent;border:1px solid var(--border);border-radius:3px;color:var(--muted);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;">Clear All</button>
+  </div>
+  <div class="slots-row" id="blockSlots"></div>
+  <div style="margin-top:10px;font-size:11px;color:var(--muted)">Click a filled slot to unblock. Block slots scale with Quest Points (requires Smoking Kills).</div>
+</div>
+<div class="panel" id="recPanel" style="display:none">
+  <div class="rec-box"><div class="rec-title">⚔️ Optimal Block Recommendations</div><div id="recContent"></div></div>
+  <div class="sum-grid" id="sumCards"></div>
+</div>
+<div class="panel">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+    <div class="ptitle" style="margin:0">Task List</div>
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+      <input type="text" id="taskSearch" placeholder="Search tasks..." style="width:150px;font-size:12px;padding:5px 8px" oninput="renderTable()">
+      <select id="filterStatus" onchange="renderTable()" style="width:120px;font-size:12px;padding:5px 8px"><option value="all">All tasks</option><option value="active">Active only</option><option value="blocked">Blocked</option></select>
+    </div>
+  </div>
+  <div class="task-table-wrap">
+    <table><thead><tr><th onclick="sortBy('name')">Task</th><th onclick="sortBy('chance')">Chance %</th><th onclick="sortBy('xp')">XP/hr</th><th onclick="sortBy('gp')">GP/hr</th><th>Method</th><th onclick="sortBy('weight')">Weight</th><th>Action</th></tr></thead><tbody id="taskBody"></tbody></table>
+  </div>
+  <div style="margin-top:8px;font-size:11px;color:var(--muted)" id="tableFooter"></div>
+</div>
+</div>
+<script>
+const DURADEL_TASKS=[{name:"Aberrant spectres",slayReq:60,combatReq:65,weight:7,xpMelee:25000,xpCannon:35000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"Herb drops. Nose peg/slayer helm."},{name:"Abyssal demons",slayReq:85,combatReq:85,weight:12,xpMelee:35000,xpCannon:45000,xpBarrage:55000,gpHr:150000,cannon:true,barrage:true,notes:"Barrage in Catacombs. Whip/dagger drops."},{name:"Ankou",slayReq:0,combatReq:40,weight:5,xpMelee:25000,xpCannon:35000,xpBarrage:40000,gpHr:80000,cannon:true,barrage:true,notes:"Catacombs for prayer XP."},{name:"Aquanite",slayReq:78,combatReq:0,weight:5,xpMelee:20000,xpCannon:28000,xpBarrage:0,gpHr:90000,cannon:true,barrage:false,notes:"Lured In unlock + Sailing 73 req."},{name:"Araxytes",slayReq:92,combatReq:0,weight:10,xpMelee:40000,xpCannon:52000,xpBarrage:0,gpHr:350000,cannon:false,barrage:false,notes:"Araxxor alt. No cannon in lair."},{name:"Aviansie",slayReq:0,combatReq:0,weight:8,xpMelee:28000,xpCannon:42000,xpBarrage:0,gpHr:500000,cannon:false,barrage:false,notes:"Watch the Birdie unlock. AFK in GWD."},{name:"Basilisks",slayReq:40,combatReq:0,weight:7,xpMelee:22000,xpCannon:32000,xpBarrage:0,gpHr:150000,cannon:true,barrage:false,notes:"Mirror shield/Basilocked unlock."},{name:"Black demons",slayReq:0,combatReq:80,weight:8,xpMelee:28000,xpCannon:40000,xpBarrage:50000,gpHr:100000,cannon:true,barrage:true,notes:"Demonic gorillas alt for zenyte."},{name:"Black dragons",slayReq:0,combatReq:80,weight:9,xpMelee:18000,xpCannon:25000,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Baby blacks/KBD alt."},{name:"Bloodveld",slayReq:50,combatReq:50,weight:8,xpMelee:28000,xpCannon:40000,xpBarrage:50000,gpHr:100000,cannon:true,barrage:true,notes:"Catacombs for prayer XP."},{name:"Blue dragons",slayReq:0,combatReq:65,weight:4,xpMelee:20000,xpCannon:28000,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Vorkath alt."},{name:"Boss tasks",slayReq:0,combatReq:0,weight:12,xpMelee:40000,xpCannon:0,xpBarrage:0,gpHr:800000,cannon:false,barrage:false,notes:"Like a Boss unlock required."},{name:"Cave horrors",slayReq:58,combatReq:85,weight:4,xpMelee:22000,xpCannon:30000,xpBarrage:0,gpHr:180000,cannon:true,barrage:false,notes:"Black mask drops. Cabin Fever req."},{name:"Cave kraken",slayReq:87,combatReq:80,weight:9,xpMelee:25000,xpCannon:0,xpBarrage:0,gpHr:500000,cannon:false,barrage:false,notes:"Kraken alt. Magic only."},{name:"Dagannoth",slayReq:0,combatReq:75,weight:9,xpMelee:30000,xpCannon:45000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"DKs alt."},{name:"Dark beasts",slayReq:90,combatReq:90,weight:11,xpMelee:35000,xpCannon:0,xpBarrage:0,gpHr:300000,cannon:false,barrage:false,notes:"Mournings End Pt2 req. Dark bow drops."},{name:"Drakes",slayReq:84,combatReq:0,weight:8,xpMelee:30000,xpCannon:0,xpBarrage:0,gpHr:350000,cannon:false,barrage:false,notes:"Drake tooth drops."},{name:"Dust devils",slayReq:65,combatReq:70,weight:5,xpMelee:28000,xpCannon:40000,xpBarrage:55000,gpHr:150000,cannon:true,barrage:true,notes:"Desert Treasure I partial req."},{name:"Elves",slayReq:0,combatReq:70,weight:4,xpMelee:25000,xpCannon:35000,xpBarrage:0,gpHr:300000,cannon:true,barrage:false,notes:"Regicide req. Crystal drops."},{name:"Fire giants",slayReq:0,combatReq:65,weight:7,xpMelee:25000,xpCannon:40000,xpBarrage:0,gpHr:120000,cannon:true,barrage:false,notes:"Fast with cannon."},{name:"Fossil Island Wyverns",slayReq:66,combatReq:60,weight:7,xpMelee:22000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Bone Voyage + Elemental Workshop I."},{name:"Frost dragons",slayReq:0,combatReq:85,weight:5,xpMelee:20000,xpCannon:0,xpBarrage:0,gpHr:300000,cannon:false,barrage:false,notes:"Sailing 87 req."},{name:"Gargoyles",slayReq:75,combatReq:80,weight:8,xpMelee:30000,xpCannon:40000,xpBarrage:0,gpHr:350000,cannon:true,barrage:false,notes:"GG alt. Rock hammer needed."},{name:"Greater demons",slayReq:0,combatReq:75,weight:9,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:120000,cannon:true,barrage:false,notes:"Krils alt."},{name:"Gryphons",slayReq:51,combatReq:0,weight:7,xpMelee:28000,xpCannon:38000,xpBarrage:0,gpHr:250000,cannon:true,barrage:false,notes:"Wings Spread unlock. Sailing 45 req."},{name:"Hellhounds",slayReq:0,combatReq:75,weight:10,xpMelee:25000,xpCannon:38000,xpBarrage:0,gpHr:80000,cannon:true,barrage:false,notes:"Cerberus alt (91 slayer). Clue scrolls."},{name:"Kalphite",slayReq:0,combatReq:15,weight:9,xpMelee:25000,xpCannon:40000,xpBarrage:0,gpHr:100000,cannon:true,barrage:false,notes:"KQ alt."},{name:"Kurask",slayReq:70,combatReq:65,weight:4,xpMelee:20000,xpCannon:28000,xpBarrage:0,gpHr:150000,cannon:true,barrage:false,notes:"Leaf-bladed/broad weapons req."},{name:"Lizardmen",slayReq:0,combatReq:0,weight:10,xpMelee:30000,xpCannon:45000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"Reptile Got Ripped unlock. Shayzien armour."},{name:"Metal dragons",slayReq:0,combatReq:0,weight:8,xpMelee:15000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Anti-dragon shield req. Slow. Common block."},{name:"Muttadiles",slayReq:97,combatReq:0,weight:8,xpMelee:30000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Raids prep task."},{name:"Nechryael",slayReq:80,combatReq:0,weight:10,xpMelee:32000,xpCannon:45000,xpBarrage:55000,gpHr:200000,cannon:true,barrage:true,notes:"Slayer Tower or Catacombs."},{name:"Red dragons",slayReq:0,combatReq:68,weight:6,xpMelee:20000,xpCannon:0,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Brutal reds alt (77 slayer)."},{name:"Rune dragons",slayReq:0,combatReq:0,weight:4,xpMelee:18000,xpCannon:0,xpBarrage:0,gpHr:600000,cannon:false,barrage:false,notes:"Dragon metal drops."},{name:"Skeletal wyverns",slayReq:72,combatReq:0,weight:8,xpMelee:22000,xpCannon:0,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Elemental/mind shield req."},{name:"Smoke devils",slayReq:93,combatReq:0,weight:10,xpMelee:35000,xpCannon:50000,xpBarrage:0,gpHr:300000,cannon:true,barrage:false,notes:"DT2 req. Occult necklace drops."},{name:"Spiritual creatures",slayReq:0,combatReq:60,weight:7,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:300000,cannon:true,barrage:false,notes:"GWD area. Ranger boots/spirit shields."},{name:"Steel dragons",slayReq:0,combatReq:0,weight:8,xpMelee:15000,xpCannon:0,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Slow. Consider blocking."},{name:"Suqahs",slayReq:0,combatReq:0,weight:8,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:100000,cannon:true,barrage:false,notes:"Lunar isle."},{name:"Vampyres",slayReq:0,combatReq:0,weight:8,xpMelee:25000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Flail/silver req."},{name:"Warped creatures",slayReq:56,combatReq:0,weight:8,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:150000,cannon:true,barrage:false,notes:"Hosidius favour."},{name:"Waterfiend",slayReq:0,combatReq:0,weight:3,xpMelee:20000,xpCannon:0,xpBarrage:0,gpHr:100000,cannon:false,barrage:false,notes:"Barbarian Training partial req."},{name:"Wyrms",slayReq:62,combatReq:0,weight:10,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"Dragon sword/harpoon drops."},{name:"Zygomites",slayReq:57,combatReq:0,weight:2,xpMelee:18000,xpCannon:0,xpBarrage:0,gpHr:100000,cannon:false,barrage:false,notes:"Fungicide spray needed."}];
+const NIEVE_TASKS=[{name:"Aberrant spectres",slayReq:60,combatReq:65,weight:8,xpMelee:25000,xpCannon:35000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"Nose peg/slayer helm."},{name:"Abyssal demons",slayReq:85,combatReq:85,weight:9,xpMelee:35000,xpCannon:45000,xpBarrage:55000,gpHr:150000,cannon:true,barrage:true,notes:"Barrage in Catacombs."},{name:"Ankou",slayReq:0,combatReq:40,weight:5,xpMelee:25000,xpCannon:35000,xpBarrage:40000,gpHr:80000,cannon:true,barrage:true,notes:"Catacombs for prayer XP."},{name:"Araxytes",slayReq:92,combatReq:0,weight:10,xpMelee:40000,xpCannon:52000,xpBarrage:0,gpHr:350000,cannon:false,barrage:false,notes:"Araxxor alt."},{name:"Aviansie",slayReq:0,combatReq:0,weight:8,xpMelee:28000,xpCannon:42000,xpBarrage:0,gpHr:500000,cannon:false,barrage:false,notes:"Watch the Birdie unlock."},{name:"Basilisks",slayReq:40,combatReq:0,weight:7,xpMelee:22000,xpCannon:32000,xpBarrage:0,gpHr:150000,cannon:true,barrage:false,notes:"Basilocked unlock."},{name:"Black demons",slayReq:0,combatReq:80,weight:9,xpMelee:28000,xpCannon:40000,xpBarrage:50000,gpHr:100000,cannon:true,barrage:true,notes:"Demonic gorillas alt."},{name:"Black dragons",slayReq:0,combatReq:80,weight:9,xpMelee:18000,xpCannon:25000,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Baby blacks alt."},{name:"Bloodveld",slayReq:50,combatReq:50,weight:8,xpMelee:28000,xpCannon:40000,xpBarrage:50000,gpHr:100000,cannon:true,barrage:true,notes:"Catacombs for prayer XP."},{name:"Blue dragons",slayReq:0,combatReq:65,weight:4,xpMelee:20000,xpCannon:28000,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Vorkath alt."},{name:"Boss tasks",slayReq:0,combatReq:0,weight:12,xpMelee:40000,xpCannon:0,xpBarrage:0,gpHr:800000,cannon:false,barrage:false,notes:"Like a Boss unlock."},{name:"Brine rats",slayReq:47,combatReq:0,weight:3,xpMelee:15000,xpCannon:0,xpBarrage:0,gpHr:60000,cannon:false,barrage:false,notes:"Slow. Block candidate."},{name:"Cave horrors",slayReq:58,combatReq:85,weight:4,xpMelee:22000,xpCannon:30000,xpBarrage:0,gpHr:180000,cannon:true,barrage:false,notes:"Black mask drops."},{name:"Cave kraken",slayReq:87,combatReq:80,weight:9,xpMelee:25000,xpCannon:0,xpBarrage:0,gpHr:500000,cannon:false,barrage:false,notes:"Kraken alt. Magic only."},{name:"Dagannoth",slayReq:0,combatReq:75,weight:9,xpMelee:30000,xpCannon:45000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"DKs alt."},{name:"Dark beasts",slayReq:90,combatReq:90,weight:5,xpMelee:35000,xpCannon:0,xpBarrage:0,gpHr:300000,cannon:false,barrage:false,notes:"Mournings End Pt2 req."},{name:"Drakes",slayReq:84,combatReq:0,weight:8,xpMelee:30000,xpCannon:0,xpBarrage:0,gpHr:350000,cannon:false,barrage:false,notes:"Drake tooth drops."},{name:"Dust devils",slayReq:65,combatReq:70,weight:6,xpMelee:28000,xpCannon:40000,xpBarrage:55000,gpHr:150000,cannon:true,barrage:true,notes:"Desert Treasure I partial."},{name:"Elves",slayReq:0,combatReq:70,weight:4,xpMelee:25000,xpCannon:35000,xpBarrage:0,gpHr:300000,cannon:true,barrage:false,notes:"Regicide req."},{name:"Fire giants",slayReq:0,combatReq:65,weight:9,xpMelee:25000,xpCannon:40000,xpBarrage:0,gpHr:120000,cannon:true,barrage:false,notes:"Fast with cannon."},{name:"Gargoyles",slayReq:75,combatReq:80,weight:8,xpMelee:30000,xpCannon:40000,xpBarrage:0,gpHr:350000,cannon:true,barrage:false,notes:"GG alt. Rock hammer needed."},{name:"Greater demons",slayReq:0,combatReq:75,weight:9,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:120000,cannon:true,barrage:false,notes:"Krils alt."},{name:"Hellhounds",slayReq:0,combatReq:75,weight:10,xpMelee:25000,xpCannon:38000,xpBarrage:0,gpHr:80000,cannon:true,barrage:false,notes:"Cerberus alt."},{name:"Kalphite",slayReq:0,combatReq:15,weight:8,xpMelee:25000,xpCannon:40000,xpBarrage:0,gpHr:100000,cannon:true,barrage:false,notes:"KQ alt."},{name:"Kurask",slayReq:70,combatReq:65,weight:4,xpMelee:20000,xpCannon:28000,xpBarrage:0,gpHr:150000,cannon:true,barrage:false,notes:"Broad/leaf-bladed req."},{name:"Lizardmen",slayReq:0,combatReq:0,weight:8,xpMelee:30000,xpCannon:45000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:"Shayzien armour."},{name:"Metal dragons",slayReq:0,combatReq:0,weight:9,xpMelee:15000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Common block candidate."},{name:"Muttadiles",slayReq:97,combatReq:0,weight:7,xpMelee:30000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:""},{name:"Nechryael",slayReq:80,combatReq:0,weight:10,xpMelee:32000,xpCannon:45000,xpBarrage:55000,gpHr:200000,cannon:true,barrage:true,notes:"Slayer Tower/Catacombs."},{name:"Red dragons",slayReq:0,combatReq:68,weight:7,xpMelee:20000,xpCannon:0,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Brutal reds alt."},{name:"Skeletal wyverns",slayReq:72,combatReq:0,weight:7,xpMelee:22000,xpCannon:0,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Shield req."},{name:"Smoke devils",slayReq:93,combatReq:0,weight:10,xpMelee:35000,xpCannon:50000,xpBarrage:0,gpHr:300000,cannon:true,barrage:false,notes:"DT2 req."},{name:"Spiritual creatures",slayReq:0,combatReq:60,weight:7,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:300000,cannon:true,barrage:false,notes:"GWD area."},{name:"Steel dragons",slayReq:0,combatReq:0,weight:8,xpMelee:15000,xpCannon:0,xpBarrage:0,gpHr:250000,cannon:false,barrage:false,notes:"Slow. Block candidate."},{name:"Suqahs",slayReq:0,combatReq:0,weight:7,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:100000,cannon:true,barrage:false,notes:""},{name:"Turoths",slayReq:55,combatReq:60,weight:4,xpMelee:18000,xpCannon:25000,xpBarrage:0,gpHr:100000,cannon:true,barrage:false,notes:"Broad/leaf-bladed req."},{name:"Vampyres",slayReq:0,combatReq:0,weight:7,xpMelee:25000,xpCannon:0,xpBarrage:0,gpHr:200000,cannon:false,barrage:false,notes:"Flail req."},{name:"Warped creatures",slayReq:56,combatReq:0,weight:7,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:150000,cannon:true,barrage:false,notes:""},{name:"Wyrms",slayReq:62,combatReq:0,weight:10,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:200000,cannon:true,barrage:false,notes:""},{name:"Zygomites",slayReq:57,combatReq:0,weight:2,xpMelee:18000,xpCannon:0,xpBarrage:0,gpHr:100000,cannon:false,barrage:false,notes:"Fungicide needed."}];
+let state={rsn:'',slayLvl:99,combatLvl:126,questPts:275,attack:99,strength:99,defence:99,magic:99,ranged:99,prayer:82,agility:87,master:'duradel',method:'cannon',goal:'xp',blocked:new Set()};
+const MASTERS={duradel:{name:'Duradel',pts:15,blockCost:100,tasks:DURADEL_TASKS},nieve:{name:'Nieve/Steve',pts:12,blockCost:90,tasks:NIEVE_TASKS},konar:{name:'Konar',pts:18,blockCost:100,tasks:NIEVE_TASKS}};
+const UNLOCK_MAP={ul_watchBirdie:'Aviansie',ul_basilocked:'Basilisks',ul_reptileGotRipped:'Lizardmen',ul_luredIn:'Aquanite',ul_wingsSpread:'Gryphons',ul_likeABoss:'Boss tasks'};
+function fmtK(n){if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return Math.round(n/1e3)+'K';return n.toLocaleString();}
+function setStatus(id,t,cls){const el=document.getElementById(id);if(el){el.textContent=t;el.className='status-line '+(cls||'');}}
+const SKILL_IDX={overall:0,attack:1,defence:2,strength:3,hitpoints:4,ranged:5,prayer:6,magic:7,cooking:8,woodcutting:9,fletching:10,fishing:11,firemaking:12,crafting:13,smithing:14,mining:15,herblore:16,agility:17,thieving:18,slayer:19,farming:20,runecrafting:21,hunter:22,construction:23};
+const ENDPOINT={regular:'hiscore_oldschool',ironman:'hiscore_oldschool_ironman',hardcore:'hiscore_oldschool_hardcore_ironman',ultimate:'hiscore_oldschool_ultimate'};
+async function lookupPlayer(){
+  const name=document.getElementById('rsn').value.trim();
+  if(!name){setStatus('lookupStatus','Enter a username first','err');return;}
+  const btn=document.getElementById('lookupBtn');
+  btn.disabled=true;btn.textContent='...';
+  setStatus('lookupStatus','Looking up '+name+'...','info');
+  try{
+    const mode=document.getElementById('accountType').value;
+    const ep=ENDPOINT[mode]||ENDPOINT.regular;
+    const playerParam=name.replace(/ /g,'+');
+    const innerUrl=`https://secure.runescape.com/m=${ep}/index_lite.ws?player=${playerParam}`;
+    const url=`https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(innerUrl)}`;
+    const r=await fetch(url);
+    const text=await r.text();
+    if(!text||text.includes('<!DOCTYPE')||text.trim().length<20)throw new Error('Player not found');
+    const lines=text.trim().split('\n');
+    const get=(skill)=>{const l=lines[SKILL_IDX[skill]];return l?parseInt(l.split(',')[1])||1:1;};
+    state.slayLvl=get('slayer');state.attack=get('attack');state.strength=get('strength');
+    state.defence=get('defence');state.magic=get('magic');state.ranged=get('ranged');
+    state.prayer=get('prayer');state.agility=get('agility');
+    const hp=get('hitpoints');
+    const base=0.25*(state.defence+hp+Math.floor(state.prayer/2));
+    const melee=0.325*(state.attack+state.strength);
+    const range=0.325*(Math.floor(state.ranged*1.5));
+    const mage=0.325*(Math.floor(state.magic*1.5));
+    state.combatLvl=Math.floor(base+Math.max(melee,range,mage));
+    const qpLine=lines[64];
+    state.questPts=qpLine?parseInt(qpLine.split(',')[1])||0:0;
+    state.rsn=name;
+    renderStatPills();
+    setStatus('lookupStatus',`Loaded: ${name} - Combat ${state.combatLvl}, Slayer ${state.slayLvl}, QP ${state.questPts}`,'ok');
+    recalculate();
+  }catch(e){setStatus('lookupStatus','Error: '+e.message,'err');}
+  btn.disabled=false;btn.textContent='Lookup';
+}
+function blockSlotsFromQp(qp){
+  const t=[0,32,75,100,125,150,200];let s=0;
+  for(let i=0;i<t.length;i++)if(qp>=t[i])s=i+1;
+  return Math.min(s,7);
+}
+function renderStatPills(){
+  const pills=[`Combat: <span>${state.combatLvl}</span>`,`Slayer: <span>${state.slayLvl}</span>`,`QP: <span>${state.questPts}</span>`,`Block Slots: <span>${blockSlotsFromQp(state.questPts)}</span>`,`Prayer: <span>${state.prayer}</span>`,`Agility: <span>${state.agility}</span>`];
+  document.getElementById('statPills').innerHTML=pills.map(p=>`<div class="pill">${p}</div>`).join('');
+}
+function setMaster(m){
+  state.master=m;
+  document.querySelectorAll('.mtab').forEach((el,i)=>el.classList.toggle('active',['duradel','nieve','konar'][i]===m));
+  const info=MASTERS[m];
+  document.getElementById('masterInfo').textContent=`${info.name} - ${info.pts} pts/task, Block cost: ${info.blockCost}pts`;
+  recalculate();
+}
+function setMethod(m){
+  state.method=m;
+  document.querySelectorAll('.mpill').forEach(el=>el.classList.toggle('active',el.dataset.m===m));
+  recalculate();
+}
+function isEligible(task){
+  if(task.slayReq>0&&state.slayLvl<task.slayReq)return false;
+  if(task.combatReq>0&&state.combatLvl<task.combatReq)return false;
+  for(const[ulId,taskName]of Object.entries(UNLOCK_MAP)){
+    if(task.name===taskName){const ul=document.getElementById(ulId);if(!ul||!ul.checked)return false;}
+  }
+  return true;
+}
+function getXpForTask(task){
+  if(state.method==='barrage'&&task.xpBarrage>0)return task.xpBarrage;
+  if(state.method==='cannon'&&task.xpCannon>0)return task.xpCannon;
+  return task.xpMelee;
+}
+function recalculate(){
+  const master=MASTERS[state.master];
+  const tasks=master.tasks;
+  const maxBlocks=blockSlotsFromQp(state.questPts);
+  document.getElementById('blockMax').textContent=maxBlocks;
+  const eligible=tasks.filter(t=>isEligible(t)&&!state.blocked.has(t.name));
+  const totalWeight=eligible.reduce((s,t)=>s+t.weight,0);
+  let wXp=0,wGp=0;
+  eligible.forEach(t=>{const pct=totalWeight>0?t.weight/totalWeight:0;wXp+=pct*getXpForTask(t);wGp+=pct*t.gpHr;});
+  const remainingSlots=maxBlocks-state.blocked.size;
+  const blockCandidates=eligible.filter(t=>!state.blocked.has(t.name)).map(t=>{const xp=getXpForTask(t);const improvement=(wXp-xp)*(t.weight/totalWeight);return{...t,improvement,xp};}).filter(t=>t.improvement>0).sort((a,b)=>b.improvement-a.improvement);
+  document.getElementById('recPanel').style.display='block';
+  const topBlocks=blockCandidates.slice(0,Math.min(remainingSlots,5));
+  const recContent=document.getElementById('recContent');
+  if(topBlocks.length>0){
+    recContent.innerHTML=`<div style="font-size:12px;color:var(--muted);margin-bottom:6px">Block these to maximise ${state.goal==="xp"?"XP/hr":"efficiency"} - ordered by impact:</div><div class="rec-items">${topBlocks.map(t=>`<span class="rec-tag rec-block" onclick="toggleBlock('${t.name}')" style="cursor:pointer">🚫 ${t.name} (w:${t.weight})</span>`).join('')}</div><div style="font-size:11px;color:var(--muted);margin-top:6px">Click a tag to block. ${remainingSlots} slot${remainingSlots!==1?'s':''} remaining.</div>`;
+  }else{
+    recContent.innerHTML=`<div style="font-size:12px;color:var(--green)">✓ Block list looks optimal!</div>`;
+  }
+  document.getElementById('sumCards').innerHTML=`<div class="sum-card"><div class="sum-val">${fmtK(Math.round(wXp))}</div><div class="sum-lbl">Avg XP/hr</div></div><div class="sum-card"><div class="sum-val gold">${fmtK(Math.round(wGp))}</div><div class="sum-lbl">Avg GP/hr</div></div><div class="sum-card"><div class="sum-val">${eligible.length}</div><div class="sum-lbl">Active Tasks</div></div><div class="sum-card"><div class="sum-val red">${state.blocked.size}</div><div class="sum-lbl">Blocked</div></div><div class="sum-card"><div class="sum-val green">${master.pts}</div><div class="sum-lbl">Pts/Task</div></div><div class="sum-card"><div class="sum-val">${totalWeight}</div><div class="sum-lbl">Total Weight</div></div>`;
+  renderBlockSlots();renderTable();
+}
+function renderBlockSlots(){
+  const maxBlocks=blockSlotsFromQp(state.questPts);
+  const blocked=[...state.blocked];
+  document.getElementById('blockCount').textContent=blocked.length;
+  let html='';
+  for(let i=0;i<maxBlocks;i++){
+    if(i<blocked.length){html+=`<div class="slot-filled" onclick="toggleBlock('${blocked[i]}')" title="Unblock: ${blocked[i]}">${blocked[i].split(' ').map(w=>w[0]).join('').slice(0,4)}<br><span style="font-size:7px">${blocked[i].slice(0,8)}</span></div>`;}
+    else{html+=`<div class="slot-empty">+</div>`;}
+  }
+  document.getElementById('blockSlots').innerHTML=html;
+}
+function toggleBlock(name){
+  if(state.blocked.has(name)){state.blocked.delete(name);}
+  else{
+    const maxBlocks=blockSlotsFromQp(state.questPts);
+    if(state.blocked.size>=maxBlocks){alert(`Only ${maxBlocks} block slots available.`);return;}
+    state.blocked.add(name);
+  }
+  recalculate();
+}
+function clearAllBlocks(){state.blocked.clear();recalculate();}
+let sortCol='chance',sortAsc=false;
+function sortBy(col){if(sortCol===col)sortAsc=!sortAsc;else{sortCol=col;sortAsc=col==='name';}renderTable();}
+function renderTable(){
+  const master=MASTERS[state.master];
+  const tasks=master.tasks;
+  const activeTasks=tasks.filter(t=>isEligible(t)&&!state.blocked.has(t.name));
+  const totalWeight=activeTasks.reduce((s,t)=>s+t.weight,0);
+  const search=document.getElementById('taskSearch').value.toLowerCase();
+  const filter=document.getElementById('filterStatus').value;
+  let rows=tasks.map(t=>{const eligible=isEligible(t);const blocked=state.blocked.has(t.name);const chance=eligible&&!blocked&&totalWeight>0?(t.weight/totalWeight*100):0;const xp=getXpForTask(t);return{...t,eligible,blocked,chance,xp};});
+  if(filter==='active')rows=rows.filter(r=>r.eligible&&!r.blocked);
+  if(filter==='blocked')rows=rows.filter(r=>r.blocked);
+  if(search)rows=rows.filter(r=>r.name.toLowerCase().includes(search));
+  rows.sort((a,b)=>{let av,bv;if(sortCol==='name'){av=a.name;bv=b.name;return sortAsc?av.localeCompare(bv):bv.localeCompare(av);}if(sortCol==='chance'){av=a.chance;bv=b.chance;}else if(sortCol==='xp'){av=a.xp;bv=b.xp;}else if(sortCol==='gp'){av=a.gpHr;bv=b.gpHr;}else if(sortCol==='weight'){av=a.weight;bv=b.weight;}else{av=a.chance;bv=b.chance;}return sortAsc?av-bv:bv-av;});
+  const activeRows=rows.filter(r=>r.eligible&&!r.blocked);
+  const avgXp=activeRows.length>0?activeRows.reduce((s,r)=>s+r.xp,0)/activeRows.length:0;
+  const tbody=document.getElementById('taskBody');
+  tbody.innerHTML=rows.map(t=>{
+    const isTop=!t.blocked&&t.eligible&&t.xp>=avgXp*1.2;
+    const isBad=!t.blocked&&t.eligible&&t.xp<avgXp*0.6;
+    const rowCls=t.blocked?'row-blocked':isTop?'row-top':isBad?'row-skip':'';
+    const canBadge=t.cannon?'<span class="badge b-can">CANNON</span>':'';
+    const barBadge=t.barrage?'<span class="badge b-bar">BARRAGE</span>':'';
+    const reqBadge=!t.eligible?`<span class="badge b-req">Need ${t.slayReq>state.slayLvl?'Slay '+t.slayReq:'CB '+t.combatReq}</span>`:'';
+    const wBar=t.eligible&&!t.blocked?`<div class="w-bar" style="width:${Math.min(t.weight*6,80)}px"></div>`:'–';
+    const blockBtn=t.blocked?`<button class="tbl-btn btn-block active" onclick="toggleBlock('${t.name}')">Unblock</button>`:`<button class="tbl-btn btn-block" onclick="toggleBlock('${t.name}')" ${!t.eligible?'disabled':''}>Block</button>`;
+    return `<tr class="${rowCls}"><td class="name-cell">${t.name}${canBadge}${barBadge}${reqBadge}<div class="task-note">${t.notes}</div></td><td>${t.chance>0?t.chance.toFixed(1)+'%':'-'}</td><td>${t.eligible?fmtK(t.xp):'-'}</td><td>${t.eligible?fmtK(t.gpHr):'-'}</td><td style="font-size:11px">${t.cannon&&t.barrage?'Both':t.cannon?'Cannon':t.barrage?'Barrage':'Melee'}</td><td>${wBar}</td><td>${blockBtn}</td></tr>`;
+  }).join('');
+  const activeCount=rows.filter(r=>r.eligible&&!r.blocked).length;
+  document.getElementById('tableFooter').textContent=`Showing ${rows.length} tasks. ${activeCount} active, ${state.blocked.size} blocked.`;
+  document.querySelectorAll('thead th').forEach((th,i)=>{const cols=['name','chance','xp','gp',null,'weight',null];th.className=cols[i]===sortCol?`sorted${sortAsc?' asc':''}`:'';});
+}
+setMaster('duradel');
+recalculate();
+</script>
+</body>
+</html>
