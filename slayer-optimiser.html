@@ -52,6 +52,8 @@ select option{background:var(--bg);}
 .mtab:last-child{border-radius:0 3px 3px 0;}
 .mtab:not(:first-child){border-left:none;}
 .mtab.active{background:var(--teal-dark);border-color:var(--teal);color:var(--teal);}
+.mtab.wild{color:var(--red);}
+.mtab.wild.active{background:rgba(240,64,96,.15);border-color:var(--red);color:var(--red);}
 .sum-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:14px;}
 .sum-card{background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:12px;text-align:center;}
 .sum-val{font-size:20px;font-weight:700;color:var(--teal);line-height:1;}
@@ -155,8 +157,8 @@ tr.row-top td.name-cell{color:var(--green);}
       <div><label class="fl">Quest Points</label><input type="number" id="manQP" value="200" min="0" max="310" oninput="onManualChange()"></div>
       <div><label class="fl">Sailing Level</label><input type="number" id="manSailing" value="0" min="0" max="99" oninput="onManualChange()"></div>
     </div>
-    <div style="margin-top:8px">
-      <label class="chk"><input type="checkbox" id="manDiaryLumbElite" onchange="onManualChange()"><span class="cb"></span>Lumbridge &amp; Draynor Elite Diary (unlocks 7th block slot)</label>
+    <div id="manDiaryRow" style="margin-top:8px">
+      <label class="chk"><input type="checkbox" id="manDiaryLumbElite" onchange="onManualChange()"><span class="cb"></span>Lumbridge &amp; Draynor Elite Diary (unlocks 7th block slot) &#8212; auto-detected when WikiSync loads</label>
     </div>
   </div>
   <div id="lookupStatus" class="status-line">Enter your RSN &#8212; WikiSync tried first, falls back to hiscores</div>
@@ -194,15 +196,11 @@ tr.row-top td.name-cell{color:var(--green);}
     <div class="mtab active" onclick="setMaster('duradel')">Duradel</div>
     <div class="mtab" onclick="setMaster('nieve')">Nieve / Steve</div>
     <div class="mtab" onclick="setMaster('konar')">Konar</div>
-    <div class="mtab" onclick="setMaster('krystilia')" id="tabKrystilia" style="display:none">Krystilia</div>
+    <div class="mtab wild" onclick="setMaster('krystilia')" id="tabKrystilia">Krystilia &#x2620;</div>
     <div class="mtab" onclick="setMaster('turael')">Turael</div>
   </div>
   <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px">
     <div id="masterInfo" style="font-size:12px;color:var(--muted)"></div>
-    <label class="chk" style="margin:0">
-      <input type="checkbox" id="toggleWilderness" onchange="toggleWildernessMode()"><span class="cb"></span>
-      <span style="font-size:11px;color:var(--red)">&#x2620; Wilderness Slayer (Krystilia)</span>
-    </label>
   </div>
   <div class="master-blocks-bar" id="masterBlocksBar"></div>
 </div>
@@ -310,13 +308,11 @@ tr.row-top td.name-cell{color:var(--green);}
    QUEST DATA
    ========================================================= */
 var QUEST_QP = {"Cook's Assistant":1,"Demon Slayer":3,"The Restless Ghost":1,"Romeo & Juliet":5,"Sheep Shearer":1,"Shield of Arrav":1,"Ernest the Chicken":4,"Vampyre Slayer":3,"Imp Catcher":1,"Prince Ali Rescue":3,"Doric's Quest":1,"Black Knights' Fortress":3,"Witch's Potion":1,"The Knight's Sword":1,"Goblin Diplomacy":5,"Pirate's Treasure":2,"Dragon Slayer I":2,"Druidic Ritual":4,"Lost City":3,"Witch's House":4,"Merlin's Crystal":6,"Heroes' Quest":1,"Scorpion Catcher":1,"Family Crest":1,"Tribal Totem":1,"Fishing Contest":1,"Monk's Friend":1,"Temple of Ikov":1,"Clock Tower":1,"Holy Grail":2,"Tree Gnome Village":2,"Fight Arena":2,"Hazeel Cult":1,"Sheep Herder":4,"Plague City":1,"Sea Slug":1,"Waterfall Quest":1,"Biohazard":3,"Jungle Potion":1,"The Grand Tree":5,"Shilo Village":2,"Underground Pass":5,"Observatory Quest":2,"The Tourist Trap":2,"Watchtower":4,"Dwarf Cannon":1,"Murder Mystery":3,"The Dig Site":2,"Gertrude's Cat":1,"Legends' Quest":4,"Big Chompy Bird Hunting":2,"Elemental Workshop I":1,"Priest in Peril":1,"Nature Spirit":2,"Death Plateau":1,"Troll Stronghold":1,"Tai Bwo Wannai Trio":2,"Regicide":3,"Eadgar's Ruse":1,"Shades of Mort'ton":3,"Shadow of the Storm":3,"Animal Magnetism":1,"Haunted Mine":2,"Troll Romance":2,"In Search of the Myreque":2,"Creature of Fenkenstrain":2,"Rum Deal":2,"Zogre Flesh Eaters":2,"One Small Favour":2,"Mountain Daughter":2,"Between a Rock...":2,"The Feud":1,"Ghosts Ahoy":2,"Icthlarin's Little Helper":4,"Tears of Guthix":1,"Mourning's End Part I":2,"Recipe for Disaster":10,"In Aid of the Myreque":2,"Lunar Diplomacy":2,"Devious Minds":1,"The Hand in the Sand":1,"Enakhra's Lament":2,"Cabin Fever":2,"Fairytale I - Growing Pains":2,"Garden of Tranquillity":2,"A Tail of Two Cats":2,"Wanted!":1,"Mourning's End Part II":2,"Skippy and the Mogres":1,"Lair of Tarn Razorlor":1,"Horror from the Deep":4,"Throne of Miscellania":1,"Monkey Madness I":3,"Fairytale II - Cure a Queen":2,"Grim Tales":1,"King's Ransom":1,"Monkey Madness II":4,"Enlightened Journey":1,"Eagles' Peak":2,"Cold War":1,"The Fremennik Isles":1,"Tower of Life":2,"Ratcatchers":2,"Swan Song":2,"Royal Trouble":1,"Death to the Dorgeshuun":1,"Forgettable Tale...":2,"Another Slice of H.A.M.":1,"Dream Mentor":2,"My Arm's Big Adventure":1,"Darkness of Hallowvale":2,"The Slug Menace":1,"Elemental Workshop II":1,"The Eyes of Glouphrie":2,"Desert Treasure I":3,"Olaf's Quest":1,"A Soul's Bane":1,"The Fremennik Trials":3,"Bone Voyage":1,"Client of Kourend":1,"Dragon Slayer II":4,"Sins of the Father":2,"Making Friends with My Arm":1,"The Forsaken Tower":1,"The Ascent of Arceuus":1,"X Marks the Spot":1,"Children of the Sun":1,"Desert Treasure II - The Fallen Empire":5,"A Night at the Theatre":2,"A Kingdom Divided":1,"Below Ice Mountain":1,"A Porcine of Interest":1,"Daddy's Home":1,"Getting Ahead":1,"Sleeping Giants":1,"His Faithful Servants":1,"Hopespear's Will":1,"Into the Tombs":1,"Ethically Acquired Antiquities":1,"Death on the Isle":1,"At First Light":1,"Current Affairs":1,"The Path of Glouphrie":2,"Beneath Cursed Sands":2,"Curse of the Empty Lord":1,"Defender of Varrock":1,"Enter the Abyss":1,"A Taste of Hope":2,"While Guthix Sleeps":5,"The Fremennik Exiles":2,"Land of the Goblins":2,"Song of the Elves":4,"The Great Brain Robbery":2,"Making History":3,"Recruitment Drive":1,"What Lies Below":1,"Roving Elves":1,"The Corsair Curse":1,"The Lost Tribe":1,"The Golem":1,"The General's Shadow":1,"The Giant Dwarf":1,"Temple of the Eye":1,"Tale of the Righteous":1,"The Queen of Thieves":1,"The Depths of Despair":1,"The Curse of Arrav":1,"The Garden of Death":1,"Secrets of the North":1,"Perilous Moons":1,"Twilight's Promise":1,"Troubled Tortugans":1,"Pandemonium":1,"Prying Times":1,"Meat and Greet":1,"Scrambled!":1,"Vale Totems":1,"The Ides of Milk":1,"Rag and Bone Man I":1,"Rag and Bone Man II":1,"Misthalin Mystery":1,"Shadows of Custodia":1,"The Final Dawn":2,"The Heart of Darkness":2,"The Ribbiting Tale of a Lily Pad Labour Dispute":1,"Spirits of the Elid":2};
-
 function calcQpFromQuests(completed){var qp=0;completed.forEach(function(q){qp+=QUEST_QP[q]||0;});return qp;}
-
 var QUEST_REQ_MAP={dragonSlayer:"Dragon Slayer I",priestInPeril:"Priest in Peril",regicide:"Regicide",desertTreasure:"Desert Treasure I",cabinFever:"Cabin Fever",horrorFromDeep:"Horror from the Deep",boneVoyage:"Bone Voyage",elementalWorkshop:"Elemental Workshop I",mourningsEnd2:"Mourning's End Part II",whileGuthixSleeps:"While Guthix Sleeps",troubledTortugans:"Troubled Tortugans",lunarDiplomacy:"Lunar Diplomacy",skippyMogres:"Skippy and the Mogres"};
 
 /* =========================================================
-   TASK LISTS  (difficulty: 1=easy 2=med 3=hard 4=elite)
+   TASK LISTS
    ========================================================= */
 var DURADEL_TASKS=[
   {name:"Aberrant spectres",slayReq:60,combatReq:65,weight:7,xpMelee:25000,xpCannon:35000,xpBarrage:0,gpHr:200000,questReq:null,notes:"Herb drops. Nose peg/slayer helm.",difficulty:2},
@@ -363,7 +359,6 @@ var DURADEL_TASKS=[
   {name:"Wyrms",slayReq:62,combatReq:0,weight:10,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:200000,questReq:null,notes:"Dragon sword/harpoon drops.",difficulty:2},
   {name:"Zygomites",slayReq:57,combatReq:0,weight:2,xpMelee:18000,xpCannon:0,xpBarrage:0,gpHr:100000,questReq:null,notes:"Fungicide spray needed.",difficulty:2}
 ];
-
 var NIEVE_TASKS=[
   {name:"Aberrant spectres",slayReq:60,combatReq:65,weight:8,xpMelee:25000,xpCannon:35000,xpBarrage:0,gpHr:200000,questReq:null,notes:"Nose peg/slayer helm.",difficulty:2},
   {name:"Abyssal demons",slayReq:85,combatReq:85,weight:9,xpMelee:35000,xpCannon:45000,xpBarrage:55000,gpHr:150000,questReq:null,notes:"Barrage in Catacombs.",difficulty:3},
@@ -405,7 +400,6 @@ var NIEVE_TASKS=[
   {name:"Wyrms",slayReq:62,combatReq:0,weight:10,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:200000,questReq:null,notes:"",difficulty:2},
   {name:"Zygomites",slayReq:57,combatReq:0,weight:2,xpMelee:18000,xpCannon:0,xpBarrage:0,gpHr:100000,questReq:null,notes:"Fungicide needed.",difficulty:2}
 ];
-
 var KONAR_TASKS=[
   {name:"Abyssal demons",slayReq:85,combatReq:85,weight:9,xpMelee:35000,xpCannon:45000,xpBarrage:55000,gpHr:150000,questReq:null,notes:"Slayer Tower or Catacombs. Barrage fast XP.",difficulty:3},
   {name:"Adamant dragons",slayReq:0,combatReq:0,weight:2,xpMelee:18000,xpCannon:0,xpBarrage:0,gpHr:400000,questReq:"dragonSlayer",notes:"Lithkren Vault (Dragon Slayer II). Frequent block candidate.",difficulty:4},
@@ -440,7 +434,6 @@ var KONAR_TASKS=[
   {name:"Warped creatures",slayReq:56,combatReq:0,weight:8,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:150000,questReq:null,notes:"Catacombs of Kourend. Good prayer XP.",difficulty:1},
   {name:"Wyrms",slayReq:62,combatReq:0,weight:10,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:200000,questReq:null,notes:"Karuulm Slayer Dungeon. Boots of stone.",difficulty:2}
 ];
-
 var TURAEL_TASKS=[
   {name:"Banshees",slayReq:15,combatReq:0,weight:8,xpMelee:8000,xpCannon:12000,xpBarrage:0,gpHr:20000,questReq:null,notes:"Earmuffs req.",difficulty:1},
   {name:"Bats",slayReq:0,combatReq:0,weight:7,xpMelee:6000,xpCannon:10000,xpBarrage:0,gpHr:10000,questReq:null,notes:"Quick reset task.",difficulty:1},
@@ -468,9 +461,8 @@ var TURAEL_TASKS=[
   {name:"Wolves",slayReq:0,combatReq:0,weight:7,xpMelee:7000,xpCannon:11000,xpBarrage:0,gpHr:8000,questReq:null,notes:"",difficulty:1},
   {name:"Zombies",slayReq:0,combatReq:0,weight:7,xpMelee:6000,xpCannon:10000,xpBarrage:0,gpHr:8000,questReq:null,notes:"",difficulty:1}
 ];
-
 var KRYSTILIA_TASKS=[
-  {name:"Ankou",slayReq:0,combatReq:40,weight:5,xpMelee:25000,xpCannon:35000,xpBarrage:40000,gpHr:80000,questReq:null,notes:"Wilderness Graveyard of Shadows or Chaos Temple.",difficulty:2},
+  {name:"Ankou",slayReq:0,combatReq:40,weight:5,xpMelee:25000,xpCannon:35000,xpBarrage:40000,gpHr:80000,questReq:null,notes:"Wilderness Graveyard or Chaos Temple.",difficulty:2},
   {name:"Bears",slayReq:0,combatReq:0,weight:5,xpMelee:7000,xpCannon:11000,xpBarrage:0,gpHr:10000,questReq:null,notes:"Wilderness bears.",difficulty:1},
   {name:"Black demons",slayReq:0,combatReq:80,weight:5,xpMelee:28000,xpCannon:40000,xpBarrage:50000,gpHr:100000,questReq:null,notes:"Wilderness. PvP risk.",difficulty:3},
   {name:"Black dragons",slayReq:0,combatReq:80,weight:5,xpMelee:18000,xpCannon:25000,xpBarrage:0,gpHr:200000,questReq:"dragonSlayer",notes:"Wilderness.",difficulty:3},
@@ -480,12 +472,12 @@ var KRYSTILIA_TASKS=[
   {name:"Earth warriors",slayReq:0,combatReq:0,weight:5,xpMelee:12000,xpCannon:18000,xpBarrage:0,gpHr:30000,questReq:null,notes:"Edgeville Dungeon.",difficulty:2},
   {name:"Ents",slayReq:0,combatReq:0,weight:5,xpMelee:14000,xpCannon:22000,xpBarrage:0,gpHr:50000,questReq:null,notes:"Woodcutting axe needed. Magic logs.",difficulty:2},
   {name:"Fire giants",slayReq:0,combatReq:65,weight:7,xpMelee:25000,xpCannon:40000,xpBarrage:0,gpHr:120000,questReq:null,notes:"Wilderness.",difficulty:2},
-  {name:"Green dragons",slayReq:0,combatReq:0,weight:7,xpMelee:16000,xpCannon:22000,xpBarrage:0,gpHr:280000,questReq:"dragonSlayer",notes:"High value. High PvP risk. Green dhide + bones.",difficulty:2},
+  {name:"Green dragons",slayReq:0,combatReq:0,weight:7,xpMelee:16000,xpCannon:22000,xpBarrage:0,gpHr:280000,questReq:"dragonSlayer",notes:"High value. High PvP risk.",difficulty:2},
   {name:"Greater demons",slayReq:0,combatReq:75,weight:6,xpMelee:28000,xpCannon:40000,xpBarrage:0,gpHr:120000,questReq:null,notes:"Wilderness.",difficulty:2},
   {name:"Hellhounds",slayReq:0,combatReq:75,weight:6,xpMelee:25000,xpCannon:38000,xpBarrage:0,gpHr:80000,questReq:null,notes:"Wilderness cave.",difficulty:2},
   {name:"Ice giants",slayReq:0,combatReq:0,weight:5,xpMelee:16000,xpCannon:25000,xpBarrage:0,gpHr:40000,questReq:null,notes:"Wilderness.",difficulty:1},
   {name:"Ice warriors",slayReq:0,combatReq:0,weight:5,xpMelee:12000,xpCannon:20000,xpBarrage:0,gpHr:30000,questReq:null,notes:"Ice Plateau.",difficulty:1},
-  {name:"Lava dragons",slayReq:0,combatReq:0,weight:6,xpMelee:20000,xpCannon:0,xpBarrage:0,gpHr:300000,questReq:null,notes:"Deep wilderness. High PvP risk. Lava dragon isle.",difficulty:3},
+  {name:"Lava dragons",slayReq:0,combatReq:0,weight:6,xpMelee:20000,xpCannon:0,xpBarrage:0,gpHr:300000,questReq:null,notes:"Deep wilderness. Lava dragon isle.",difficulty:3},
   {name:"Lesser demons",slayReq:0,combatReq:0,weight:5,xpMelee:14000,xpCannon:20000,xpBarrage:0,gpHr:60000,questReq:null,notes:"Wilderness.",difficulty:1},
   {name:"Magic axes",slayReq:0,combatReq:0,weight:5,xpMelee:12000,xpCannon:0,xpBarrage:0,gpHr:30000,questReq:null,notes:"Deep wilderness.",difficulty:2},
   {name:"Mammoths",slayReq:0,combatReq:0,weight:5,xpMelee:18000,xpCannon:28000,xpBarrage:0,gpHr:50000,questReq:null,notes:"Wilderness Volcano.",difficulty:2},
@@ -507,37 +499,27 @@ var state={
   rsn:'',slayLvl:99,combatLvl:126,questPts:275,sailingLvl:0,
   methods:{melee:true,cannon:true,barrage:true},
   master:'duradel',goal:'xp',
-  // Per-master block lists — key is master key string
   blockedByMaster:{duradel:[],nieve:[],konar:[],krystilia:[],turael:[]},
   completedQuests:[],diaries:{},
-  wikisyncLoaded:false,manDiaryLumbElite:false,wildernessMode:false
+  wikisyncLoaded:false,manDiaryLumbElite:false
 };
-
-// Convenience: get/set current master's block list
 function getBlocked(){return state.blockedByMaster[state.master]||[];}
 function setBlocked(arr){state.blockedByMaster[state.master]=arr;}
-
-// Persist block lists to localStorage (keyed separately from flags)
-function saveBlockLists(){
-  try{localStorage.setItem('slayer_blocks',JSON.stringify(state.blockedByMaster));}catch(e){}
-}
+function saveBlockLists(){try{localStorage.setItem('slayer_blocks',JSON.stringify(state.blockedByMaster));}catch(e){}}
 function loadBlockLists(){
   try{
     var d=JSON.parse(localStorage.getItem('slayer_blocks')||'null');
-    if(d&&typeof d==='object'){
-      Object.keys(d).forEach(function(k){if(k in state.blockedByMaster)state.blockedByMaster[k]=d[k];});
-    }
+    if(d&&typeof d==='object'){Object.keys(d).forEach(function(k){if(k in state.blockedByMaster)state.blockedByMaster[k]=d[k];});}
   }catch(e){}
 }
 
 var MASTERS={
-  duradel:{name:'Duradel',pts:15,blockCost:100,skipCost:30,tasks:DURADEL_TASKS,bonusDiary:'Kourend & Kebos',bonusTier:'Elite',bonusPts:15,avgTaskLen:180},
-  nieve:{name:'Nieve/Steve',pts:12,blockCost:90,skipCost:30,tasks:NIEVE_TASKS,bonusDiary:'Western Provinces',bonusTier:'Elite',bonusPts:15,avgTaskLen:170},
-  konar:{name:'Konar quo Maten',pts:18,blockCost:100,skipCost:30,tasks:KONAR_TASKS,bonusDiary:'Kourend & Kebos',bonusTier:'Elite',bonusPts:20,avgTaskLen:150},
-  krystilia:{name:'Krystilia',pts:25,blockCost:100,skipCost:30,tasks:KRYSTILIA_TASKS,bonusDiary:null,bonusTier:null,bonusPts:25,avgTaskLen:120},
-  turael:{name:'Turael/Spria',pts:2,blockCost:30,skipCost:30,tasks:TURAEL_TASKS,bonusDiary:null,bonusTier:null,bonusPts:2,avgTaskLen:60}
+  duradel:{name:'Duradel',pts:15,tasks:DURADEL_TASKS,bonusDiary:'Kourend & Kebos',bonusTier:'Elite',bonusPts:15,avgTaskLen:15},
+  nieve:{name:'Nieve/Steve',pts:12,tasks:NIEVE_TASKS,bonusDiary:'Western Provinces',bonusTier:'Elite',bonusPts:15,avgTaskLen:14},
+  konar:{name:'Konar quo Maten',pts:18,tasks:KONAR_TASKS,bonusDiary:'Kourend & Kebos',bonusTier:'Elite',bonusPts:20,avgTaskLen:12},
+  krystilia:{name:'Krystilia',pts:25,tasks:KRYSTILIA_TASKS,bonusDiary:null,bonusTier:null,bonusPts:25,avgTaskLen:10},
+  turael:{name:'Turael/Spria',pts:2,tasks:TURAEL_TASKS,bonusDiary:null,bonusTier:null,bonusPts:2,avgTaskLen:5}
 };
-
 var MASTER_KEYS=['duradel','nieve','konar','krystilia','turael'];
 
 var UNLOCKS=[
@@ -559,24 +541,17 @@ var UNLOCKS=[
   {name:"Extend Bloodveld",cost:100,desc:"Extend bloodveld tasks"}
 ];
 
-/* =========================================================
-   localStorage — flags (global, all masters)
-   ========================================================= */
 function loadFlags(){try{return JSON.parse(localStorage.getItem('slayer_flags')||'{}');}catch(e){return{};}}
 function saveFlags(f){try{localStorage.setItem('slayer_flags',JSON.stringify(f));}catch(e){}}
 var taskFlags=loadFlags();
-
 function toggleFlag(name,type){
   if(taskFlags[name]===type)delete taskFlags[name];
   else taskFlags[name]=type;
   saveFlags(taskFlags);renderTable();
 }
 
-/* =========================================================
-   HELPERS
-   ========================================================= */
 function fmtK(n){if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return Math.round(n/1e3)+'K';return n.toLocaleString();}
-function setStatus(id,t,cls){var el=document.getElementById(id);if(el){el.textContent=t;el.className='status-line '+(cls||'');}}
+function setStatus(id,t,cls){var el=document.getElementById(id);if(el){el.innerHTML=t;el.className='status-line '+(cls||'');}}
 function hasBlocked(name){return getBlocked().indexOf(name)>=0;}
 function hasQuest(qk){
   if(!qk)return true;
@@ -585,17 +560,12 @@ function hasQuest(qk){
   return true;
 }
 function hasSailing(r){return !r||state.sailingLvl>=r;}
-function escQ(s){return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
+function escQ(s){return s.replace(/'/g,"\\'");}
 
-/* =========================================================
-   BLOCK SLOTS — 7th slot: L&D Elite diary
-   ========================================================= */
 function hasLumbDraynorElite(){
   if(state.wikisyncLoaded&&state.diaries){
     var ld=state.diaries['Lumbridge & Draynor'];
     if(ld&&ld['Elite']&&ld['Elite'].complete)return true;
-    var ld2=state.diaries['Lumbridge'];
-    if(ld2&&ld2['Elite']&&ld2['Elite'].complete)return true;
   }
   return state.manDiaryLumbElite;
 }
@@ -615,9 +585,6 @@ function getDiaryBonus(mk){
   return(tier&&tier.complete)?m.bonusPts:m.pts;
 }
 
-/* =========================================================
-   STAT PILLS
-   ========================================================= */
 function renderStatPills(){
   var slots=blockSlotsFromQp(state.questPts);
   var currentBal=parseInt(document.getElementById('currentPointsBalance').value)||0;
@@ -641,28 +608,20 @@ function renderStatPills(){
   }
 }
 
-/* =========================================================
-   MASTER BLOCKS SUMMARY BAR
-   shows blocked count per master across all masters
-   ========================================================= */
 function renderMasterBlocksBar(){
-  var bar=document.getElementById('masterBlocksBar');
-  if(!bar)return;
+  var bar=document.getElementById('masterBlocksBar');if(!bar)return;
   var html='';
   MASTER_KEYS.forEach(function(k){
-    if(k==='krystilia'&&!state.wildernessMode)return;
+    if(k==='turael')return;
     var m=MASTERS[k];
     var count=(state.blockedByMaster[k]||[]).length;
     var isCurrent=k===state.master;
-    html+='<div class="mb-chip" style="'+(isCurrent?'border-color:var(--teal-dim);color:var(--teal);':'')+'">'
-      +m.name.split('/')[0]+': <span class="mb-chip-count'+(count>0?' has-blocks':'')+'">'+count+'</span></div>';
+    html+='<div class="mb-chip" style="'+(isCurrent?'border-color:var(--teal-dim);color:var(--teal);':'')+'">'+
+      m.name.split('/')[0]+': <span class="mb-chip-count'+(count>0?' has-blocks':'')+'">'+count+'</span></div>';
   });
   bar.innerHTML=html;
 }
 
-/* =========================================================
-   MASTER SELECT
-   ========================================================= */
 function setMaster(m){
   state.master=m;
   var tabs=document.querySelectorAll('.mtab');
@@ -672,31 +631,13 @@ function setMaster(m){
   if(m==='krystilia')info+=' | Wilderness only &#9888; PvP risk';
   document.getElementById('masterInfo').innerHTML=info;
   document.getElementById('masterNameInline').textContent=MASTERS[m].name.split('/')[0];
-  renderMasterBlocksBar();
-  renderStatPills();recalculate();calcTuraelBoost();
+  renderMasterBlocksBar();renderStatPills();recalculate();calcTuraelBoost();
 }
 
-/* =========================================================
-   WILDERNESS MODE
-   ========================================================= */
-function toggleWildernessMode(){
-  state.wildernessMode=document.getElementById('toggleWilderness').checked;
-  document.getElementById('tabKrystilia').style.display=state.wildernessMode?'':'none';
-  if(!state.wildernessMode&&state.master==='krystilia')setMaster('duradel');
-  renderMasterBlocksBar();recalculate();
-}
-
-/* =========================================================
-   METHODS
-   ========================================================= */
 function toggleMethod(m){
   state.methods[m]=!state.methods[m];
   if(!state.methods.melee&&!state.methods.cannon&&!state.methods.barrage)state.methods.melee=true;
-  var pills=document.querySelectorAll('.mpill');
-  for(var i=0;i<pills.length;i++){
-    var dm=pills[i].getAttribute('data-m');
-    if(dm)pills[i].classList.toggle('active',state.methods[dm]);
-  }
+  document.querySelectorAll('.mpill').forEach(function(p){var dm=p.getAttribute('data-m');if(dm)p.classList.toggle('active',state.methods[dm]);});
   recalculate();
 }
 
@@ -715,9 +656,6 @@ function getBestXp(task){
   return{xp:task.xpMelee,method:'Melee'};
 }
 
-/* =========================================================
-   MAIN RECALCULATE
-   ========================================================= */
 function recalculate(){
   var master=MASTERS[state.master];
   var tasks=master.tasks;
@@ -745,7 +683,7 @@ function recalculate(){
   if(top.length>0){
     var html='<div style="font-size:12px;color:var(--muted);margin-bottom:6px">Block these to maximise '+(state.goal==='xp'?'XP/hr':'efficiency')+' &#8212; click to block:</div><div class="rec-items">';
     top.forEach(function(t){
-      html+='<span class="rec-tag rec-block" onclick="toggleBlock(''+escQ(t.name)+'')" title="Block costs 100pts; skip costs 30pts">[X] '+t.name+' (w:'+t.weight+', '+fmtK(t.xp)+'/hr)</span>';
+      html+='<span class="rec-tag rec-block" onclick="toggleBlock(\''+escQ(t.name)+'\')" title="Block=100pts, Skip=30pts">[X] '+t.name+' (w:'+t.weight+', '+fmtK(t.xp)+'/hr)</span>';
     });
     html+='</div><div style="font-size:11px;color:var(--muted);margin-top:6px">'+remSlots+' slot'+(remSlots!==1?'s':'')+' remaining.</div>';
     rc.innerHTML=html;
@@ -755,8 +693,9 @@ function recalculate(){
 
   var pts=getDiaryBonus(state.master);
   var currentBal=parseInt(document.getElementById('currentPointsBalance').value)||0;
-  var avgLen=master.avgTaskLen||180;
-  var tasksPerHour=3600/(avgLen*60+300);
+  // avgTaskLen is in minutes; tasksPerHour = 60 / (avgLen + travel)
+  var avgLen=master.avgTaskLen||15;
+  var tasksPerHour=60/(avgLen+5);
   var ptsPerHour=pts*tasksPerHour;
 
   document.getElementById('sumCards').innerHTML=
@@ -776,9 +715,6 @@ function recalculate(){
   renderUnlockTracker(currentBal,pts);
 }
 
-/* =========================================================
-   SKIP/BLOCK COST INFO
-   ========================================================= */
 function renderSkipInfo(pts,currentBal,ptsPerHour){
   var skipCost=30,blockCost=100;
   var skipTasks=Math.ceil(skipCost/pts);
@@ -787,25 +723,18 @@ function renderSkipInfo(pts,currentBal,ptsPerHour){
   var blockHrs=(blockCost/ptsPerHour).toFixed(1);
   var canSkip=currentBal>=skipCost,canBlock=currentBal>=blockCost;
   document.getElementById('skipInfo').innerHTML=
-    '<div class="skip-card">'+
-      '<div class="skip-card-title">Skip a Task</div>'+
-      '<div class="skip-card-val" style="color:var(--orange)">'+skipCost+' pts</div>'+
-      '<div style="font-size:11px;color:var(--muted);margin-top:4px">~'+skipTasks+' tasks to earn | ~'+skipHrs+'hr</div>'+
-      '<div style="margin-top:6px;font-size:11px;font-weight:700;color:'+(canSkip?'var(--green)':'var(--red)')+'">'+
-      (canSkip?'&#10003; Affordable':'&#10007; Need '+(skipCost-currentBal)+' more pts')+'</div>'+
-    '</div>'+
-    '<div class="skip-card">'+
-      '<div class="skip-card-title">Block a Task</div>'+
-      '<div class="skip-card-val" style="color:var(--red)">'+blockCost+' pts</div>'+
-      '<div style="font-size:11px;color:var(--muted);margin-top:4px">~'+blockTasks+' tasks to earn | ~'+blockHrs+'hr</div>'+
-      '<div style="margin-top:6px;font-size:11px;font-weight:700;color:'+(canBlock?'var(--green)':'var(--red)')+'">'+
-      (canBlock?'&#10003; Affordable':'&#10007; Need '+(blockCost-currentBal)+' more pts')+'</div>'+
-    '</div>';
+    '<div class="skip-card"><div class="skip-card-title">Skip a Task</div>'+
+    '<div class="skip-card-val" style="color:var(--orange)">'+skipCost+' pts</div>'+
+    '<div style="font-size:11px;color:var(--muted);margin-top:4px">~'+skipTasks+' tasks | ~'+skipHrs+'hr</div>'+
+    '<div style="margin-top:6px;font-size:11px;font-weight:700;color:'+(canSkip?'var(--green)':'var(--red)')+'">'+
+    (canSkip?'&#10003; Affordable':'&#10007; Need '+(skipCost-currentBal)+' more pts')+'</div></div>'+
+    '<div class="skip-card"><div class="skip-card-title">Block a Task</div>'+
+    '<div class="skip-card-val" style="color:var(--red)">'+blockCost+' pts</div>'+
+    '<div style="font-size:11px;color:var(--muted);margin-top:4px">~'+blockTasks+' tasks | ~'+blockHrs+'hr</div>'+
+    '<div style="margin-top:6px;font-size:11px;font-weight:700;color:'+(canBlock?'var(--green)':'var(--red)')+'">'+
+    (canBlock?'&#10003; Affordable':'&#10007; Need '+(blockCost-currentBal)+' more pts')+'</div></div>';
 }
 
-/* =========================================================
-   BLOCK SLOTS
-   ========================================================= */
 function renderBlockSlots(){
   var max=blockSlotsFromQp(state.questPts);
   var HARD_MAX=7;
@@ -814,13 +743,11 @@ function renderBlockSlots(){
   var h='';
   for(var i=0;i<HARD_MAX;i++){
     if(i>=max){
-      h+='<div class="slot-locked" title="'+(i===6?'Requires Lumbridge & Draynor Elite Diary':'Requires more quest points')+'">+</div>';
+      h+='<div class="slot-locked" title="'+(i===6?'Requires L&D Elite Diary':'Requires more QP')+'">+</div>';
     }else if(i<blocked.length){
       var n=blocked[i];
       var words=n.split(' ');
-      var line1=words[0].slice(0,7);
-      var line2=words.length>1?words[1].slice(0,7):'';
-      h+='<div class="slot-filled" onclick="toggleBlock(''+escQ(n)+'')" title="Unblock: '+n+'">'+line1+(line2?'<br>'+line2:'')+'</div>';
+      h+='<div class="slot-filled" onclick="toggleBlock(\''+escQ(n)+'\')" title="Unblock: '+n+'">'+words[0].slice(0,7)+(words[1]?'<br>'+words[1].slice(0,7):'')+'</div>';
     }else{
       h+='<div class="slot-empty">+</div>';
     }
@@ -829,29 +756,20 @@ function renderBlockSlots(){
 }
 
 function toggleBlock(name){
-  var blocked=getBlocked();
+  var blocked=getBlocked().slice();
   var idx=blocked.indexOf(name);
   if(idx>=0){
     blocked.splice(idx,1);
   }else{
     var m=blockSlotsFromQp(state.questPts);
-    if(blocked.length>=m){alert('Only '+m+' block slots available for this master. 7th requires Lumbridge & Draynor Elite diary.');return;}
+    if(blocked.length>=m){alert('Only '+m+' block slots available. 7th requires L&D Elite diary.');return;}
     blocked.push(name);
   }
-  setBlocked(blocked);
-  saveBlockLists();
-  recalculate();
+  setBlocked(blocked);saveBlockLists();recalculate();
 }
 
-function clearAllBlocks(){
-  setBlocked([]);
-  saveBlockLists();
-  recalculate();
-}
+function clearAllBlocks(){setBlocked([]);saveBlockLists();recalculate();}
 
-/* =========================================================
-   TURAEL BOOST CALCULATOR
-   ========================================================= */
 function calcTuraelBoost(){
   var mk=document.getElementById('boostMainMaster').value;
   var pts=getDiaryBonus(mk);
@@ -860,7 +778,7 @@ function calcTuraelBoost(){
   var mainLen=(MASTERS[mk]||MASTERS['duradel']).avgTaskLen;
   var cycleTime=mainLen*9+5;
   var ptsPerHourBoost=(ptsPerCycle/cycleTime)*60;
-  var straightPtsPerHour=(pts/mainLen)*60;
+  var straightPtsPerHour=(pts/(mainLen+5))*60;
   var tasksLeft=9-streak;
   document.getElementById('turaelResults').innerHTML=
     '<div class="boost-stat"><div class="boost-val">'+ptsPerCycle+'</div><div class="boost-lbl">Pts / 10-task cycle</div></div>'+
@@ -870,45 +788,31 @@ function calcTuraelBoost(){
     (tasksLeft===0?'Go Turael now!':tasksLeft+' tasks left')+'</div><div class="boost-lbl">Until Turael reset</div></div>';
 }
 
-/* =========================================================
-   UNLOCK TRACKER
-   ========================================================= */
 function renderUnlockTracker(currentBal,pts){
   var el=document.getElementById('unlockList');if(!el)return;
   var html='';
   UNLOCKS.forEach(function(u){
     var can=currentBal>=u.cost;
     var away=can?0:Math.ceil((u.cost-currentBal)/pts);
-    var prog=can
-      ?'<div class="unlock-already">&#10003; Affordable</div>'
-      :'<div class="unlock-tasks-away">'+away+' tasks</div><div style="font-size:10px;color:var(--muted)">to afford</div>';
+    var prog=can?'<div class="unlock-already">&#10003; Affordable</div>':'<div class="unlock-tasks-away">'+away+' tasks</div><div style="font-size:10px;color:var(--muted)">to afford</div>';
     html+='<div class="unlock-row"><div><div class="unlock-name">'+u.name+'</div><div class="unlock-cost">'+u.cost+' pts &#8212; '+u.desc+'</div></div><div class="unlock-progress">'+prog+'</div></div>';
   });
   el.innerHTML=html||'<div style="color:var(--muted);font-size:12px">No data.</div>';
 }
 
-/* =========================================================
-   COLLAPSIBLE SECTIONS
-   ========================================================= */
 var sectOpen={turaelSect:true,unlockSect:true};
 function toggleSect(id,toggleId){
   sectOpen[id]=!sectOpen[id];
-  var body=document.getElementById(id);
-  var icon=document.getElementById(toggleId);
-  body.style.display=sectOpen[id]?'':'none';
-  icon.textContent=sectOpen[id]?'\u25BC':'\u25B6';
+  document.getElementById(id).style.display=sectOpen[id]?'':'none';
+  document.getElementById(toggleId).textContent=sectOpen[id]?'\u25BC':'\u25B6';
 }
 
-/* =========================================================
-   SORT + TABLE
-   ========================================================= */
 var sortCol='chance',sortAsc=false;
 function sortBy(col){
   if(sortCol===col)sortAsc=!sortAsc;
   else{sortCol=col;sortAsc=col==='name';}
   renderTable();
 }
-
 var DIFF_LABEL=['','Easy','Med','Hard','Elite'];
 var DIFF_CLASS=['','b-diff1','b-diff2','b-diff3','b-diff4'];
 
@@ -925,7 +829,7 @@ function renderTable(){
     var chance=eligible&&!blocked&&tw>0?t.weight/tw*100:0;
     var best=getBestXp(t);
     return{name:t.name,slayReq:t.slayReq,combatReq:t.combatReq,questReq:t.questReq,sailingReq:t.sailingReq,
-      unlock:t.unlock,weight:t.weight,gpHr:t.gpHr,notes:t.notes,difficulty:t.difficulty||1,
+      unlock:t.unlock,weight:t.weight,gpHr:t.gpHr,notes:t.notes||'',difficulty:t.difficulty||1,
       eligible:eligible,blocked:blocked,chance:chance,xp:best.xp,method:best.method,flag:taskFlags[t.name]||null};
   });
 
@@ -948,9 +852,7 @@ function renderTable(){
   rows.forEach(function(t){
     var isTop=!t.blocked&&t.eligible&&t.xp>=avgXp*1.2;
     var isBad=!t.blocked&&t.eligible&&t.xp<avgXp*0.6;
-    var rowCls=t.blocked?'row-blocked':isTop?'row-top':isBad?'row-skip':'';
-    if(t.flag==='preferred'&&!t.blocked)rowCls='row-top';
-    if(t.flag==='disliked'&&!t.blocked&&rowCls!=='row-blocked')rowCls='row-skip';
+    var rowCls=t.blocked?'row-blocked':t.flag==='preferred'&&!t.blocked?'row-top':t.flag==='disliked'&&!t.blocked?'row-skip':isTop?'row-top':isBad?'row-skip':'';
 
     var req='';
     if(!t.eligible){
@@ -963,13 +865,14 @@ function renderTable(){
     var flagBadge=t.flag==='preferred'?'<span class="badge b-pref">&#9825; Pref</span>':t.flag==='disliked'?'<span class="badge b-dislike">&#10007; Dislike</span>':'';
     var diff=t.difficulty||1;
     var diffBadge='<span class="badge '+DIFF_CLASS[diff]+'">'+DIFF_LABEL[diff]+'</span>';
-    var mBadge=t.eligible?'<span class="badge '+(t.method==='Barrage'?'b-bar':t.method==='Cannon'?'b-can':'')+'">'+t.method+'</span>':'';
+    var mBadge=t.eligible?'<span class="badge '+(t.method==='Barrage'?'b-bar':t.method==='Cannon'?'b-can':'')+'">'+(t.method||'Melee')+'</span>':'';
     var wBar=t.eligible&&!t.blocked?'<span style="font-weight:700;color:var(--teal)">'+t.weight+'</span><div class="w-bar" style="width:'+Math.min(t.weight*6,60)+'px;margin-left:6px;display:inline-block"></div>':'-';
+    var qn=escQ(t.name);
     var bb=t.blocked
-      ?'<button class="tbl-btn btn-block active" onclick="toggleBlock(''+escQ(t.name)+'')">Unblock</button>'
-      :'<button class="tbl-btn btn-block" onclick="toggleBlock(''+escQ(t.name)+'')"'+(t.eligible?'':' disabled')+'>Block</button>';
-    var prefBtn='<button class="tbl-btn btn-pref'+(t.flag==='preferred'?' active':'')+'" onclick="toggleFlag(''+escQ(t.name)+'','preferred')" title="Mark preferred">&#9825;</button>';
-    var dislikeBtn='<button class="tbl-btn btn-dislike'+(t.flag==='disliked'?' active':'')+'" onclick="toggleFlag(''+escQ(t.name)+'','disliked')" title="Mark disliked">&#10007;</button>';
+      ?'<button class="tbl-btn btn-block active" onclick="toggleBlock(\''+qn+'\')">Unblock</button>'
+      :'<button class="tbl-btn btn-block" onclick="toggleBlock(\''+qn+'\')"'+(t.eligible?'':' disabled')+'>Block</button>';
+    var prefBtn='<button class="tbl-btn btn-pref'+(t.flag==='preferred'?' active':'')+'" onclick="toggleFlag(\''+qn+'\',\'preferred\')" title="Mark preferred">&#9825;</button>';
+    var dislikeBtn='<button class="tbl-btn btn-dislike'+(t.flag==='disliked'?' active':'')+'" onclick="toggleFlag(\''+qn+'\',\'disliked\')" title="Mark disliked">&#10007;</button>';
 
     html+='<tr class="'+rowCls+'">';
     html+='<td class="name-cell">'+t.name+req+flagBadge+diffBadge+'<div class="task-note">'+t.notes+'</div></td>';
@@ -990,7 +893,8 @@ function renderTable(){
 }
 
 /* =========================================================
-   WIKISYNC LOOKUP
+   WIKISYNC LOOKUP — uses allorigins /get (returns {contents:'...'})
+   WikiSync requires RuneLite user-agent; direct browser fetch is blocked (403)
    ========================================================= */
 async function lookupPlayer(){
   var name=document.getElementById('rsn').value.trim();
@@ -1000,65 +904,69 @@ async function lookupPlayer(){
   setStatus('lookupStatus','Trying WikiSync...','info');
 
   var wsLoaded=false;
-  var proxies=['https://api.allorigins.win/raw?url=','https://api.codetabs.com/v1/proxy/?quest='];
 
-  for(var pi=0;pi<proxies.length&&!wsLoaded;pi++){
-    try{
-      var wsUrl='https://sync.runescape.wiki/runelite/player/'+encodeURIComponent(name)+'/STANDARD';
-      var resp=await fetch(proxies[pi]+encodeURIComponent(wsUrl));
-      if(!resp.ok)throw new Error('proxy failed');
-      var text=await resp.text();
-      if(text.indexOf('username')<0)throw new Error('bad response');
-      var d=JSON.parse(text);
-      if(d.code==='NO_USER_DATA')throw new Error('no_wikisync');
+  try{
+    var wsUrl='https://sync.runescape.wiki/runelite/player/'+encodeURIComponent(name)+'/STANDARD';
+    var resp=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(wsUrl));
+    if(!resp.ok)throw new Error('proxy '+resp.status);
+    var wrapper=await resp.json();
+    var text=wrapper.contents||'';
+    if(!text||text.indexOf('username')<0)throw new Error('bad response');
+    var d=JSON.parse(text);
+    if(d.code==='NO_USER_DATA')throw new Error('no_wikisync');
 
-      var lv=d.levels||{};
-      state.slayLvl=lv['Slayer']||99;state.sailingLvl=lv['Sailing']||0;
-      var atk=lv['Attack']||99,str=lv['Strength']||99,def=lv['Defence']||99;
-      var hp=lv['Hitpoints']||99,pray=lv['Prayer']||70,rng=lv['Ranged']||99,mag=lv['Magic']||99;
-      var base=0.25*(def+hp+Math.floor(pray/2));
-      state.combatLvl=Math.floor(base+Math.max(0.325*(atk+str),0.325*Math.floor(rng*1.5),0.325*Math.floor(mag*1.5)));
+    var lv=d.levels||{};
+    state.slayLvl=lv['Slayer']||99;state.sailingLvl=lv['Sailing']||0;
+    var atk=lv['Attack']||99,str=lv['Strength']||99,def=lv['Defence']||99;
+    var hp=lv['Hitpoints']||99,pray=lv['Prayer']||70,rng=lv['Ranged']||99,mag=lv['Magic']||99;
+    var base=0.25*(def+hp+Math.floor(pray/2));
+    state.combatLvl=Math.floor(base+Math.max(0.325*(atk+str),0.325*Math.floor(rng*1.5),0.325*Math.floor(mag*1.5)));
 
-      var q=d.quests||{};
-      state.completedQuests=Object.keys(q).filter(function(k){return q[k]===2;});
-      state.questPts=calcQpFromQuests(state.completedQuests);
-      state.diaries=d.achievement_diaries||{};
-      state.rsn=name;state.wikisyncLoaded=true;wsLoaded=true;
+    var q=d.quests||{};
+    state.completedQuests=Object.keys(q).filter(function(k){return q[k]===2;});
+    state.questPts=calcQpFromQuests(state.completedQuests);
+    state.diaries=d.achievement_diaries||{};
+    state.rsn=name;state.wikisyncLoaded=true;wsLoaded=true;
 
-      var hasLD=hasLumbDraynorElite();
-      var slots=blockSlotsFromQp(state.questPts);
-      document.getElementById('wikisyncBadge').style.display='inline-flex';
-      setStatus('lookupStatus','WikiSync: '+name+' &#8212; CB '+state.combatLvl+', Slay '+state.slayLvl+
-        ', '+state.completedQuests.length+' quests ('+state.questPts+' QP), Sail '+state.sailingLvl+
-        ', '+slots+' block slots'+(hasLD?' (L&D Elite &#10003;)':''),'ok');
-      renderStatPills();recalculate();
-    }catch(e){
-      if(e.message==='no_wikisync'){setStatus('lookupStatus','No WikiSync data &#8212; trying hiscores...','info');break;}
+    var hasLD=hasLumbDraynorElite();
+    var slots=blockSlotsFromQp(state.questPts);
+    document.getElementById('wikisyncBadge').style.display='inline-flex';
+    document.getElementById('manDiaryRow').style.display='none';
+    setStatus('lookupStatus','WikiSync: '+name+' &#8212; CB '+state.combatLvl+', Slay '+state.slayLvl+
+      ', '+state.completedQuests.length+' quests ('+state.questPts+' QP), Sail '+state.sailingLvl+
+      ', '+slots+' block slots'+(hasLD?' (L&amp;D Elite &#10003;)':''),'ok');
+    renderStatPills();recalculate();
+  }catch(e){
+    if(e.message==='no_wikisync'){
+      setStatus('lookupStatus','No WikiSync data for this account, trying hiscores...','info');
+    }else{
+      setStatus('lookupStatus','WikiSync unavailable ('+e.message+'), trying hiscores...','info');
     }
   }
 
   if(!wsLoaded){
     try{
-      setStatus('lookupStatus','Trying hiscores...','info');
       var playerParam=name.replace(/ /g,'+');
-      var innerUrl='https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player='+playerParam;
-      var r2=await fetch('https://api.codetabs.com/v1/proxy/?quest='+encodeURIComponent(innerUrl));
-      var text2=await r2.text();
-      if(!text2||text2.indexOf('<!DOCTYPE')>=0||text2.trim().length<20)throw new Error('Player not found');
+      var hsUrl='https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player='+playerParam;
+      var r2=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(hsUrl));
+      if(!r2.ok)throw new Error('hiscores proxy failed');
+      var wrapper2=await r2.json();
+      var text2=wrapper2.contents||'';
+      if(!text2||text2.indexOf('<!DOCTYPE')>=0||text2.trim().length<20)throw new Error('Player not found on hiscores');
       var lines=text2.trim().split('\n');
-      function get(i){var l=lines[i];return l?parseInt(l.split(',')[1])||1:1;}
-      var atk2=get(1),def2=get(2),str2=get(3),hp2=get(4),rng2=get(5),pray2=get(6),mag2=get(7);
-      state.slayLvl=get(19);
+      function getLvl(i){var l=lines[i];return l?parseInt(l.split(',')[1])||1:1;}
+      var atk2=getLvl(1),def2=getLvl(2),str2=getLvl(3),hp2=getLvl(4),rng2=getLvl(5),pray2=getLvl(6),mag2=getLvl(7);
+      state.slayLvl=getLvl(19);
       var base2=0.25*(def2+hp2+Math.floor(pray2/2));
       state.combatLvl=Math.floor(base2+Math.max(0.325*(atk2+str2),0.325*Math.floor(rng2*1.5),0.325*Math.floor(mag2*1.5)));
       state.wikisyncLoaded=false;state.rsn=name;
       document.getElementById('wikisyncBadge').style.display='none';
       document.getElementById('manSlayer').value=state.slayLvl;
       document.getElementById('manCombat').value=state.combatLvl;
-      setStatus('lookupStatus','Hiscores: '+name+' &#8212; CB '+state.combatLvl+', Slay '+state.slayLvl+'. Enter QP + diary manually.','ok');
+      setStatus('lookupStatus','Hiscores: '+name+' &#8212; CB '+state.combatLvl+', Slay '+state.slayLvl+'. Enter QP &amp; diary status manually.','ok');
       renderStatPills();recalculate();
     }catch(e2){
-      setStatus('lookupStatus','Lookup failed: '+e2.message+'. Enter stats manually.','err');
+      setStatus('lookupStatus','Lookup failed: '+e2.message+'. Enter stats manually above.','err');
     }
   }
   btn.disabled=false;btn.textContent='Lookup';
