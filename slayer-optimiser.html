@@ -161,7 +161,7 @@ tr.row-top td.name-cell{color:var(--green);}
       <label class="chk"><input type="checkbox" id="manDiaryLumbElite" onchange="onManualChange()"><span class="cb"></span>Lumbridge &amp; Draynor Elite Diary (unlocks 7th block slot) &#8212; auto-detected when WikiSync loads</label>
     </div>
   </div>
-  <div id="lookupStatus" class="status-line">Enter your RSN &#8212; WikiSync tried first, falls back to hiscores</div>
+  <div id="lookupStatus" class="status-line">Enter your RSN &#8212; WikiSync tried first (quest/diary data), falls back to hiscores (skills only)</div>
   <div class="stat-pills" id="statPills"></div>
 </div>
 
@@ -304,16 +304,10 @@ tr.row-top td.name-cell{color:var(--green);}
 </div>
 
 <script>
-/* =========================================================
-   QUEST DATA
-   ========================================================= */
 var QUEST_QP = {"Cook's Assistant":1,"Demon Slayer":3,"The Restless Ghost":1,"Romeo & Juliet":5,"Sheep Shearer":1,"Shield of Arrav":1,"Ernest the Chicken":4,"Vampyre Slayer":3,"Imp Catcher":1,"Prince Ali Rescue":3,"Doric's Quest":1,"Black Knights' Fortress":3,"Witch's Potion":1,"The Knight's Sword":1,"Goblin Diplomacy":5,"Pirate's Treasure":2,"Dragon Slayer I":2,"Druidic Ritual":4,"Lost City":3,"Witch's House":4,"Merlin's Crystal":6,"Heroes' Quest":1,"Scorpion Catcher":1,"Family Crest":1,"Tribal Totem":1,"Fishing Contest":1,"Monk's Friend":1,"Temple of Ikov":1,"Clock Tower":1,"Holy Grail":2,"Tree Gnome Village":2,"Fight Arena":2,"Hazeel Cult":1,"Sheep Herder":4,"Plague City":1,"Sea Slug":1,"Waterfall Quest":1,"Biohazard":3,"Jungle Potion":1,"The Grand Tree":5,"Shilo Village":2,"Underground Pass":5,"Observatory Quest":2,"The Tourist Trap":2,"Watchtower":4,"Dwarf Cannon":1,"Murder Mystery":3,"The Dig Site":2,"Gertrude's Cat":1,"Legends' Quest":4,"Big Chompy Bird Hunting":2,"Elemental Workshop I":1,"Priest in Peril":1,"Nature Spirit":2,"Death Plateau":1,"Troll Stronghold":1,"Tai Bwo Wannai Trio":2,"Regicide":3,"Eadgar's Ruse":1,"Shades of Mort'ton":3,"Shadow of the Storm":3,"Animal Magnetism":1,"Haunted Mine":2,"Troll Romance":2,"In Search of the Myreque":2,"Creature of Fenkenstrain":2,"Rum Deal":2,"Zogre Flesh Eaters":2,"One Small Favour":2,"Mountain Daughter":2,"Between a Rock...":2,"The Feud":1,"Ghosts Ahoy":2,"Icthlarin's Little Helper":4,"Tears of Guthix":1,"Mourning's End Part I":2,"Recipe for Disaster":10,"In Aid of the Myreque":2,"Lunar Diplomacy":2,"Devious Minds":1,"The Hand in the Sand":1,"Enakhra's Lament":2,"Cabin Fever":2,"Fairytale I - Growing Pains":2,"Garden of Tranquillity":2,"A Tail of Two Cats":2,"Wanted!":1,"Mourning's End Part II":2,"Skippy and the Mogres":1,"Lair of Tarn Razorlor":1,"Horror from the Deep":4,"Throne of Miscellania":1,"Monkey Madness I":3,"Fairytale II - Cure a Queen":2,"Grim Tales":1,"King's Ransom":1,"Monkey Madness II":4,"Enlightened Journey":1,"Eagles' Peak":2,"Cold War":1,"The Fremennik Isles":1,"Tower of Life":2,"Ratcatchers":2,"Swan Song":2,"Royal Trouble":1,"Death to the Dorgeshuun":1,"Forgettable Tale...":2,"Another Slice of H.A.M.":1,"Dream Mentor":2,"My Arm's Big Adventure":1,"Darkness of Hallowvale":2,"The Slug Menace":1,"Elemental Workshop II":1,"The Eyes of Glouphrie":2,"Desert Treasure I":3,"Olaf's Quest":1,"A Soul's Bane":1,"The Fremennik Trials":3,"Bone Voyage":1,"Client of Kourend":1,"Dragon Slayer II":4,"Sins of the Father":2,"Making Friends with My Arm":1,"The Forsaken Tower":1,"The Ascent of Arceuus":1,"X Marks the Spot":1,"Children of the Sun":1,"Desert Treasure II - The Fallen Empire":5,"A Night at the Theatre":2,"A Kingdom Divided":1,"Below Ice Mountain":1,"A Porcine of Interest":1,"Daddy's Home":1,"Getting Ahead":1,"Sleeping Giants":1,"His Faithful Servants":1,"Hopespear's Will":1,"Into the Tombs":1,"Ethically Acquired Antiquities":1,"Death on the Isle":1,"At First Light":1,"Current Affairs":1,"The Path of Glouphrie":2,"Beneath Cursed Sands":2,"Curse of the Empty Lord":1,"Defender of Varrock":1,"Enter the Abyss":1,"A Taste of Hope":2,"While Guthix Sleeps":5,"The Fremennik Exiles":2,"Land of the Goblins":2,"Song of the Elves":4,"The Great Brain Robbery":2,"Making History":3,"Recruitment Drive":1,"What Lies Below":1,"Roving Elves":1,"The Corsair Curse":1,"The Lost Tribe":1,"The Golem":1,"The General's Shadow":1,"The Giant Dwarf":1,"Temple of the Eye":1,"Tale of the Righteous":1,"The Queen of Thieves":1,"The Depths of Despair":1,"The Curse of Arrav":1,"The Garden of Death":1,"Secrets of the North":1,"Perilous Moons":1,"Twilight's Promise":1,"Troubled Tortugans":1,"Pandemonium":1,"Prying Times":1,"Meat and Greet":1,"Scrambled!":1,"Vale Totems":1,"The Ides of Milk":1,"Rag and Bone Man I":1,"Rag and Bone Man II":1,"Misthalin Mystery":1,"Shadows of Custodia":1,"The Final Dawn":2,"The Heart of Darkness":2,"The Ribbiting Tale of a Lily Pad Labour Dispute":1,"Spirits of the Elid":2};
-function calcQpFromQuests(completed){var qp=0;completed.forEach(function(q){qp+=QUEST_QP[q]||0;});return qp;}
+function calcQpFromQuests(c){var q=0;c.forEach(function(x){q+=QUEST_QP[x]||0;});return q;}
 var QUEST_REQ_MAP={dragonSlayer:"Dragon Slayer I",priestInPeril:"Priest in Peril",regicide:"Regicide",desertTreasure:"Desert Treasure I",cabinFever:"Cabin Fever",horrorFromDeep:"Horror from the Deep",boneVoyage:"Bone Voyage",elementalWorkshop:"Elemental Workshop I",mourningsEnd2:"Mourning's End Part II",whileGuthixSleeps:"While Guthix Sleeps",troubledTortugans:"Troubled Tortugans",lunarDiplomacy:"Lunar Diplomacy",skippyMogres:"Skippy and the Mogres"};
 
-/* =========================================================
-   TASK LISTS
-   ========================================================= */
 var DURADEL_TASKS=[
   {name:"Aberrant spectres",slayReq:60,combatReq:65,weight:7,xpMelee:25000,xpCannon:35000,xpBarrage:0,gpHr:200000,questReq:null,notes:"Herb drops. Nose peg/slayer helm.",difficulty:2},
   {name:"Abyssal demons",slayReq:85,combatReq:85,weight:12,xpMelee:35000,xpCannon:45000,xpBarrage:55000,gpHr:150000,questReq:null,notes:"Barrage in Catacombs. Whip/dagger drops.",difficulty:3},
@@ -492,9 +486,6 @@ var KRYSTILIA_TASKS=[
   {name:"Zombies",slayReq:0,combatReq:0,weight:5,xpMelee:6000,xpCannon:10000,xpBarrage:0,gpHr:8000,questReq:null,notes:"",difficulty:1}
 ];
 
-/* =========================================================
-   STATE
-   ========================================================= */
 var state={
   rsn:'',slayLvl:99,combatLvl:126,questPts:275,sailingLvl:0,
   methods:{melee:true,cannon:true,barrage:true},
@@ -693,7 +684,6 @@ function recalculate(){
 
   var pts=getDiaryBonus(state.master);
   var currentBal=parseInt(document.getElementById('currentPointsBalance').value)||0;
-  // avgTaskLen is in minutes; tasksPerHour = 60 / (avgLen + travel)
   var avgLen=master.avgTaskLen||15;
   var tasksPerHour=60/(avgLen+5);
   var ptsPerHour=pts*tasksPerHour;
@@ -865,7 +855,7 @@ function renderTable(){
     var flagBadge=t.flag==='preferred'?'<span class="badge b-pref">&#9825; Pref</span>':t.flag==='disliked'?'<span class="badge b-dislike">&#10007; Dislike</span>':'';
     var diff=t.difficulty||1;
     var diffBadge='<span class="badge '+DIFF_CLASS[diff]+'">'+DIFF_LABEL[diff]+'</span>';
-    var mBadge=t.eligible?'<span class="badge '+(t.method==='Barrage'?'b-bar':t.method==='Cannon'?'b-can':'')+'">'+(t.method||'Melee')+'</span>':'';
+    var mBadge=t.eligible?'<span class="badge '+(t.method==='Barrage'?'b-bar':t.method==='Cannon'?'b-can':'')+'">'+t.method+'</span>':'';
     var wBar=t.eligible&&!t.blocked?'<span style="font-weight:700;color:var(--teal)">'+t.weight+'</span><div class="w-bar" style="width:'+Math.min(t.weight*6,60)+'px;margin-left:6px;display:inline-block"></div>':'-';
     var qn=escQ(t.name);
     var bb=t.blocked
@@ -893,8 +883,11 @@ function renderTable(){
 }
 
 /* =========================================================
-   WIKISYNC LOOKUP — uses allorigins /get (returns {contents:'...'})
-   WikiSync requires RuneLite user-agent; direct browser fetch is blocked (403)
+   LOOKUP
+   WikiSync blocked by Cloudflare unless accessed via RuneLite client.
+   We race two CORS proxies - whichever responds first wins.
+   If both fail/timeout, fall back to OSRS hiscores (skills only, no quests/diaries).
+   Quest points have no public API - enter manually.
    ========================================================= */
 async function lookupPlayer(){
   var name=document.getElementById('rsn').value.trim();
@@ -907,10 +900,12 @@ async function lookupPlayer(){
 
   try{
     var wsUrl='https://sync.runescape.wiki/runelite/player/'+encodeURIComponent(name)+'/STANDARD';
-    var resp=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(wsUrl));
-    if(!resp.ok)throw new Error('proxy '+resp.status);
-    var wrapper=await resp.json();
-    var text=wrapper.contents||'';
+    // Race allorigins and codetabs - use whichever responds first with valid data
+    var wsProxies=[
+      fetch('https://api.allorigins.win/get?url='+encodeURIComponent(wsUrl)).then(function(r){return r.json().then(function(j){return j.contents||'';});}),
+      fetch('https://api.codetabs.com/v1/proxy/?quest='+encodeURIComponent(wsUrl)).then(function(r){return r.text();})
+    ];
+    var text=await Promise.race(wsProxies.concat([new Promise(function(_,rej){setTimeout(function(){rej(new Error('timeout'));},7000);})]));
     if(!text||text.indexOf('username')<0)throw new Error('bad response');
     var d=JSON.parse(text);
     if(d.code==='NO_USER_DATA')throw new Error('no_wikisync');
@@ -930,6 +925,11 @@ async function lookupPlayer(){
 
     var hasLD=hasLumbDraynorElite();
     var slots=blockSlotsFromQp(state.questPts);
+    // Sync input fields so onManualChange() doesn't overwrite what WikiSync loaded
+    document.getElementById('manSlayer').value=state.slayLvl;
+    document.getElementById('manCombat').value=state.combatLvl;
+    document.getElementById('manQP').value=state.questPts;
+    document.getElementById('manSailing').value=state.sailingLvl;
     document.getElementById('wikisyncBadge').style.display='inline-flex';
     document.getElementById('manDiaryRow').style.display='none';
     setStatus('lookupStatus','WikiSync: '+name+' &#8212; CB '+state.combatLvl+', Slay '+state.slayLvl+
@@ -940,7 +940,7 @@ async function lookupPlayer(){
     if(e.message==='no_wikisync'){
       setStatus('lookupStatus','No WikiSync data for this account, trying hiscores...','info');
     }else{
-      setStatus('lookupStatus','WikiSync unavailable ('+e.message+'), trying hiscores...','info');
+      setStatus('lookupStatus','WikiSync unavailable ('+e.message+') &#8212; trying hiscores...','info');
     }
   }
 
@@ -948,11 +948,13 @@ async function lookupPlayer(){
     try{
       var playerParam=name.replace(/ /g,'+');
       var hsUrl='https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player='+playerParam;
-      var r2=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(hsUrl));
-      if(!r2.ok)throw new Error('hiscores proxy failed');
-      var wrapper2=await r2.json();
-      var text2=wrapper2.contents||'';
-      if(!text2||text2.indexOf('<!DOCTYPE')>=0||text2.trim().length<20)throw new Error('Player not found on hiscores');
+      // codetabs is faster for hiscores; allorigins as backup
+      var hsProxies=[
+        fetch('https://api.codetabs.com/v1/proxy/?quest='+encodeURIComponent(hsUrl)).then(function(r){return r.text();}),
+        fetch('https://api.allorigins.win/get?url='+encodeURIComponent(hsUrl)).then(function(r){return r.json().then(function(j){return j.contents||'';});})
+      ];
+      var text2=await Promise.race(hsProxies.concat([new Promise(function(_,rej){setTimeout(function(){rej(new Error('hiscores timeout'));},8000);})]));
+      if(!text2||text2.indexOf('<!DOCTYPE')>=0||text2.trim().length<20)throw new Error('Player not found');
       var lines=text2.trim().split('\n');
       function getLvl(i){var l=lines[i];return l?parseInt(l.split(',')[1])||1:1;}
       var atk2=getLvl(1),def2=getLvl(2),str2=getLvl(3),hp2=getLvl(4),rng2=getLvl(5),pray2=getLvl(6),mag2=getLvl(7);
@@ -963,10 +965,11 @@ async function lookupPlayer(){
       document.getElementById('wikisyncBadge').style.display='none';
       document.getElementById('manSlayer').value=state.slayLvl;
       document.getElementById('manCombat').value=state.combatLvl;
-      setStatus('lookupStatus','Hiscores: '+name+' &#8212; CB '+state.combatLvl+', Slay '+state.slayLvl+'. Enter QP &amp; diary status manually.','ok');
+      setStatus('lookupStatus','Hiscores: CB '+state.combatLvl+', Slay '+state.slayLvl+
+        '. Enter QP manually (no public API for quest data).','ok');
       renderStatPills();recalculate();
     }catch(e2){
-      setStatus('lookupStatus','Lookup failed: '+e2.message+'. Enter stats manually above.','err');
+      setStatus('lookupStatus','Both lookups failed: '+e2.message+'. Enter stats manually above.','err');
     }
   }
   btn.disabled=false;btn.textContent='Lookup';
@@ -981,9 +984,6 @@ function onManualChange(){
   renderStatPills();recalculate();
 }
 
-/* =========================================================
-   INIT
-   ========================================================= */
 loadBlockLists();
 setMaster('duradel');
 calcTuraelBoost();
